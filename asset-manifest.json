@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/portfolio-alain/static/css/main.f49b1992.css",
+    "main.js": "/portfolio-alain/static/js/main.82f101f9.js",
+    "static/js/453.f30c1698.chunk.js": "/portfolio-alain/static/js/453.f30c1698.chunk.js",
+    "index.html": "/portfolio-alain/index.html",
+    "main.f49b1992.css.map": "/portfolio-alain/static/css/main.f49b1992.css.map",
+    "main.82f101f9.js.map": "/portfolio-alain/static/js/main.82f101f9.js.map",
+    "453.f30c1698.chunk.js.map": "/portfolio-alain/static/js/453.f30c1698.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f49b1992.css",
+    "static/js/main.82f101f9.js"
+  ]
+}
