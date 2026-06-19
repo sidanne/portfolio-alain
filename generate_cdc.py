@@ -200,25 +200,19 @@ def build():
         ("3.6 Dashboard administrateur enrichi",                   9,  2),
         ("3.7 Fonctionnalités avancées",                           9,  2),
         ("3.8 Export PDF et attestation",                          9,  2),
-        ("3.9 Priorisation des fonctionnalités (MoSCoW)",         10,  2),
-        ("4. Analyse technique",                                   11,  1),
-        ("4.1 Nouvelles tables de la base de données",            11,  2),
-        ("4.2 Nouveaux endpoints API REST",                       13,  2),
-        ("4.3 Nouvelles pages frontend",                          15,  2),
-        ("4.4 Maquettes des nouvelles pages",                     16,  2),
-        ("5. Répartition des tâches / Apport personnel",          18,  1),
-        ("5.1 Travail réalisé durant le stage",                   18,  2),
-        ("5.2 Travail à réaliser dans le cadre du TFE",           18,  2),
-        ("5.3 Tableau récapitulatif",                             19,  2),
-        ("6. Plan de travail",                                    20,  1),
-        ("6.1 Calendrier officiel",                               20,  2),
-        ("6.2 Plan de développement",                             20,  2),
-        ("6.3 Dates clés personnelles",                           20,  2),
-        ("6.4 Contraintes et risques identifiés",                 21,  2),
-        ("7. Stratégie de tests",                                 22,  1),
-        ("7.1 Types de tests",                                    22,  2),
-        ("7.2 Outils utilisés",                                   22,  2),
-        ("7.3 Scénarios de tests principaux",                     22,  2),
+        ("4. Analyse technique",                                   10,  1),
+        ("4.1 Nouvelles tables de la base de données",            10,  2),
+        ("4.2 Nouveaux endpoints API REST",                       12,  2),
+        ("4.3 Nouvelles pages frontend",                          14,  2),
+        ("5. Répartition des tâches / Apport personnel",          15,  1),
+        ("5.1 Travail réalisé durant le stage",                   15,  2),
+        ("5.2 Travail à réaliser dans le cadre du TFE",           15,  2),
+        ("5.3 Tableau récapitulatif",                             16,  2),
+        ("6. Plan de travail",                                    17,  1),
+        ("6.1 Calendrier officiel",                               17,  2),
+        ("6.2 Plan de développement",                             17,  2),
+        ("6.3 Dates clés personnelles",                           17,  2),
+        ("6.4 Contraintes et risques identifiés",                 18,  2),
     ]
     for label, page, level in toc:
         S_.append(toc_line(label, page, level))
@@ -474,70 +468,7 @@ def build():
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
-    # P10 — 3.9 PRIORISATION MoSCoW
-    # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("3.9 Priorisation des fonctionnalités (MoSCoW)", SEC2))
-    S_.append(Paragraph(
-        "Compte tenu du calendrier de la 2ème session (juillet à octobre 2026), les "
-        "fonctionnalités sont classées selon la méthode MoSCoW afin d'identifier clairement "
-        "les priorités de développement.", BODY))
-
-    def moscow_table(title, bg, items):
-        rows = [[Paragraph(title, S("mh", fontName="Helvetica-Bold", fontSize=9, leading=11,
-                                    textColor=colors.white, alignment=TA_CENTER))]]
-        for item in items:
-            rows.append([Paragraph(f"• {item}", TB)])
-        t = Table(rows, colWidths=[CW])
-        ts = TableStyle([
-            ("BACKGROUND",    (0,0),(0,0), bg),
-            ("BACKGROUND",    (0,1),(0,-1), C_LGRAY),
-            ("GRID",          (0,0),(-1,-1), 0.5, colors.black),
-            ("TOPPADDING",    (0,0),(-1,-1), 4),
-            ("BOTTOMPADDING", (0,0),(-1,-1), 4),
-            ("LEFTPADDING",   (0,0),(-1,-1), 6),
-            ("RIGHTPADDING",  (0,0),(-1,-1), 6),
-            ("FONTSIZE",      (0,0),(-1,-1), 9),
-            ("LEADING",       (0,0),(-1,-1), 12),
-        ])
-        t.setStyle(ts)
-        return t
-
-    S_.append(moscow_table("MUST HAVE — Fonctionnalités obligatoires", GREEN_D, [
-        "Espace bénévole : inscription, connexion et profil de base",
-        "Gestion des événements : CRUD complet côté administrateur",
-        "Système d'inscription aux événements (côté bénévole)",
-        "Email de confirmation automatique (inscription / désinscription)",
-        "Liste d'attente avec passage automatique WAITING → CONFIRMED",
-        "Dashboard administrateur : onglets Bénévoles et Événements",
-        "4 nouvelles tables BD (app_users, events, registrations, reviews)",
-        "30 nouveaux endpoints API REST",
-    ]))
-    S_.append(sp(0.3))
-    S_.append(moscow_table("SHOULD HAVE — Fonctionnalités importantes", colors.HexColor("#2D7D46"), [
-        "Refonte graphique complète (charte Terra Sana)",
-        "Réinitialisation du mot de passe par email",
-        "Retours post-événement (note + commentaire)",
-        "Niveaux bénévole (Bronze / Argent / Or) avec badge et notification email",
-        "Export PDF de l'attestation de participation",
-    ]))
-    S_.append(sp(0.3))
-    S_.append(moscow_table("COULD HAVE — Fonctionnalités optionnelles", colors.HexColor("#5A9E6F"), [
-        "Graphiques Chart.js dans le dashboard administrateur",
-        "Badge de notification (inscriptions en attente dans la navbar)",
-        "Export PDF de la liste des inscrits par événement",
-        "Filtres avancés et pagination côté bénévole",
-    ]))
-    S_.append(sp(0.3))
-    S_.append(moscow_table("WON'T HAVE — Hors périmètre de ce TFE", C_GRAY, [
-        "Application mobile native",
-        "Paiement en ligne",
-        "Intégration réseaux sociaux",
-        "Module de gestion financière ou comptable",
-    ]))
-    S_.append(PageBreak())
-
-    # ═══════════════════════════════════════════════════════
-    # P11 — 4.1 TABLES BD
+    # P10 — 4.1 TABLES BD
     # ═══════════════════════════════════════════════════════
     S_.append(Paragraph("4. Analyse technique", SEC1))
     S_.append(Paragraph("4.1 Nouvelles tables de la base de données — 4 tables", SEC2))
@@ -681,140 +612,7 @@ def build():
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
-    # P16 — 4.4 MAQUETTES (wireframes)
-    # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("4.4 Maquettes des nouvelles pages", SEC2))
-    S_.append(Paragraph(
-        "Les maquettes ci-dessous représentent la structure visuelle des principales nouvelles "
-        "pages. Ces maquettes filaires (wireframes) définissent l'organisation des éléments "
-        "d'interface ; le design final respectera la charte graphique Terra Sana.", BODY))
-
-    def wf_cell(txt, bg=C_WHITE, bold=False):
-        fn = "Helvetica-Bold" if bold else "Helvetica"
-        p = Paragraph(txt, S("wc", fontName=fn, fontSize=7.5, leading=10, alignment=TA_CENTER))
-        return p
-
-    def wf_btn(txt):
-        return Paragraph(txt, S("wb", fontName="Helvetica-Bold", fontSize=7.5, leading=10,
-                                 alignment=TA_CENTER, textColor=colors.white))
-
-    # ── Maquette 1 : /evenements ──────────────────────────
-    S_.append(Paragraph("Maquette 1 — /evenements (liste des événements)", SEC2B))
-    wf1_data = [
-        [wf_cell("Logo Terra Sana", bold=True),
-         wf_cell("Accueil  |  Projets  |  Blog  |  Bénévolat  |  Événements"),
-         wf_cell("FR / EN / NL")],
-        [wf_cell("Événements à venir", bold=True), "", ""],
-        [wf_cell("Date ▼"), wf_cell("Lieu ▼"), wf_cell("Statut ▼   🔍 Rechercher")],
-        [wf_cell("📷 Photo\n─────────────────\nTitre de l'événement\n📅 Date  |  📍 Lieu  |  👥 X places restantes"),
-         "",
-         wf_cell("─── Carte 2 ───\n\n(même structure)")],
-        [wf_cell("─── Carte 3 ───\n\n(même structure)"), "", wf_cell("─── Carte 4 ───\n\n(même structure)")],
-        [wf_cell(""), wf_cell("◀  1  2  3  ▶"), wf_cell("")],
-    ]
-    wf1 = Table(wf1_data,
-                colWidths=[CW/3, CW/3, CW/3],
-                rowHeights=[1.0*cm, 0.7*cm, 0.7*cm, 2.3*cm, 2.3*cm, 0.7*cm])
-    wf1.setStyle(TableStyle([
-        ("BACKGROUND", (0,0),(-1,0), GREEN_D),
-        ("TEXTCOLOR",  (0,0),(-1,0), colors.white),
-        ("BACKGROUND", (0,1),(-1,1), C_LGRAY),
-        ("FONTNAME",   (0,1),(-1,1), "Helvetica-Bold"),
-        ("BACKGROUND", (0,2),(-1,2), C_GRAY),
-        ("BACKGROUND", (0,3),(-1,4), C_WHITE),
-        ("BACKGROUND", (0,5),(-1,5), C_LGRAY),
-        ("GRID",       (0,0),(-1,-1), 0.5, colors.black),
-        ("SPAN",       (0,1),(2,1)),
-        ("VALIGN",     (0,0),(-1,-1), "MIDDLE"),
-        ("ALIGN",      (0,0),(-1,-1), "CENTER"),
-        ("FONTSIZE",   (0,0),(-1,-1), 7.5),
-        ("LEADING",    (0,0),(-1,-1), 10),
-        ("TOPPADDING", (0,0),(-1,-1), 4),
-        ("BOTTOMPADDING",(0,0),(-1,-1), 4),
-    ]))
-    S_.append(wf1)
-    S_.append(sp(0.6))
-
-    # ── Maquette 2 : /benevoles/mon-espace ───────────────
-    S_.append(Paragraph("Maquette 2 — /benevoles/mon-espace (espace personnel bénévole)", SEC2B))
-    wf2_data = [
-        [wf_cell("Logo Terra Sana", bold=True),
-         wf_cell("Bonjour, Prénom Nom"),
-         wf_cell("🥉 Bronze  |  Déconnexion")],
-        [wf_cell("Mon Profil", bold=True), wf_cell("Mes Inscriptions", bold=True), wf_cell("Mes Attestations", bold=True)],
-        [wf_cell("Nom : Youndjeu Alain\nEmail : alain@email.com\nTél : —\nVille : Bruxelles\nCompétences : —\nDisponibilités : —"),
-         wf_cell("✅ Atelier jardinage\n    12/07/2026 — Confirmé\n─────────────────\n✅ Conférence santé\n    05/08/2026 — Confirmé\n─────────────────\n⏳ Nettoyage parc\n    20/08/2026 — En attente"),
-         ""],
-        [wf_cell("[ Modifier mon profil ]"), wf_cell(""), wf_cell("[ Télécharger attestation ]")],
-    ]
-    wf2 = Table(wf2_data,
-                colWidths=[CW/3, CW/3, CW/3],
-                rowHeights=[1.0*cm, 0.7*cm, 3.5*cm, 0.9*cm])
-    wf2.setStyle(TableStyle([
-        ("BACKGROUND", (0,0),(-1,0), GREEN_D),
-        ("TEXTCOLOR",  (0,0),(-1,0), colors.white),
-        ("BACKGROUND", (0,1),(-1,1), GREEN_L),
-        ("BACKGROUND", (0,2),(-1,2), C_WHITE),
-        ("BACKGROUND", (0,3),(0,3),  C_LGRAY),
-        ("BACKGROUND", (2,3),(2,3),  C_LGRAY),
-        ("BACKGROUND", (1,3),(1,3),  C_WHITE),
-        ("SPAN",       (1,2),(2,2)),
-        ("GRID",       (0,0),(-1,-1), 0.5, colors.black),
-        ("VALIGN",     (0,0),(-1,-1), "MIDDLE"),
-        ("ALIGN",      (0,0),(-1,-1), "CENTER"),
-        ("FONTSIZE",   (0,0),(-1,-1), 7.5),
-        ("LEADING",    (0,0),(-1,-1), 10),
-        ("TOPPADDING", (0,0),(-1,-1), 4),
-        ("BOTTOMPADDING",(0,0),(-1,-1), 4),
-    ]))
-    S_.append(wf2)
-    S_.append(PageBreak())
-
-    # P17 — Maquette 3 : /evenements/:id
-    S_.append(Paragraph("Maquette 3 — /evenements/:id (détail et inscription)", SEC2B))
-    wf3_data = [
-        [wf_cell("Logo Terra Sana", bold=True),
-         wf_cell("Accueil  |  Projets  |  Blog  |  Bénévolat  |  Événements"),
-         wf_cell("FR / EN / NL")],
-        [wf_cell("📷  Photo de l'événement (bannière)"), "", ""],
-        [wf_cell("Titre de l'événement", bold=True),
-         wf_cell("📅 Date : 12/07/2026 à 10h00"),
-         wf_cell("📍 Lieu : Auderghem")],
-        [wf_cell("Description complète de l'événement\n(plusieurs paragraphes possibles)"),
-         wf_cell("👥 Places : 12 / 30\nStatut : OPEN\n\n[ S'inscrire ]\n\nou\n[ Rejoindre la liste d'attente ]"),
-         ""],
-        [wf_cell("⭐ Note moyenne : 4.2 / 5\n(basée sur X avis)\n──────────────────\nAvis des bénévoles : ..."),
-         "", ""],
-        [wf_cell("◀ Retour à la liste"), "", ""],
-    ]
-    wf3 = Table(wf3_data,
-                colWidths=[CW/3, CW/3, CW/3],
-                rowHeights=[1.0*cm, 1.5*cm, 0.8*cm, 2.8*cm, 1.8*cm, 0.7*cm])
-    wf3.setStyle(TableStyle([
-        ("BACKGROUND",    (0,0),(-1,0), GREEN_D),
-        ("TEXTCOLOR",     (0,0),(-1,0), colors.white),
-        ("SPAN",          (0,1),(2,1)),
-        ("BACKGROUND",    (0,1),(2,1), C_GRAY),
-        ("SPAN",          (0,3),(0,3)),
-        ("SPAN",          (1,3),(2,3)),
-        ("BACKGROUND",    (1,3),(2,3), C_LGRAY),
-        ("SPAN",          (0,4),(2,4)),
-        ("BACKGROUND",    (0,4),(2,4), C_WHITE),
-        ("SPAN",          (0,5),(2,5)),
-        ("BACKGROUND",    (0,5),(2,5), C_LGRAY),
-        ("GRID",          (0,0),(-1,-1), 0.5, colors.black),
-        ("VALIGN",        (0,0),(-1,-1), "MIDDLE"),
-        ("ALIGN",         (0,0),(-1,-1), "CENTER"),
-        ("FONTSIZE",      (0,0),(-1,-1), 7.5),
-        ("LEADING",       (0,0),(-1,-1), 10),
-        ("TOPPADDING",    (0,0),(-1,-1), 4),
-        ("BOTTOMPADDING", (0,0),(-1,-1), 4),
-    ]))
-    S_.append(wf3)
-    S_.append(PageBreak())
-
-    # ═══════════════════════════════════════════════════════
-    # P18 — 5. RÉPARTITION DES TÂCHES
+    # P15 — 5. RÉPARTITION DES TÂCHES
     # ═══════════════════════════════════════════════════════
     S_.append(Paragraph("5. Répartition des tâches / Apport personnel", SEC1))
     S_.append(Paragraph("5.1 Travail réalisé durant le stage — base technique existante", SEC2))
@@ -938,89 +736,6 @@ def build():
          tb("L'application est développée et présentée en environnement local (WAMP Server sous Windows). Aucun déploiement en ligne n'est prévu dans le cadre de ce TFE.")],
     ]))
     S_.append(PageBreak())
-
-    # ═══════════════════════════════════════════════════════
-    # P22 — 7. STRATÉGIE DE TESTS
-    # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("7. Stratégie de tests", SEC1))
-    S_.append(Paragraph(
-        "Une stratégie de tests structurée est mise en place pour valider le bon fonctionnement "
-        "du module TFE avant la remise. Elle couvre les trois niveaux habituels : unitaire, "
-        "intégration et fonctionnel.", BODY))
-
-    S_.append(Paragraph("7.1 Types de tests", SEC2))
-    S_.append(grid([3.5*cm, CW-3.5*cm], [
-        [th("Type"),                 th("Description")],
-        [tb("Tests unitaires"),      tb("Vérification des méthodes et services Spring Boot de façon isolée (calcul du niveau bénévole, passage liste d'attente, validation des données).")],
-        [tb("Tests d'intégration"),  tb("Validation des endpoints API REST : requêtes, codes HTTP, format des réponses JSON, gestion des erreurs (401, 403, 404, 400).")],
-        [tb("Tests fonctionnels"),   tb("Simulation des parcours utilisateur complets (bénévole + administrateur) directement dans le navigateur en environnement local.")],
-    ]))
-    S_.append(sp(0.4))
-
-    S_.append(Paragraph("7.2 Outils utilisés", SEC2))
-    S_.append(grid([3.5*cm, CW-7.0*cm, 3.3*cm], [
-        [th("Outil"),         th("Usage"),                                              th("Contexte")],
-        [tb("JUnit 5"),       tb("Tests unitaires des services Spring Boot"),           tb("Backend")],
-        [tb("Mockito"),       tb("Simulation des dépendances (repositories, services)"),tb("Backend")],
-        [tb("Postman"),       tb("Tests manuels des endpoints API REST (collections)"), tb("API REST")],
-        [tb("Navigateur"),    tb("Tests fonctionnels des pages React"),                 tb("Frontend")],
-        [tb("Console React"), tb("Vérification des erreurs JavaScript et des appels API"),tb("Frontend")],
-    ]))
-    S_.append(sp(0.4))
-
-    S_.append(Paragraph("7.3 Scénarios de tests principaux", SEC2))
-    S_.append(grid([0.5*cm, 5.5*cm, CW-8.3*cm, 2.0*cm], [
-        [th("N°"), th("Scénario"),                                      th("Résultat attendu"),                                          th("Type")],
-        [tb("01"), tb("Inscription d'un nouveau bénévole"),             tb("Compte créé, email de confirmation reçu"),                   tb("Fonct.")],
-        [tb("02"), tb("Connexion avec identifiants corrects"),          tb("Token JWT généré, accès à l'espace personnel"),              tb("Fonct.")],
-        [tb("03"), tb("Connexion avec mot de passe incorrect"),         tb("Erreur 401 renvoyée, accès refusé"),                        tb("Intégr.")],
-        [tb("04"), tb("Inscription à un événement disponible"),         tb("statut = CONFIRMED, email de confirmation envoyé"),         tb("Fonct.")],
-        [tb("05"), tb("Inscription à un événement complet"),           tb("statut = WAITING, position enregistrée dans la file"),      tb("Fonct.")],
-        [tb("06"), tb("Désinscription → libération d'une place"),      tb("Premier bénévole WAITING passe à CONFIRMED + email"),       tb("Unitaire")],
-        [tb("07"), tb("Réinitialisation du mot de passe"),             tb("Email reçu, lien valide 24h, nouveau mot de passe actif"),  tb("Fonct.")],
-        [tb("08"), tb("Admin : création d'un événement"),              tb("Événement visible dans la liste publique"),                 tb("Fonct.")],
-        [tb("09"), tb("Admin : validation d'une inscription"),         tb("statut = CONFIRMED, email envoyé au bénévole"),            tb("Fonct.")],
-        [tb("10"), tb("Admin : envoi d'un email groupé"),              tb("Email reçu par tous les bénévoles inscrits confirmés"),    tb("Fonct.")],
-        [tb("11"), tb("Calcul du niveau bénévole (7 participations)"), tb("Niveau = Or, badge mis à jour, email de notification"),    tb("Unitaire")],
-        [tb("12"), tb("Téléchargement de l'attestation PDF"),          tb("Fichier PDF généré avec les bonnes données bénévole"),     tb("Fonct.")],
-        [tb("13"), tb("Accès admin sans token JWT"),                   tb("Erreur 403 renvoyée"),                                     tb("Intégr.")],
-        [tb("14"), tb("Laisser un avis post-événement"),               tb("Avis enregistré, note moyenne recalculée"),                tb("Fonct.")],
-    ]))
-    S_.append(PageBreak())
-
-    # ═══════════════════════════════════════════════════════
-    # PAGE SIGNATURES
-    # ═══════════════════════════════════════════════════════
-    S_.append(Spacer(1, 1.0*cm))
-    S_.append(Paragraph("Validation du cahier des charges", SEC1))
-    S_.append(Paragraph(
-        "Le présent cahier des charges a été lu, compris et approuvé par les parties concernées. "
-        "Les signataires s'engagent à respecter les objectifs et le périmètre définis dans ce "
-        "document pour l'année académique 2025-2026.", BODY))
-    S_.append(sp(0.6))
-
-    sig_data = [
-        [th("Rôle"),                    th("Nom"),                             th("Date"),        th("Signature")],
-        [tb("Étudiant"),                tb("Youndjeu Tchouapi Alain"),         tb("03/07/2026"),  tb(" "*40)],
-        [tb("Maître de stage"),         tb("Didier Seraye\n(Terra Sana ASBL)"),tb("__ / __ /2026"), tb(" "*40)],
-        [tb("Encadreur scolaire"),      tb("Marie-Christine Namur\n(EAFC Uccle)"), tb("__ / __ /2026"), tb(" "*40)],
-    ]
-    sig_t = Table(sig_data, colWidths=[3.5*cm, 4.5*cm, 3.5*cm, CW-11.7*cm])
-    sig_t.setStyle(TableStyle([
-        ("FONTNAME",      (0,0),(-1,0), "Helvetica-Bold"),
-        ("FONTNAME",      (0,1),(-1,-1),"Helvetica"),
-        ("FONTSIZE",      (0,0),(-1,-1), 9),
-        ("LEADING",       (0,0),(-1,-1), 13),
-        ("GRID",          (0,0),(-1,-1), 0.5, colors.black),
-        ("VALIGN",        (0,0),(-1,-1), "TOP"),
-        ("ROWHEIGHT",     (0,1),(-1,-1), 2.5*cm),
-        ("TOPPADDING",    (0,0),(-1,-1), 5),
-        ("BOTTOMPADDING", (0,0),(-1,-1), 5),
-        ("LEFTPADDING",   (0,0),(-1,-1), 5),
-        ("RIGHTPADDING",  (0,0),(-1,-1), 5),
-        ("LINEBELOW",     (3,1),(3,-1), 0.5, colors.black),
-    ]))
-    S_.append(sig_t)
 
     doc.build(S_)
     print(f"PDF généré : {out}")
