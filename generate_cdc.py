@@ -504,7 +504,7 @@ def build():
     ]))
     S_.append(PageBreak())
 
-    # P12
+    # P11
     S_.append(grid(cbd, [
         [th("Champ"),      th("Type"),          th("Contrainte"),   th("Description")],
         [tb("title"),      tb("VARCHAR(200)"),  tb("NOT NULL"),     tb("Titre de l'événement")],
@@ -540,7 +540,7 @@ def build():
     ]))
     S_.append(PageBreak())
 
-    # P13 — 4.2 endpoints (1)
+    # P12 — 4.2 endpoints (1)
     S_.append(Paragraph("4.2 Nouveaux endpoints API REST — 30 endpoints", SEC2))
     cep2 = [2.3*cm, CW-6.1*cm, 3.6*cm]
 
@@ -581,7 +581,7 @@ def build():
     ]))
     S_.append(PageBreak())
 
-    # P14 — 4.2 (suite)
+    # P13 — 4.2 (suite)
     S_.append(Paragraph("Retours, export et statistiques", SEC2B))
     S_.append(grid(cep2, [
         [th("Méthode"), th("Endpoint"),                        th("Accès")],
@@ -597,7 +597,7 @@ def build():
     ]))
     S_.append(PageBreak())
 
-    # P15 — 4.3
+    # P14 — 4.3
     S_.append(Paragraph("4.3 Nouvelles pages frontend — 7 pages", SEC2))
     S_.append(grid([5.0*cm, CW-9.0*cm, 3.8*cm], [
         [th("Route"),                          th("Page"),                                              th("Accès")],
@@ -653,7 +653,7 @@ def build():
     ]))
     S_.append(PageBreak())
 
-    # P19 — 5.3
+    # P16 — 5.3
     S_.append(Paragraph("5.3 Tableau récapitulatif", SEC2))
     S_.append(grid([4.5*cm, 2.5*cm, CW-7.2*cm], [
         [th("Critère"),            th("Stage"),   th("TFE (apport personnel)")],
@@ -674,7 +674,7 @@ def build():
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
-    # P20 — 6. PLAN DE TRAVAIL
+    # P17 — 6. PLAN DE TRAVAIL
     # ═══════════════════════════════════════════════════════
     S_.append(Paragraph("6. Plan de travail", SEC1))
     S_.append(Paragraph("6.1 Calendrier officiel — 2ème session", SEC2))
@@ -714,7 +714,7 @@ def build():
     ]))
     S_.append(PageBreak())
 
-    # P21 — 6.4
+    # P18 — 6.4
     S_.append(Paragraph("6.4 Contraintes et risques identifiés", SEC2))
     S_.append(Paragraph(
         "Plusieurs contraintes techniques et organisationnelles ont été anticipées dès la phase "
@@ -723,7 +723,7 @@ def build():
     S_.append(grid([5.0*cm, CW-5.0*cm], [
         [th("Contrainte / Risque"), th("Mesure prévue")],
         [tb("Délai serré de la 2ème session\n(juillet à octobre 2026)"),
-         tb("Découpage du travail en huit phases planifiées (point 6.2) et priorisation MoSCoW (point 3.9) pour garantir les fonctionnalités essentielles en premier.")],
+         tb("Découpage du travail en huit phases planifiées (point 6.2) afin de garantir les fonctionnalités essentielles en priorité.")],
         [tb("Dépendance au service Gmail SMTP pour l'envoi des e-mails"),
          tb("Utilisation d'un mot de passe d'application dédié ; en cas d'indisponibilité, les notifications restent consultables directement dans l'espace bénévole.")],
         [tb("Sécurité des données personnelles des bénévoles"),
