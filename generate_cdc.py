@@ -11,8 +11,9 @@ from reportlab.lib.units import cm
 from reportlab.lib import colors
 from reportlab.platypus import (
     BaseDocTemplate, Frame, PageTemplate, NextPageTemplate,
-    Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether,
+    Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, Image,
 )
+import os
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY, TA_RIGHT
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.graphics.shapes import (
@@ -308,136 +309,21 @@ def diag_use_case():
 
     return d
 
-# ─── Class diagram ───────────────────────────────────────────
-def diag_classes():
-    DW, DH = 459, 605
-    d = Drawing(DW, DH)
-    _dr(d, 0, 0, DW, DH, fill=_WHT, stroke=None)
-    BW = 128
+# ─── Class diagram : image fournie par l'auteur ──────────────
+_CLASS_IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                          "assets", "diagramme_classes.png")
 
-    # ── Admin ─ x=10, top=595 ────────────────
-    # h = 18 + 4*11+7 + 2*11+7 = 98  → bottom=497
-    _class_box(d, 10, 595, "Admin", [
-        "id : Long",
-        "username : String",
-        "password : String  {BCrypt}",
-        "role : String",
-    ], methods=["+ login() : String", "+ changePassword() : void"], w=BW)
-
-    # ── Event ─ x=321, top=595 ───────────────
-    # h = 18 + 7*11+7 = 102  → bottom=493
-    _class_box(d, 321, 595, "Event", [
-        "id : Long",
-        "title : String",
-        "eventDate : DateTime",
-        "location : String",
-        "maxPlaces : Integer",
-        "status : String",
-        "imageUrl : String",
-    ], w=BW)
-
-    # ── Registration ─ x=168, top=475 ────────
-    # h = 18 + 4*11+7 = 69  → bottom=406
-    _class_box(d, 168, 475, "Registration", [
-        "id : Long",
-        "status : String",
-        "position : Integer",
-        "createdAt : DateTime",
-    ], w=BW)
-
-    # ── AppUser ─ x=321, top=455 ─────────────
-    # h = 18 + 6*11+7 + 2*11+7 = 120  → bottom=335
-    _class_box(d, 321, 455, "AppUser", [
-        "id : Long",
-        "email : String  {UNIQUE}",
-        "password : String  {BCrypt}",
-        "firstName, lastName : String",
-        "isActive : Boolean",
-        "createdAt : DateTime",
-    ], methods=["+ getLevel() : String", "+ generateAttestation() : PDF"], w=BW)
-
-    # ── Review ─ x=168, top=320 ──────────────
-    # h = 18 + 4*11+7 = 69  → bottom=251
-    _class_box(d, 168, 320, "Review", [
-        "id : Long",
-        "rating : Integer  {1..5}",
-        "comment : String",
-        "createdAt : DateTime",
-    ], w=BW)
-
-    # ── Separator ────────────────────────────
-    _dl(d, 10, 218, DW-10, 218, dash=[4,3], w=0.5, col=_GRY)
-    _ds(d, DW/2, 208, "Classes existantes (avant le TFE)", fs=7, col=_GRY)
-
-    # ── Project ─ x=10, top=197 ──────────────
-    _class_box(d, 10, 197, "Project", [
-        "id : Long", "name : String", "isActive : Boolean",
-    ], w=BW)   # h=58, bottom=139
-
-    # ── BlogPost ─ x=168, top=197 ────────────
-    _class_box(d, 168, 197, "BlogPost", [
-        "id : Long", "title : String", "isPublished : Boolean",
-    ], w=BW)   # bottom=139
-
-    # ── ContactMessage ─ x=321, top=197 ──────
-    _class_box(d, 321, 197, "ContactMessage", [
-        "id : Long", "email : String", "isRead : Boolean",
-    ], w=BW)   # bottom=139
-
-    # ── Note ─────────────────────────────────
-    _dr(d, 10, 0, DW-20, 55, fill=colors.HexColor("#F9F9F9"), stroke=_GRY, sw=0.5)
-    _ds(d, 15, 44, "Légende : Admin gère également Project, BlogPost et ContactMessage (1 → 0..*)", anchor='start', fs=6.5, col=_GRY)
-    _ds(d, 15, 31, "Relations principales TFE représentées en trait plein ; relations avec classes existantes en pointillés.", anchor='start', fs=6.5, col=_GRY)
-    _ds(d, 15, 18, "AppUser (Bénévole) et Event sont les nouvelles entités centrales du module TFE.", anchor='start', fs=6.5, col=_GRY)
-
-    # ── Relations TFE (trait plein) ───────────
-    # 1. Admin ─── Event  (crée, 1 → 0..*)
-    _dl(d, 138, 546, 321, 544)
-    _card(d, 143, 549, "1"); _card(d, 304, 548, "0..*")
-    _ds(d, 228, 550, "crée", fs=6, col=_GRY)
-
-    # 2. Admin ─── Registration  (1 → 0..*)
-    _dl(d, 138, 546, 168, 441)
-    _card(d, 133, 539, "1"); _card(d, 170, 444, "0..*")
-
-    # 3. Event ─── Registration  (1 → 0..*)
-    _dl(d, 321, 544, 296, 441)
-    _card(d, 316, 537, "1"); _card(d, 298, 444, "0..*")
-
-    # 4. AppUser ─── Registration  (1 → 0..*)
-    _dl(d, 321, 395, 296, 441)
-    _card(d, 316, 391, "1"); _card(d, 298, 444, "0..*")
-
-    # 5. AppUser ─── Review  (1 → 0..*)
-    _dl(d, 321, 395, 296, 286)
-    _card(d, 316, 388, "1"); _card(d, 298, 289, "0..*")
-
-    # 6. Event ─── Review  (1 → 0.*) ─ routed right
-    _dl(d, 385, 493, 453, 493)
-    _dl(d, 453, 493, 453, 286)
-    _dl(d, 453, 286, 296, 286)
-    _card(d, 380, 496, "1"); _card(d, 298, 283, "0..*")
-
-    # ── Relations avec classes existantes (pointillés) ──
-    # Admin → Project  (vertical)
-    _dl(d, 74, 497, 74, 197, dash=[4,3])
-    _card(d, 79, 493, "1"); _card(d, 79, 200, "0..*")
-
-    # Admin → BlogPost  (bent: right then down then right)
-    _dl(d, 138, 566, 148, 566, dash=[4,3])
-    _dl(d, 148, 566, 148, 68, dash=[4,3])
-    _dl(d, 148, 68, 232, 68, dash=[4,3])
-    _dl(d, 232, 68, 232, 139, dash=[4,3])
-    _card(d, 143, 569, "1"); _card(d, 234, 142, "0..*")
-
-    # Admin → ContactMessage  (bent)
-    _dl(d, 138, 556, 158, 556, dash=[4,3])
-    _dl(d, 158, 556, 158, 60, dash=[4,3])
-    _dl(d, 158, 60, 385, 60, dash=[4,3])
-    _dl(d, 385, 60, 385, 139, dash=[4,3])
-    _card(d, 163, 559, "1"); _card(d, 387, 142, "0..*")
-
-    return d
+def img_classes(max_h=600):
+    """Diagramme de classes (image de l'auteur), mis à l'échelle."""
+    from reportlab.lib.utils import ImageReader
+    iw, ih = ImageReader(_CLASS_IMG).getSize()
+    ratio = ih / iw
+    w = CW
+    h = w * ratio
+    if h > max_h:                  # limité par la hauteur disponible
+        h = max_h
+        w = h / ratio
+    return Image(_CLASS_IMG, width=w, height=h)
 
 # ─────────────────────────────────────────────────────────────
 # Construction
@@ -934,11 +820,12 @@ def build():
     # P16 — 4.5 Diagramme de classes
     S_.append(Paragraph("4.5 Diagramme de classes", SEC2))
     S_.append(Paragraph(
-        "Le diagramme de classes présente la structure des entités Java de l'application et leurs "
-        "relations. Les cinq classes Admin, AppUser, Event, Registration et Review correspondent "
-        "aux nouvelles tables de la base de données développées dans le cadre du TFE.", BODY))
+        "Le diagramme de classes présente les huit entités Java de l'application, leurs attributs "
+        "(avec clés primaires «PK» et étrangères «FK»), leurs méthodes et leurs associations. Les "
+        "entités AppUser, Event, Review et Registration sont créées dans le cadre du TFE ; Admin, "
+        "Project, BlogPost et ContactMessage proviennent du site existant.", BODY))
     S_.append(sp(0.2))
-    S_.append(diag_classes())
+    S_.append(img_classes(max_h=600))
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════

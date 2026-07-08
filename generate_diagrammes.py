@@ -16,7 +16,7 @@ from reportlab.platypus import (
 import generate_cdc as G
 from generate_cdc import (
     W, H, ML, MR, CW,
-    diag_use_case, diag_classes,
+    diag_use_case, img_classes,
     BODY, SEC1, SEC2, ITAL, NOTE,
     CV_TITLE, CV_SUB, CV_MOD, CV_EXT, CV_INFO, CV_INST, CV_YEAR,
     sp, grid, th, tb,
@@ -134,13 +134,13 @@ def build():
     # ═══════════════════════════════════════════════════════
     S.append(Paragraph("2. Diagramme de classes", SEC1))
     S.append(Paragraph(
-        "Le diagramme présente le modèle de données du module. Les cinq "
-        "classes du haut sont créées dans le cadre du TFE ; les trois classes "
-        "situées sous le séparateur existent déjà dans la base actuelle et "
-        "sont rappelées pour montrer leur rattachement à l'administrateur.",
-        BODY))
-    S.append(sp(0.2))
-    S.append(diag_classes())
+        "Le diagramme présente les huit entités du modèle de données avec "
+        "leurs attributs (clés primaires «PK» et étrangères «FK»), leurs "
+        "méthodes et leurs associations nommées. AppUser, Event, Review et "
+        "Registration sont créées dans le cadre du TFE ; Admin, Project, "
+        "BlogPost et ContactMessage proviennent du site existant.", BODY))
+    S.append(sp(0.1))
+    S.append(img_classes(max_h=572))
     S.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
@@ -151,18 +151,18 @@ def build():
         [th("Classe"), th("Rôle dans le module")],
         [tb("<b>AppUser</b>"),
          tb("Représente un bénévole. Entité centrale du TFE : porte "
-            "l'identité, l'authentification (email unique, mot de passe "
-            "chiffré) et les méthodes métier (niveau de fidélité, génération "
-            "d'attestation).")],
+            "l'identité et le profil complet (coordonnées, compétences, "
+            "disponibilités), l'authentification (connexion, mot de passe "
+            "oublié / réinitialisé) et le téléchargement de l'attestation.")],
         [tb("<b>Event</b>"),
          tb("Un événement organisé par Terra Sana : date, lieu, nombre de "
             "places, statut (ouvert / complet / clôturé), visuel. Seconde "
             "entité centrale du module.")],
         [tb("<b>Registration</b>"),
-         tb("Classe d'<b>association</b> entre AppUser et Event. Elle "
-            "matérialise l'inscription et porte ses propres attributs : "
-            "statut (confirmée / en attente / refusée) et position dans la "
-            "file d'attente.")],
+         tb("Entité <b>associative</b> entre AppUser et Event (deux clés "
+            "étrangères user_id et event_id). Elle matérialise l'inscription "
+            "et porte ses propres attributs : statut (confirmée / en attente / "
+            "refusée) et position dans la file d'attente.")],
         [tb("<b>Review</b>"),
          tb("Un avis laissé par un bénévole sur un événement auquel il a "
             "participé (note de 1 à 5 et commentaire).")],
@@ -173,73 +173,89 @@ def build():
     S.append(grid([3.2*cm, CW-3.2*cm], rows))
     S.append(sp(0.25))
 
-    S.append(Paragraph("2.2 Attributs et contraintes remarquables", SEC2))
+    S.append(Paragraph("2.2 Attributs, clés et méthodes", SEC2))
     S.append(Paragraph(
-        "<b>• Sécurité</b> — les mots de passe (AppUser, Admin) ne sont jamais "
-        "stockés en clair : la contrainte <font face='Courier'>{BCrypt}</font> "
-        "rappelle qu'ils sont hachés. L'email de AppUser porte la contrainte "
-        "<font face='Courier'>{UNIQUE}</font> pour empêcher les doublons de "
-        "compte.", G.BULL))
+        "<b>• Clés primaires et étrangères</b> — chaque classe possède un "
+        "identifiant <font face='Courier'>id : Long «PK»</font>. Les "
+        "stéréotypes <font face='Courier'>«FK»</font> "
+        "(<font face='Courier'>admin_id</font>, "
+        "<font face='Courier'>user_id</font>, "
+        "<font face='Courier'>event_id</font>) matérialisent les liens vers "
+        "les autres tables : le diagramme se traduit ainsi directement en "
+        "schéma relationnel MySQL.", G.BULL))
     S.append(Paragraph(
-        "<b>• Intégrité</b> — la note d'un avis est bornée par "
-        "<font face='Courier'>{1..5}</font> ; le champ "
-        "<font face='Courier'>status</font> d'Event et de Registration prend "
-        "ses valeurs dans un ensemble fermé (énumération).", G.BULL))
+        "<b>• Trois compartiments</b> — chaque classe est découpée en nom, "
+        "attributs puis méthodes. Les méthodes traduisent les traitements "
+        "métier : <font face='Courier'>confirm()</font>, "
+        "<font face='Courier'>refuse()</font>, "
+        "<font face='Courier'>promoteFromWaiting()</font> et "
+        "<font face='Courier'>sendConfirmationEmail()</font> sur "
+        "Registration ; <font face='Courier'>getAvailablePlaces()</font>, "
+        "<font face='Courier'>isFull()</font> et "
+        "<font face='Courier'>exportPDF()</font> sur Event ; "
+        "<font face='Courier'>downloadAttestation()</font> sur AppUser.",
+        G.BULL))
     S.append(Paragraph(
-        "<b>• Méthodes métier</b> — <font face='Courier'>getLevel()</font> "
-        "calcule le niveau de fidélité du bénévole à partir de son nombre de "
-        "participations ; <font face='Courier'>generateAttestation()</font> "
-        "produit l'attestation PDF. Elles sont placées dans le troisième "
-        "compartiment des classes concernées.", G.BULL))
+        "<b>• Sécurité (implémentation)</b> — les mots de passe ne sont jamais "
+        "stockés en clair (hachage BCrypt côté Spring Security) et l'email de "
+        "AppUser est unique en base ; ces règles sont portées par les "
+        "contraintes de la base et la couche service.", G.BULL))
     S.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
     # P6 — ANALYSE DU DIAGRAMME DE CLASSES (2)
     # ═══════════════════════════════════════════════════════
     S.append(Paragraph("2.3 Associations et cardinalités", SEC2))
-    rows = [
-        [th("Association"), th("Card."), th("Lecture")],
-        [tb("AppUser — Registration"), tb("1 → 0..*"),
-         tb("Un bénévole possède plusieurs inscriptions ; une inscription "
-            "appartient à un seul bénévole.")],
-        [tb("Event — Registration"), tb("1 → 0..*"),
-         tb("Un événement reçoit plusieurs inscriptions ; une inscription "
-            "concerne un seul événement.")],
-        [tb("AppUser — Review"), tb("1 → 0..*"),
-         tb("Un bénévole peut rédiger plusieurs avis.")],
-        [tb("Event — Review"), tb("1 → 0..*"),
-         tb("Un événement peut recevoir plusieurs avis.")],
-        [tb("Admin — Event"), tb("1 → 0..*"),
-         tb("Un administrateur crée et gère de nombreux événements.")],
-        [tb("Admin — Registration"), tb("1 → 0..*"),
-         tb("L'administrateur valide ou refuse les inscriptions.")],
-    ]
-    S.append(grid([4.6*cm, 1.9*cm, CW-6.5*cm], rows))
-    S.append(sp(0.2))
     S.append(Paragraph(
-        "La classe <b>Registration</b> est le pivot du modèle : en la plaçant "
-        "entre AppUser et Event, on transforme une relation « plusieurs à "
-        "plusieurs » (un bénévole s'inscrit à plusieurs événements, un "
-        "événement accueille plusieurs bénévoles) en deux relations « un à "
-        "plusieurs » exploitables, tout en offrant un endroit naturel pour "
-        "stocker le statut et la position en liste d'attente.", BODY))
+        "Chaque association est nommée par un verbe métier et porte ses "
+        "cardinalités. Associations propres au module TFE :", BODY))
+    rows = [
+        [th("Association"), th("Verbe"), th("Card."), th("Lecture")],
+        [tb("AppUser → Registration"), tb("effectue"), tb("1 → 0..*"),
+         tb("Un bénévole effectue plusieurs inscriptions ; chaque inscription "
+            "appartient à un seul bénévole.")],
+        [tb("Event → Registration"), tb("reçoit"), tb("1 → 0..*"),
+         tb("Un événement reçoit plusieurs inscriptions ; chaque inscription "
+            "concerne un seul événement.")],
+        [tb("AppUser → Review"), tb("rédige"), tb("1 → 0..*"),
+         tb("Un bénévole peut rédiger plusieurs avis.")],
+        [tb("Event → Review"), tb("concerne"), tb("1 → 0..*"),
+         tb("Un avis concerne un événement ; un événement peut en recevoir "
+            "plusieurs.")],
+    ]
+    S.append(grid([3.9*cm, 1.9*cm, 1.7*cm, CW-7.5*cm], rows))
+    S.append(sp(0.15))
+    S.append(Paragraph(
+        "L'administrateur, lui, pilote aussi bien les nouvelles entités que "
+        "les contenus existants : il <b>crée</b> les Event (1 → 0..*) et "
+        "<b>gère</b> / <b>publie</b> / <b>reçoit</b> respectivement les "
+        "Project, BlogPost et ContactMessage du site.", BODY))
+    S.append(sp(0.15))
+    S.append(Paragraph(
+        "La classe <b>Registration</b> est le pivot du modèle : placée entre "
+        "AppUser et Event avec ses deux clés étrangères, elle transforme une "
+        "relation « plusieurs à plusieurs » (un bénévole s'inscrit à plusieurs "
+        "événements, un événement accueille plusieurs bénévoles) en deux "
+        "relations « un à plusieurs » exploitables, tout en offrant un endroit "
+        "naturel pour stocker le statut et la position en liste d'attente.",
+        BODY))
     S.append(sp(0.2))
 
     S.append(Paragraph("2.4 Choix de conception", SEC2))
     S.append(Paragraph(
-        "<b>• Séparation visuelle</b> — les classes existantes (Project, "
-        "BlogPost, ContactMessage) sont regroupées sous un séparateur en "
-        "pointillés. On voit d'un coup d'œil ce qui est ajouté par le TFE et "
-        "ce qui préexiste, sans réécrire l'existant.", G.BULL))
+        "<b>• Réutilisation de l'existant</b> — le compte Admin déjà présent "
+        "pilote aussi bien les nouvelles entités que les contenus du site "
+        "(Project, BlogPost, ContactMessage). On étend la base sans la "
+        "réécrire ni dupliquer un compte de gestion.", G.BULL))
     S.append(Paragraph(
-        "<b>• Réutilisation de l'administrateur</b> — l'Admin déjà présent "
-        "pilote aussi les nouvelles entités (liens en pointillés vers les "
-        "classes existantes), ce qui évite de dupliquer un compte de gestion.",
-        G.BULL))
+        "<b>• Traçabilité PK / FK</b> — l'affichage explicite des clés "
+        "primaires et étrangères rend le passage au modèle relationnel MySQL "
+        "immédiat : chaque «FK» correspond à une contrainte de clé étrangère "
+        "réelle en base.", G.BULL))
     S.append(Paragraph(
         "<b>• Cohérence avec le code</b> — chaque classe correspond à une "
-        "entité JPA (Spring Boot) et à une table MySQL ; les attributs et "
-        "types reflètent directement le schéma de la base.", G.BULL))
+        "entité JPA (Spring Boot) et à une table MySQL ; les attributs, types "
+        "et méthodes reflètent directement l'implémentation.", G.BULL))
     S.append(sp(0.2))
     S.append(Paragraph(
         "Les deux diagrammes sont cohérents entre eux : chaque cas "
