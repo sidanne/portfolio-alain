@@ -354,20 +354,20 @@ def _cbox(d, x, top, title, attrs, methods=None, w=128, fs=6.5, rh=9, nh=14):
     return total
 
 def diag_classes():
-    DW, DH = 459, 666
+    DW, DH = 459, 676
     d = Drawing(DW, DH)
     _dr(d, 0, 0, DW, DH, fill=_WHT, stroke=None)
-    rh, nh, fs = 8, 12, 6.2
+    rh, nh, fs = 8.5, 12.5, 6.8   # texte et lignes agrandis (moins serré)
 
-    # ── Admin ─ x=148, top=656 ───────────────────────────────
-    _cbox(d, 148, 656, "Admin", [
+    # ── Admin ─ x=148, top=667 ───────────────────────────────
+    _cbox(d, 148, 667, "Admin", [
         "id : Long  «PK»", "username : String",
         "password : String", "role : String",
     ], ["login() : String", "changePassword() : void", "register() : void"],
         w=112, fs=fs, rh=rh, nh=nh)
 
-    # ── Project / BlogPost / ContactMessage ─ top=536 ────────
-    _cbox(d, 2, 536, "Project", [
+    # ── Project / BlogPost / ContactMessage ─ top=561 ────────
+    _cbox(d, 2, 561, "Project", [
         "id : Long  «PK»", "admin_id : Long  «FK»", "name : String",
         "description : String", "link : String",
         "documentationLink : String", "image : String",
@@ -375,20 +375,20 @@ def diag_classes():
         "createdAt : LocalDateTime",
     ], ["activate() : void", "deactivate() : void"], w=108, fs=fs, rh=rh, nh=nh)
 
-    _cbox(d, 116, 536, "BlogPost", [
+    _cbox(d, 116, 561, "BlogPost", [
         "id : Long  «PK»", "admin_id : Long  «FK»", "title : String",
         "content : String", "image : String",
         "isPublished : Boolean", "createdAt : LocalDateTime",
     ], ["publish() : void", "unpublish() : void"], w=108, fs=fs, rh=rh, nh=nh)
 
-    _cbox(d, 230, 536, "ContactMessage", [
+    _cbox(d, 230, 561, "ContactMessage", [
         "id : Long  «PK»", "admin_id : Long  «FK»", "name : String",
         "email : String", "message : String",
         "isRead : Boolean", "createdAt : LocalDateTime",
     ], ["markAsRead() : void", "reply() : void"], w=108, fs=fs, rh=rh, nh=nh)
 
-    # ── Event ─ x=342, top=536 ───────────────────────────────
-    _cbox(d, 342, 536, "Event", [
+    # ── Event ─ x=342, top=561 ───────────────────────────────
+    _cbox(d, 342, 561, "Event", [
         "id : Long  «PK»", "admin_id : Long  «FK»", "title : String",
         "description : String", "eventDate : LocalDateTime",
         "location : String", "maxPlaces : Integer",
@@ -398,8 +398,8 @@ def diag_classes():
         "sendGroupEmail() : void", "isFull() : Boolean",
         "exportPDF() : byte[]"], w=110, fs=fs, rh=rh, nh=nh)
 
-    # ── AppUser ─ x=2, top=368 — inclut le niveau bénévole ────
-    _cbox(d, 2, 368, "AppUser", [
+    # ── AppUser ─ x=2, top=387 — inclut le niveau bénévole ────
+    _cbox(d, 2, 387, "AppUser", [
         "id : Long  «PK»", "firstName : String", "lastName : String",
         "email : String", "password : String", "phone : String",
         "birthDate : LocalDate", "gender : String", "city : String",
@@ -413,62 +413,72 @@ def diag_classes():
         "updateProfile() : void", "getLevel() : String",
         "downloadAttestation() : byte[]"], w=150, fs=fs, rh=rh, nh=nh)
 
-    # ── Review ─ x=192, top=368 ──────────────────────────────
-    _cbox(d, 192, 368, "Review", [
+    # ── Review ─ x=192, top=387 ──────────────────────────────
+    _cbox(d, 192, 387, "Review", [
         "id : Long  «PK»", "user_id : Long  «FK»", "event_id : Long  «FK»",
         "rating : Integer", "comment : String", "createdAt : LocalDateTime",
     ], ["submitReview() : void", "getAverageRating() : Double"],
         w=118, fs=fs, rh=rh, nh=nh)
 
-    # ── Registration ─ x=190, top=124 ────────────────────────
-    _cbox(d, 190, 124, "Registration", [
+    # ── Registration ─ x=190, top=134 — clé candidate ajoutée ─
+    _cbox(d, 190, 134, "Registration", [
         "id : Long  «PK»", "user_id : Long  «FK»", "event_id : Long  «FK»",
         "status : String", "position : Integer", "createdAt : LocalDateTime",
+        "{unique : user_id, event_id}",
     ], ["confirm() : void", "refuse() : void", "cancel() : void",
         "promoteFromWaiting() : void", "sendConfirmationEmail() : void"],
         w=142, fs=fs, rh=rh, nh=nh)
 
     # ── Associations Admin → classes existantes ──────────────
-    # (gap admin→row2 élargi à 40pt pour loger 3 lignes de texte
-    # sans chevauchement : cardinalité / verbe / cardinalité)
-    _dl(d, 168, 578, 56, 538)
-    _card(d, 172, 571, "1"); _card(d, 50, 542, "0..*")
-    _ds(d, 106, 556, "gère", fs=6, bold=True)
+    _dl(d, 168, 585, 56, 563)
+    _card(d, 172, 577, "1"); _card(d, 50, 567, "0..*")
+    _ds(d, 106, 571, "gère", fs=6.2, bold=True)
 
-    _dl(d, 192, 578, 170, 538)
-    _card(d, 196, 571, "1"); _card(d, 158, 542, "0..*")
-    _ds(d, 187, 556, "publie", fs=6, bold=True)
+    _dl(d, 192, 585, 170, 563)
+    _card(d, 196, 577, "1"); _card(d, 158, 567, "0..*")
+    _ds(d, 187, 571, "publie", fs=6.2, bold=True)
 
-    _dl(d, 216, 578, 284, 538)
-    _card(d, 212, 571, "1"); _card(d, 288, 542, "0..*")
-    _ds(d, 258, 556, "reçoit", fs=6, bold=True)
+    _dl(d, 216, 585, 284, 563)
+    _card(d, 212, 577, "1"); _card(d, 288, 567, "0..*")
+    _ds(d, 258, 571, "reçoit", fs=6.2, bold=True)
 
-    _dl(d, 240, 578, 397, 538)
-    _card(d, 244, 571, "1"); _card(d, 392, 542, "0..*")
-    _ds(d, 330, 556, "crée", fs=6, bold=True)
+    _dl(d, 240, 585, 397, 563)
+    _card(d, 244, 577, "1"); _card(d, 392, 567, "0..*")
+    _ds(d, 330, 571, "crée", fs=6.2, bold=True)
+
+    # Admin → Registration («valide») : ligne coudée pour ne pas
+    # traverser ContactMessage (passe par le couloir libre x≈339,
+    # entre ContactMessage et Event)
+    _dl(d, 256, 585, 339, 585)
+    _dl(d, 339, 585, 339, 136)
+    _dl(d, 339, 136, 250, 136)
+    _card(d, 260, 577, "1"); _card(d, 246, 140, "0..*")
+    _ds(d, 344, 360, "valide", anchor='start', fs=6.2, bold=True)
 
     # ── Associations du module TFE ────────────────────────────
     # rédige : attache au niveau du bandeau-titre des deux boîtes,
-    # pour ne pas croiser le texte des attributs (lignes serrées à rh=8)
-    _dl(d, 152, 362, 192, 362)
-    _card(d, 154, 366, "1"); _card(d, 170, 366, "0..*")
-    _ds(d, 172, 353, "rédige", fs=6, bold=True)
+    # pour ne pas croiser le texte des attributs
+    _dl(d, 152, 376, 192, 376)
+    _card(d, 154, 380, "1"); _card(d, 170, 380, "0..*")
+    _ds(d, 172, 368, "rédige", fs=6.2, bold=True)
 
-    _dl(d, 100, 148, 200, 126)
-    _card(d, 104, 142, "1"); _card(d, 204, 128, "0..*")
-    _ds(d, 140, 130, "effectue", fs=6, bold=True)
+    _dl(d, 100, 152, 200, 136)
+    _card(d, 104, 146, "1"); _card(d, 204, 140, "0..*")
+    _ds(d, 140, 141, "effectue", fs=6.2, bold=True)
 
-    _dl(d, 398, 396, 332, 126)
-    _card(d, 402, 386, "1"); _card(d, 336, 128, "0..*")
-    _ds(d, 374, 260, "reçoit", fs=6, bold=True)
+    # Event → Registration renommée « accueille » (pour ne pas dupliquer
+    # le verbe « reçoit » déjà utilisé pour Admin → ContactMessage)
+    _dl(d, 398, 411, 332, 138)
+    _card(d, 402, 405, "1"); _card(d, 336, 142, "0..*")
+    _ds(d, 374, 275, "accueille", fs=6.2, bold=True)
 
-    _dl(d, 300, 370, 420, 396)
-    _card(d, 296, 375, "0..*"); _card(d, 424, 378, "1")
-    _ds(d, 300, 382, "concerne", fs=6, bold=True)
+    _dl(d, 300, 389, 420, 411)
+    _card(d, 296, 393, "0..*"); _card(d, 424, 405, "1")
+    _ds(d, 300, 397, "concerne", fs=6.2, bold=True)
 
     # ── Légende ───────────────────────────────────────────────
     _ds(d, 2, 6, "«PK» clé primaire   ·   «FK» clé étrangère   ·   "
-        "cardinalités 1 → 0..*", anchor='start', fs=6.2, col=_GRY)
+        "cardinalités 1 → 0..*", anchor='start', fs=6.4, col=_GRY)
 
     return d
 

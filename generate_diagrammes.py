@@ -223,22 +223,35 @@ def build():
         [tb("AppUser → Registration"), tb("effectue"), tb("1 → 0..*"),
          tb("Un bénévole effectue plusieurs inscriptions ; chaque inscription "
             "appartient à un seul bénévole.")],
-        [tb("Event → Registration"), tb("reçoit"), tb("1 → 0..*"),
-         tb("Un événement reçoit plusieurs inscriptions ; chaque inscription "
-            "concerne un seul événement.")],
+        [tb("Event → Registration"), tb("accueille"), tb("1 → 0..*"),
+         tb("Un événement accueille plusieurs inscriptions ; chaque "
+            "inscription concerne un seul événement.")],
         [tb("AppUser → Review"), tb("rédige"), tb("1 → 0..*"),
          tb("Un bénévole peut rédiger plusieurs avis.")],
         [tb("Review → Event"), tb("concerne"), tb("0..* → 1"),
          tb("Un avis concerne un seul événement ; un même événement peut en "
             "recevoir plusieurs.")],
+        [tb("Admin → Registration"), tb("valide"), tb("1 → 0..*"),
+         tb("L'administrateur valide ou refuse chaque inscription ; une "
+            "inscription est traitée par un seul administrateur.")],
     ]
     S.append(grid([3.9*cm, 1.9*cm, 1.7*cm, CW-7.5*cm], rows))
     S.append(sp(0.15))
     S.append(Paragraph(
         "L'administrateur, lui, pilote aussi bien les nouvelles entités que "
-        "les contenus existants : il <b>crée</b> les Event (1 → 0..*) et "
-        "<b>gère</b> / <b>publie</b> / <b>reçoit</b> respectivement les "
-        "Project, BlogPost et ContactMessage du site.", BODY))
+        "les contenus existants : il <b>crée</b> les Event (1 → 0..*), "
+        "<b>valide</b> les Registration, et <b>gère</b> / <b>publie</b> / "
+        "<b>reçoit</b> respectivement les Project, BlogPost et "
+        "ContactMessage du site. L'association <b>Admin — Registration</b> "
+        "rend explicite le lien entre l'administrateur et la validation des "
+        "inscriptions, plutôt que de le laisser seulement implicite via "
+        "Event.", BODY))
+    S.append(sp(0.1))
+    S.append(Paragraph(
+        "Le verbe « <b>accueille</b> » remplace ici « reçoit » pour "
+        "Event — Registration, afin de ne pas réutiliser le même mot que "
+        "pour Admin — ContactMessage et éviter toute ambiguïté de lecture.",
+        NOTE))
     S.append(sp(0.15))
     S.append(Paragraph(
         "La classe <b>Registration</b> est le pivot du modèle : placée entre "
@@ -247,7 +260,9 @@ def build():
         "événements, un événement accueille plusieurs bénévoles) en deux "
         "relations « un à plusieurs » exploitables, tout en offrant un "
         "emplacement naturel pour stocker le statut et la position en liste "
-        "d'attente.", BODY))
+        "d'attente. La contrainte <font face='Courier'>{unique : user_id, "
+        "event_id}</font> garantit qu'un même bénévole ne peut s'inscrire "
+        "qu'une seule fois au même événement.", BODY))
     S.append(sp(0.2))
 
     S.append(Paragraph("2.4 Choix de conception", SEC2))
