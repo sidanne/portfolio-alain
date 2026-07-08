@@ -289,6 +289,7 @@ def diag_use_case():
         "Gérer les bénévoles",
         "Consulter le tableau de bord",
         "Exporter la liste des inscrits",
+        "Consulter les avis",
     ]
     r_y = _evenly(ell_top, ell_bottom, len(r_labels))
     r_ucs = [(RX, y, t) for y, t in zip(r_y, r_labels)]
@@ -360,10 +361,12 @@ def diag_classes():
     rh, nh, fs = 8.5, 12.5, 6.8   # texte et lignes agrandis (moins serré)
 
     # ── Admin ─ x=148, top=667 ───────────────────────────────
+    # (register() retiré : aucun cas d'utilisation ne crée de nouveau
+    # compte administrateur — Admin est un compte existant, unique)
     _cbox(d, 148, 667, "Admin", [
         "id : Long  «PK»", "username : String",
         "password : String", "role : String",
-    ], ["login() : String", "changePassword() : void", "register() : void"],
+    ], ["login() : String", "changePassword() : void"],
         w=112, fs=fs, rh=rh, nh=nh)
 
     # ── Project / BlogPost / ContactMessage ─ top=561 ────────
@@ -420,40 +423,47 @@ def diag_classes():
     ], ["submitReview() : void", "getAverageRating() : Double"],
         w=118, fs=fs, rh=rh, nh=nh)
 
-    # ── Registration ─ x=190, top=134 — clé candidate ajoutée ─
+    # ── Registration ─ x=190, top=134 ─────────────────────────
+    # validatedBy_id est nullable : une inscription en attente n'a
+    # pas encore été traitée par un administrateur.
     _cbox(d, 190, 134, "Registration", [
         "id : Long  «PK»", "user_id : Long  «FK»", "event_id : Long  «FK»",
+        "validatedBy_id : Long  «FK»  {nullable}",
         "status : String", "position : Integer", "createdAt : LocalDateTime",
         "{unique : user_id, event_id}",
     ], ["confirm() : void", "refuse() : void", "cancel() : void",
         "promoteFromWaiting() : void", "sendConfirmationEmail() : void"],
-        w=142, fs=fs, rh=rh, nh=nh)
+        w=155, fs=fs, rh=rh, nh=nh)
 
     # ── Associations Admin → classes existantes ──────────────
-    _dl(d, 168, 585, 56, 563)
-    _card(d, 172, 577, "1"); _card(d, 50, 567, "0..*")
-    _ds(d, 106, 571, "gère", fs=6.2, bold=True)
+    # (Admin mesure désormais 75.5pt de haut sans register() : bord
+    # inférieur réel ≈ 591.5 → les points d'attache partent de y=590)
+    _dl(d, 158, 590, 56, 563)
+    _card(d, 162, 582, "1"); _card(d, 50, 567, "0..*")
+    _ds(d, 107, 574, "gère", fs=6.2, bold=True)
 
-    _dl(d, 192, 585, 170, 563)
-    _card(d, 196, 577, "1"); _card(d, 158, 567, "0..*")
-    _ds(d, 187, 571, "publie", fs=6.2, bold=True)
+    _dl(d, 180, 590, 170, 563)
+    _card(d, 184, 582, "1"); _card(d, 158, 567, "0..*")
+    _ds(d, 175, 574, "publie", fs=6.2, bold=True)
 
-    _dl(d, 216, 585, 284, 563)
-    _card(d, 212, 577, "1"); _card(d, 288, 567, "0..*")
-    _ds(d, 258, 571, "reçoit", fs=6.2, bold=True)
+    _dl(d, 202, 590, 284, 563)
+    _card(d, 198, 582, "1"); _card(d, 288, 567, "0..*")
+    _ds(d, 243, 574, "reçoit", fs=6.2, bold=True)
 
-    _dl(d, 240, 585, 397, 563)
-    _card(d, 244, 577, "1"); _card(d, 392, 567, "0..*")
-    _ds(d, 330, 571, "crée", fs=6.2, bold=True)
+    _dl(d, 224, 590, 397, 563)
+    _card(d, 220, 582, "1"); _card(d, 392, 567, "0..*")
+    _ds(d, 310, 574, "crée", fs=6.2, bold=True)
 
     # Admin → Registration («valide») : ligne coudée pour ne pas
     # traverser ContactMessage (passe par le couloir libre x≈339,
-    # entre ContactMessage et Event)
-    _dl(d, 256, 585, 339, 585)
-    _dl(d, 339, 585, 339, 136)
+    # entre ContactMessage et Event). Cardinalité 0..1 côté Admin :
+    # une inscription en attente n'a pas encore été validée. Point
+    # d'attache décalé (x=252, y=588) pour ne pas chevaucher "reçoit".
+    _dl(d, 252, 590, 339, 590)
+    _dl(d, 339, 590, 339, 136)
     _dl(d, 339, 136, 250, 136)
-    _card(d, 260, 577, "1"); _card(d, 246, 140, "0..*")
-    _ds(d, 344, 360, "valide", anchor='start', fs=6.2, bold=True)
+    _card(d, 252, 583, "0..1"); _card(d, 240, 140, "0..*")
+    _ds(d, 344, 365, "valide", anchor='start', fs=6.2, bold=True)
 
     # ── Associations du module TFE ────────────────────────────
     # rédige : attache au niveau du bandeau-titre des deux boîtes,
@@ -476,9 +486,15 @@ def diag_classes():
     _card(d, 296, 393, "0..*"); _card(d, 424, 405, "1")
     _ds(d, 300, 397, "concerne", fs=6.2, bold=True)
 
-    # ── Légende ───────────────────────────────────────────────
-    _ds(d, 2, 6, "«PK» clé primaire   ·   «FK» clé étrangère   ·   "
-        "cardinalités 1 → 0..*", anchor='start', fs=6.4, col=_GRY)
+    # ── Note explicative (existant / nouveau) ─────────────────
+    _ds(d, 350, 108, "Admin, Project, BlogPost et", anchor='start',
+        fs=6.2, col=_GRY)
+    _ds(d, 350, 98, "ContactMessage existaient déjà.", anchor='start',
+        fs=6.2, col=_GRY)
+    _ds(d, 350, 84, "Event, AppUser, Review et Registration", anchor='start',
+        fs=6.2, col=_GRY)
+    _ds(d, 350, 74, "sont les nouvelles classes du TFE.", anchor='start',
+        fs=6.2, col=_GRY)
 
     return d
 
@@ -557,15 +573,15 @@ def build():
         ("4.3 Nouvelles pages frontend",                          14,  2),
         ("4.4 Diagramme de cas d'utilisation",                    15,  2),
         ("4.5 Diagramme de classes",                              16,  2),
-        ("5. Répartition des tâches / Apport personnel",          17,  1),
-        ("5.1 Travail réalisé durant le stage",                   17,  2),
-        ("5.2 Travail à réaliser dans le cadre du TFE",           17,  2),
-        ("5.3 Tableau récapitulatif",                             18,  2),
-        ("6. Plan de travail",                                    19,  1),
-        ("6.1 Calendrier officiel",                               19,  2),
-        ("6.2 Plan de développement",                             19,  2),
-        ("6.3 Dates clés personnelles",                           19,  2),
-        ("6.4 Contraintes et risques identifiés",                 20,  2),
+        ("5. Répartition des tâches / Apport personnel",          18,  1),
+        ("5.1 Travail réalisé durant le stage",                   18,  2),
+        ("5.2 Travail à réaliser dans le cadre du TFE",           18,  2),
+        ("5.3 Tableau récapitulatif",                             19,  2),
+        ("6. Plan de travail",                                    20,  1),
+        ("6.1 Calendrier officiel",                               20,  2),
+        ("6.2 Plan de développement",                             20,  2),
+        ("6.3 Dates clés personnelles",                           20,  2),
+        ("6.4 Contraintes et risques identifiés",                 21,  2),
     ]
     for label, page, level in toc:
         S_.append(toc_line(label, page, level))

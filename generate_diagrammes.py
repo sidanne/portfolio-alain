@@ -103,7 +103,8 @@ def build():
     S.append(Paragraph(
         "<b>• Administrateur</b> — membre de Terra Sana qui gère le module "
         "depuis l'espace d'administration (événements, inscriptions, "
-        "communication, gestion des bénévoles, tableau de bord).", G.BULL))
+        "communication, gestion des bénévoles, avis, tableau de bord).",
+        G.BULL))
     S.append(sp(0.15))
 
     S.append(Paragraph("1.2 Les relations «include» et «extend»", SEC2))
@@ -168,16 +169,19 @@ def build():
             "places, statut (ouvert / complet / clôturé), visuel. Seconde "
             "entité centrale du module.")],
         [tb("<b>Registration</b>"),
-         tb("Entité <b>associative</b> entre AppUser et Event (deux clés "
+         tb("Entité <b>associative</b> entre AppUser et Event (clés "
             "étrangères user_id et event_id). Elle matérialise l'inscription "
             "et porte ses propres attributs : statut (confirmée / en attente / "
-            "refusée) et position dans la file d'attente.")],
+            "refusée), position dans la file d'attente, et une référence "
+            "optionnelle vers l'administrateur qui l'a traitée "
+            "(validatedBy_id, nulle tant qu'elle est en attente).")],
         [tb("<b>Review</b>"),
          tb("Un avis laissé par un bénévole sur un événement auquel il a "
             "participé (note de 1 à 5 et commentaire).")],
         [tb("<b>Admin</b>"),
-         tb("Compte d'administration qui gère l'ensemble du module et les "
-            "contenus existants du site.")],
+         tb("Compte d'administration existant qui gère l'ensemble du module "
+            "et les contenus déjà présents sur le site (Project, BlogPost, "
+            "ContactMessage).")],
     ]
     S.append(grid([3.2*cm, CW-3.2*cm], rows))
     S.append(sp(0.25))
@@ -189,9 +193,13 @@ def build():
         "stéréotypes <font face='Courier'>«FK»</font> "
         "(<font face='Courier'>admin_id</font>, "
         "<font face='Courier'>user_id</font>, "
-        "<font face='Courier'>event_id</font>) matérialisent les liens vers "
-        "les autres tables : le diagramme se traduit ainsi directement en "
-        "schéma relationnel MySQL.", G.BULL))
+        "<font face='Courier'>event_id</font>, "
+        "<font face='Courier'>validatedBy_id</font>) matérialisent les liens "
+        "vers les autres tables : le diagramme se traduit ainsi directement "
+        "en schéma relationnel MySQL. "
+        "<font face='Courier'>validatedBy_id</font> est <b>nullable</b> : "
+        "une inscription encore en attente n'a pas de valeur pour ce champ.",
+        G.BULL))
     S.append(Paragraph(
         "<b>• Trois compartiments</b> — chaque classe est découpée en nom, "
         "attributs puis méthodes. Les méthodes traduisent les traitements "
@@ -209,6 +217,16 @@ def build():
         "stockés en clair (hachage BCrypt côté Spring Security) et l'email de "
         "AppUser est unique en base ; ces règles sont portées par les "
         "contraintes de la base et la couche service.", G.BULL))
+    S.append(sp(0.15))
+    S.append(Paragraph(
+        "Les méthodes de Project, BlogPost et ContactMessage "
+        "(<font face='Courier'>activate()</font>, "
+        "<font face='Courier'>publish()</font>, "
+        "<font face='Courier'>reply()</font>, etc.) appartiennent à des "
+        "fonctionnalités du site déjà existantes, hors du périmètre "
+        "« Module Bénévoles &amp; Événements » : c'est pourquoi elles "
+        "n'apparaissent pas dans le diagramme de cas d'utilisation, qui ne "
+        "couvre que le nouveau module.", NOTE))
     S.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
@@ -231,18 +249,20 @@ def build():
         [tb("Review → Event"), tb("concerne"), tb("0..* → 1"),
          tb("Un avis concerne un seul événement ; un même événement peut en "
             "recevoir plusieurs.")],
-        [tb("Admin → Registration"), tb("valide"), tb("1 → 0..*"),
-         tb("L'administrateur valide ou refuse chaque inscription ; une "
-            "inscription est traitée par un seul administrateur.")],
+        [tb("Admin → Registration"), tb("valide"), tb("0..1 → 0..*"),
+         tb("Une inscription est traitée par au plus un administrateur (zéro "
+            "tant qu'elle est en attente) ; un administrateur peut traiter "
+            "plusieurs inscriptions.")],
     ]
-    S.append(grid([3.9*cm, 1.9*cm, 1.7*cm, CW-7.5*cm], rows))
+    S.append(grid([3.9*cm, 1.9*cm, 1.9*cm, CW-7.7*cm], rows))
     S.append(sp(0.15))
     S.append(Paragraph(
         "L'administrateur, lui, pilote aussi bien les nouvelles entités que "
         "les contenus existants : il <b>crée</b> les Event (1 → 0..*), "
-        "<b>valide</b> les Registration, et <b>gère</b> / <b>publie</b> / "
-        "<b>reçoit</b> respectivement les Project, BlogPost et "
-        "ContactMessage du site. L'association <b>Admin — Registration</b> "
+        "<b>valide</b> les Registration (0..1 → 0..*, puisqu'une inscription "
+        "en attente n'a encore été traitée par personne), et <b>gère</b> / "
+        "<b>publie</b> / <b>reçoit</b> respectivement les Project, BlogPost "
+        "et ContactMessage du site. L'association <b>Admin — Registration</b> "
         "rend explicite le lien entre l'administrateur et la validation des "
         "inscriptions, plutôt que de le laisser seulement implicite via "
         "Event.", BODY))
@@ -311,7 +331,8 @@ def build():
         [tb("Se connecter (admin)"), tb("Admin.login()")],
         [tb("Gérer les événements"), tb("Event (création / modification) ; Event.updateStatus()")],
         [tb("Valider / refuser les inscriptions"),
-         tb("Registration.confirm() / refuse()")],
+         tb("Registration.confirm() / refuse() ; association Admin — "
+            "Registration (« valide »)")],
         [tb("Envoyer un email de confirmation"),
          tb("Registration.sendConfirmationEmail()")],
         [tb("Envoyer des emails groupés"), tb("Event.sendGroupEmail()")],
@@ -319,6 +340,8 @@ def build():
         [tb("Consulter le tableau de bord"),
          tb("Agrégation sur Event, Registration et Review")],
         [tb("Exporter la liste des inscrits"), tb("Event.exportPDF()")],
+        [tb("Consulter les avis"),
+         tb("Review (lecture) ; Review.getAverageRating()")],
     ]
     S.append(grid([6.3*cm, CW-6.3*cm], rows))
     S.append(sp(0.2))
