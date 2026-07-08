@@ -222,11 +222,15 @@ def build():
         "Les méthodes de Project, BlogPost et ContactMessage "
         "(<font face='Courier'>activate()</font>, "
         "<font face='Courier'>publish()</font>, "
-        "<font face='Courier'>reply()</font>, etc.) appartiennent à des "
-        "fonctionnalités du site déjà existantes, hors du périmètre "
+        "<font face='Courier'>reply()</font>, etc.), ainsi que "
+        "<font face='Courier'>Admin.changePassword()</font>, appartiennent "
+        "à des fonctionnalités du site déjà existantes, hors du périmètre "
         "« Module Bénévoles &amp; Événements » : c'est pourquoi elles "
         "n'apparaissent pas dans le diagramme de cas d'utilisation, qui ne "
-        "couvre que le nouveau module.", NOTE))
+        "couvre que le nouveau module. Seul "
+        "<font face='Courier'>Admin.login()</font> y figure, car il "
+        "conditionne l'accès à l'espace d'administration du module TFE.",
+        NOTE))
     S.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
