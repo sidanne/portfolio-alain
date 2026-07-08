@@ -169,25 +169,27 @@ def _actor(d, cx, cy, name):
     _dl(d, cx, cy+3, cx+11, cy-15)
     _ds(d, cx, cy-29, name, fs=7.5, bold=True)
 
-def _uc(d, cx, cy, text, rx=70, ry=18):
+def _uc(d, cx, cy, text, rx=70, ry=18, fs=7.5):
     """Use-case ellipse with wrapped text."""
     d.add(Ellipse(cx, cy, rx, ry, fillColor=_GRL, strokeColor=_GRN, strokeWidth=1))
+    maxlen = round(22 * 7.5 / fs)
     words = text.split()
     lines, cur = [], ""
     for w in words:
         t = (cur + " " + w).strip()
-        lines = lines if len(t) <= 22 else (lines + [cur])
-        cur = t if len(t) <= 22 else w
+        lines = lines if len(t) <= maxlen else (lines + [cur])
+        cur = t if len(t) <= maxlen else w
     if cur:
         lines.append(cur)
+    lh = fs + 2.5
     if len(lines) == 1:
-        _ds(d, cx, cy-3, lines[0])
+        _ds(d, cx, cy-fs/2.5, lines[0], fs=fs)
     elif len(lines) == 2:
-        _ds(d, cx, cy+4, lines[0])
-        _ds(d, cx, cy-7, lines[1])
+        _ds(d, cx, cy+lh/2-3, lines[0], fs=fs)
+        _ds(d, cx, cy-lh/2-3, lines[1], fs=fs)
     else:
         for i, ln in enumerate(lines[:3]):
-            _ds(d, cx, cy+6-i*10, ln, fs=7)
+            _ds(d, cx, cy+lh-4-i*lh, ln, fs=fs-0.5)
 
 def _class_box(d, x, top_y, title, attrs, methods=None, w=128):
     """UML class compartment box; (x, top_y) = top-left corner."""
@@ -228,86 +230,109 @@ def _card(d, x, y, text):
     _ds(d, x, y, text, fs=6.5, col=colors.HexColor("#333333"))
 
 # ─── Use-case diagram ────────────────────────────────────────
+def _evenly(top, bottom, n):
+    """n positions en y, régulièrement espacées entre top et bottom."""
+    if n == 1:
+        return [(top + bottom) / 2]
+    step = (top - bottom) / (n - 1)
+    return [top - i * step for i in range(n)]
+
 def diag_use_case():
-    DW, DH = 459, 575
+    DW, DH = 459, 592
     d = Drawing(DW, DH)
     _dr(d, 0, 0, DW, DH, fill=_WHT, stroke=None)
 
     # System boundary
-    SX, SY, SW, SH = 72, 12, 318, 548
+    SX, SY, SW, SH = 72, 12, 318, 588
+    top_edge = SY + SH
     _dr(d, SX, SY, SW, SH, sw=1.5)
-    _ds(d, SX+SW/2, SY+SH-13,
+    _ds(d, SX+SW/2, top_edge-13,
         "Système — Module Bénévoles & Événements", bold=True, fs=8)
 
     # Vertical divider
     mid = SX + SW//2
-    _dl(d, mid, SY+22, mid, SY+SH-24, dash=[4,3], w=0.5, col=_GRY)
-    _ds(d, SX + SW//4,      SY+24, "Côté bénévole", fs=6.5, bold=True, col=_GRN)
-    _ds(d, SX + 3*SW//4,    SY+24, "Administration", fs=6.5, bold=True, col=_GRN)
+    header_y = top_edge - 32
+    _dl(d, mid, SY+18, mid, header_y+10, dash=[4,3], w=0.5, col=_GRY)
+    _ds(d, SX + SW//4,      header_y, "Côté bénévole", fs=6.5, bold=True, col=_GRN)
+    _ds(d, SX + 3*SW//4,    header_y, "Administration", fs=6.5, bold=True, col=_GRN)
 
-    # Left use cases
+    ell_top, ell_bottom = header_y - 28, SY + 26
+
+    # Left use cases (Visiteur : 0-4 ; Bénévole : 5-11, hérite de 0-4)
     LX = SX + SW//4
-    l_ucs = [
-        (LX, 522, "Consulter le site vitrine"),
-        (LX, 468, "Consulter les événements"),
-        (LX, 414, "Créer un compte"),
-        (LX, 360, "Se connecter"),
-        (LX, 306, "Gérer son profil"),
-        (LX, 252, "S'inscrire à un événement"),
-        (LX, 198, "Rejoindre la liste d'attente"),
-        (LX, 144, "Consulter son historique"),
-        (LX, 90,  "Télécharger une attestation"),
-        (LX, 36,  "Laisser un avis"),
+    l_labels = [
+        "Consulter le site vitrine",
+        "Consulter les événements",
+        "Créer un compte",
+        "Se connecter",
+        "Réinitialiser son mot de passe",
+        "Gérer son profil",
+        "S'inscrire à un événement",
+        "Rejoindre la liste d'attente",
+        "Se désinscrire",
+        "Consulter son historique",
+        "Télécharger une attestation",
+        "Laisser un avis",
     ]
+    l_y = _evenly(ell_top, ell_bottom, len(l_labels))
+    l_ucs = [(LX, y, t) for y, t in zip(l_y, l_labels)]
     for cx, cy, txt in l_ucs:
-        _uc(d, cx, cy, txt, rx=66, ry=17)
+        _uc(d, cx, cy, txt, rx=64, ry=15, fs=6.6)
 
-    # Right use cases
+    # Right use cases (Administration)
     RX = SX + 3*SW//4
-    r_ucs = [
-        (RX, 506, "Se connecter (admin)"),
-        (RX, 430, "Gérer les événements"),
-        (RX, 354, "Valider / refuser les inscriptions"),
-        (RX, 278, "Envoyer des emails"),
-        (RX, 202, "Gérer les bénévoles"),
-        (RX, 126, "Consulter le tableau de bord"),
-        (RX, 50,  "Exporter la liste des inscrits"),
+    r_labels = [
+        "Se connecter (admin)",
+        "Gérer les événements",
+        "Valider / refuser les inscriptions",
+        "Envoyer un email de confirmation",
+        "Envoyer des emails groupés",
+        "Gérer les bénévoles",
+        "Consulter le tableau de bord",
+        "Exporter la liste des inscrits",
     ]
+    r_y = _evenly(ell_top, ell_bottom, len(r_labels))
+    r_ucs = [(RX, y, t) for y, t in zip(r_y, r_labels)]
     for cx, cy, txt in r_ucs:
-        _uc(d, cx, cy, txt, rx=66, ry=17)
+        _uc(d, cx, cy, txt, rx=66, ry=16, fs=6.8)
 
     # Actors
-    _actor(d, 36, 470, "Visiteur")
-    _actor(d, 36, 200, "Bénévole")
+    v_cy = l_y[2]          # Visiteur : centré sur ses 5 cas d'utilisation
+    b_cy = l_y[8]          # Bénévole : centré sur ses 7 cas d'utilisation
+    a_cy = r_y[3]          # Administrateur : centré sur la colonne droite
+    _actor(d, 36, v_cy, "Visiteur")
+    _actor(d, 36, b_cy, "Bénévole")
     # Généralisation Bénévole → Visiteur (trait plein + triangle creux :
     # un bénévole est un visiteur authentifié)
-    _dl(d, 36, 240, 36, 428, w=0.9)
-    _arr_open(d, 36, 438, 'up')
-    _ds(d, 60, 336, "(est un)", fs=5.5, col=_GRY)
+    _dl(d, 36, b_cy+40, 36, v_cy-42, w=0.9)
+    _arr_open(d, 36, v_cy-32, 'up')
+    _ds(d, 60, (b_cy+v_cy)/2, "(est un)", fs=5.5, col=_GRY)
 
-    _actor(d, 432, 290, "Administrateur")
+    _actor(d, 432, a_cy, "Administrateur")
 
     # Associations
-    # Visiteur : consulter, créer un compte, se connecter (4 premiers)
-    for _, cy, _ in l_ucs[:4]:
-        _dl(d, 50, 488, LX-66, cy, w=0.6)
-    # Bénévole : actions authentifiées (le reste) — hérite aussi des 4 ci-dessus
-    for _, cy, _ in l_ucs[4:]:
-        _dl(d, 50, 218, LX-66, cy, w=0.6)
+    # Visiteur : consulter, créer un compte, se connecter, mot de passe oublié
+    for _, cy, _ in l_ucs[:5]:
+        _dl(d, 50, v_cy+18, LX-64, cy, w=0.6)
+    # Bénévole : actions authentifiées — hérite aussi des 5 ci-dessus
+    for _, cy, _ in l_ucs[5:]:
+        _dl(d, 50, b_cy+18, LX-64, cy, w=0.6)
     for _, cy, _ in r_ucs:
-        _dl(d, 414, 308, RX+66, cy, w=0.6)
+        _dl(d, 414, a_cy+18, RX+66, cy, w=0.6)
 
     # Relation «extend» : Rejoindre la liste d'attente ↦ S'inscrire à un
     # événement (comportement optionnel, déclenché si l'événement est complet)
-    _dl(d, LX, 215, LX, 233, dash=[3,2], w=0.7)
-    _arr_v(d, LX, 235, 'up')
-    _ds(d, LX+32, 227, "«extend»", fs=5.8, col=_GRN)
+    y_join, y_sub = l_y[7], l_y[6]
+    _dl(d, LX, y_join+15, LX, y_sub-15, dash=[3,2], w=0.7)
+    _arr_v(d, LX, y_sub-13, 'up')
+    _ds(d, LX+32, (y_join+y_sub)/2, "«extend»", fs=5.8, col=_GRN)
 
-    # Relation «include» : Valider/refuser inscriptions ↦ Envoyer emails
-    # (chaque validation/refus déclenche systématiquement une notification)
-    _dl(d, RX, 337, RX, 297, dash=[3,2], w=0.7)
-    _arr_v(d, RX, 295, 'down')
-    _ds(d, RX+34, 318, "«include»", fs=5.8, col=_GRN)
+    # Relation «include» : Valider/refuser inscriptions ↦ Envoyer un email
+    # de confirmation (chaque décision déclenche systématiquement un email)
+    y_valid, y_mail = r_y[2], r_y[3]
+    _dl(d, RX, y_valid-16, RX, y_mail+16, dash=[3,2], w=0.7)
+    _arr_v(d, RX, y_mail+14, 'down')
+    _ds(d, RX+34, (y_valid+y_mail)/2, "«include»", fs=5.8, col=_GRN)
 
     return d
 

@@ -91,18 +91,19 @@ def build():
         "Trois acteurs interagissent avec le module :", BODY))
     S.append(Paragraph(
         "<b>• Visiteur</b> — internaute non authentifié. Il peut consulter le "
-        "site vitrine et la liste des événements, créer un compte et se "
-        "connecter.", G.BULL))
+        "site vitrine et la liste des événements, créer un compte, se "
+        "connecter et réinitialiser son mot de passe s'il l'a oublié.",
+        G.BULL))
     S.append(Paragraph(
         "<b>• Bénévole</b> — visiteur qui s'est authentifié. Le lien de "
         "<b>généralisation</b> (flèche à triangle creux) indique qu'un "
         "bénévole <i>est un</i> visiteur : il hérite de tous ses cas "
         "d'utilisation et y ajoute les siens (gestion du profil, inscription "
-        "aux événements, historique, attestation, avis).", G.BULL))
+        "et désinscription, historique, attestation, avis).", G.BULL))
     S.append(Paragraph(
         "<b>• Administrateur</b> — membre de Terra Sana qui gère le module "
         "depuis l'espace d'administration (événements, inscriptions, "
-        "communication, tableau de bord).", G.BULL))
+        "communication, gestion des bénévoles, tableau de bord).", G.BULL))
     S.append(sp(0.15))
 
     S.append(Paragraph("1.2 Les relations «include» et «extend»", SEC2))
@@ -117,11 +118,18 @@ def build():
         "d'attente au lieu d'être inscrit directement.", G.BULL))
     S.append(Paragraph(
         "<b>• «include»</b> — « Valider / refuser les inscriptions » "
-        "<b>inclut</b> « Envoyer des emails ». L'envoi d'une notification au "
-        "bénévole concerné fait <i>systématiquement</i> partie du traitement : "
-        "il n'y a pas de validation ou de refus sans email de confirmation. "
-        "La relation « include » exprime précisément ce comportement "
-        "obligatoire et réutilisable.", G.BULL))
+        "<b>inclut</b> « Envoyer un email de confirmation ». L'envoi de cette "
+        "notification au bénévole concerné fait <i>systématiquement</i> "
+        "partie du traitement : il n'y a pas de validation ou de refus sans "
+        "email de confirmation. La relation « include » exprime précisément "
+        "ce comportement obligatoire et réutilisable.", G.BULL))
+    S.append(sp(0.1))
+    S.append(Paragraph(
+        "« Envoyer des emails groupés » est en revanche un cas d'utilisation "
+        "<i>indépendant</i> : l'administrateur peut, à tout moment, notifier "
+        "l'ensemble des bénévoles inscrits à un événement (rappel, "
+        "changement de lieu, annulation), sans que cette action soit liée à "
+        "une validation d'inscription précise.", BODY))
     S.append(sp(0.15))
     S.append(Paragraph(
         "Rappel de notation : trait plein + triangle creux = généralisation ; "
@@ -256,13 +264,53 @@ def build():
         "<b>• Cohérence avec le code</b> — chaque classe correspond à une "
         "entité JPA (Spring Boot) et à une table MySQL ; les attributs, types "
         "et méthodes reflètent directement l'implémentation.", G.BULL))
+    S.append(PageBreak())
+
+    # ═══════════════════════════════════════════════════════
+    # P7 — COHÉRENCE ENTRE LES DEUX DIAGRAMMES
+    # ═══════════════════════════════════════════════════════
+    S.append(Paragraph("3. Cohérence entre les deux diagrammes", SEC1))
+    S.append(Paragraph(
+        "Chaque cas d'utilisation du diagramme 1 se traduit par une ou "
+        "plusieurs opérations sur les classes du diagramme 2. Le tableau "
+        "ci-dessous établit cette correspondance de façon exhaustive.", BODY))
+    S.append(sp(0.15))
+    rows = [
+        [th("Cas d'utilisation"), th("Classe(s) / méthode(s)")],
+        [tb("Créer un compte"), tb("AppUser.register()")],
+        [tb("Se connecter"), tb("AppUser.login()")],
+        [tb("Réinitialiser son mot de passe"),
+         tb("AppUser.forgotPassword() / resetPassword()")],
+        [tb("Gérer son profil"), tb("AppUser.updateProfile()")],
+        [tb("S'inscrire à un événement"),
+         tb("Registration (création) ; Event.getAvailablePlaces() / "
+            "isFull()")],
+        [tb("Rejoindre la liste d'attente"),
+         tb("Registration (status = en attente, position)")],
+        [tb("Se désinscrire"), tb("Registration.cancel()")],
+        [tb("Consulter son historique"), tb("Registration (lecture, filtrée par bénévole)")],
+        [tb("Télécharger une attestation"), tb("AppUser.downloadAttestation()")],
+        [tb("Laisser un avis"), tb("Review.submitReview()")],
+        [tb("Se connecter (admin)"), tb("Admin.login()")],
+        [tb("Gérer les événements"), tb("Event (création / modification) ; Event.updateStatus()")],
+        [tb("Valider / refuser les inscriptions"),
+         tb("Registration.confirm() / refuse()")],
+        [tb("Envoyer un email de confirmation"),
+         tb("Registration.sendConfirmationEmail()")],
+        [tb("Envoyer des emails groupés"), tb("Event.sendGroupEmail()")],
+        [tb("Gérer les bénévoles"), tb("AppUser (consultation, filtres)")],
+        [tb("Consulter le tableau de bord"),
+         tb("Agrégation sur Event, Registration et Review")],
+        [tb("Exporter la liste des inscrits"), tb("Event.exportPDF()")],
+    ]
+    S.append(grid([6.3*cm, CW-6.3*cm], rows))
     S.append(sp(0.2))
     S.append(Paragraph(
-        "Les deux diagrammes sont cohérents entre eux : chaque cas "
-        "d'utilisation manipule une ou plusieurs de ces classes "
-        "(« S'inscrire à un événement » crée une Registration, « Laisser un "
-        "avis » crée une Review, « Gérer les événements » agit sur Event, "
-        "etc.).", NOTE))
+        "Seuls « Consulter le site vitrine » et « Consulter les événements » "
+        "n'apparaissent pas dans le tableau : ce sont de simples "
+        "consultations (pages publiques, lecture d'Event) qui ne "
+        "correspondent à aucune méthode dédiée, ce qui est cohérent avec "
+        "leur nature.", NOTE))
 
     doc.build(S)
     print(f"PDF généré : {OUT}")
