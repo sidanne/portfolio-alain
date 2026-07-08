@@ -16,7 +16,7 @@ from reportlab.platypus import (
 import generate_cdc as G
 from generate_cdc import (
     W, H, ML, MR, CW,
-    diag_use_case, img_classes,
+    diag_use_case, img_classes, patch_appuser_level,
     BODY, SEC1, SEC2, ITAL, NOTE,
     CV_TITLE, CV_SUB, CV_MOD, CV_EXT, CV_INFO, CV_INST, CV_YEAR,
     sp, grid, th, tb,
@@ -148,7 +148,18 @@ def build():
         "Registration sont créées dans le cadre du TFE ; Admin, Project, "
         "BlogPost et ContactMessage proviennent du site existant.", BODY))
     S.append(sp(0.1))
-    S.append(img_classes(max_h=572))
+    S.append(img_classes(max_h=500))
+    S.append(sp(0.15))
+    S.append(KeepTogether([
+        Paragraph(
+            "Complément : les <b>niveaux bénévole</b> (Bronze / Argent / Or, "
+            "CDC section 3.7) ne figurent pas sur le schéma ci-dessus. Ils "
+            "sont portés par un attribut et une méthode supplémentaires sur "
+            "AppUser, ajoutés ici séparément pour ne pas modifier le schéma "
+            "d'origine :", NOTE),
+        sp(0.1),
+        patch_appuser_level(),
+    ]))
     S.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
@@ -161,7 +172,8 @@ def build():
          tb("Représente un bénévole. Entité centrale du TFE : porte "
             "l'identité et le profil complet (coordonnées, compétences, "
             "disponibilités), l'authentification (connexion, mot de passe "
-            "oublié / réinitialisé) et le téléchargement de l'attestation.")],
+            "oublié / réinitialisé), le niveau de fidélité (Bronze / Argent "
+            "/ Or) et le téléchargement de l'attestation.")],
         [tb("<b>Event</b>"),
          tb("Un événement organisé par Terra Sana : date, lieu, nombre de "
             "places, statut (ouvert / complet / clôturé), visuel. Seconde "
@@ -281,7 +293,8 @@ def build():
         [tb("Se connecter"), tb("AppUser.login()")],
         [tb("Réinitialiser son mot de passe"),
          tb("AppUser.forgotPassword() / resetPassword()")],
-        [tb("Gérer son profil"), tb("AppUser.updateProfile()")],
+        [tb("Gérer son profil"),
+         tb("AppUser.updateProfile() ; AppUser.getLevel() (niveau affiché)")],
         [tb("S'inscrire à un événement"),
          tb("Registration (création) ; Event.getAvailablePlaces() / "
             "isFull()")],

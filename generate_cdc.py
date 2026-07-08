@@ -354,6 +354,21 @@ def img_classes(max_h=600):
     img.hAlign = 'CENTER'
     return img
 
+def patch_appuser_level():
+    """Complément à AppUser (niveaux bénévole), absent du diagramme
+    d'origine : présenté à part pour ne pas modifier l'image de l'auteur."""
+    DW, DH = 300, 92
+    d = Drawing(DW, DH)
+    x, w = 20, 200
+    _dr(d, x, DH-24, w, 24, fill=_WHT, stroke=_BLK, sw=1.1)
+    _ds(d, x+w/2, DH-16, "AppUser (complément)", bold=True, fs=8)
+    _dr(d, x, DH-46, w, 22, fill=_WHT, stroke=_BLK, sw=1.1)
+    _ds(d, x+6, DH-38, "level : String  {Bronze/Argent/Or}",
+        anchor='start', fs=7)
+    _dr(d, x, DH-68, w, 22, fill=_WHT, stroke=_BLK, sw=1.1)
+    _ds(d, x+6, DH-60, "getLevel() : String", anchor='start', fs=7)
+    return d
+
 # ─────────────────────────────────────────────────────────────
 # Construction
 # ─────────────────────────────────────────────────────────────
@@ -854,7 +869,18 @@ def build():
         "entités AppUser, Event, Review et Registration sont créées dans le cadre du TFE ; Admin, "
         "Project, BlogPost et ContactMessage proviennent du site existant.", BODY))
     S_.append(sp(0.2))
-    S_.append(img_classes(max_h=600))
+    S_.append(img_classes(max_h=530))
+    S_.append(sp(0.15))
+    S_.append(KeepTogether([
+        Paragraph(
+            "Complément : les <b>niveaux bénévole</b> (Bronze / Argent / Or, "
+            "section 3.7) ne figurent pas sur le schéma ci-dessus. Ils sont "
+            "portés par un attribut et une méthode supplémentaires sur "
+            "AppUser, ajoutés ici séparément pour ne pas modifier le schéma "
+            "d'origine :", NOTE),
+        sp(0.1),
+        patch_appuser_level(),
+    ]))
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
