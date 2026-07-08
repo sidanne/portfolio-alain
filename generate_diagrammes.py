@@ -91,14 +91,14 @@ def build():
         "Trois acteurs interagissent avec le module :", BODY))
     S.append(Paragraph(
         "<b>• Visiteur</b> — internaute non authentifié. Il peut consulter le "
-        "site vitrine et la liste des événements, puis créer un compte pour "
-        "aller plus loin.", G.BULL))
+        "site vitrine et la liste des événements, créer un compte et se "
+        "connecter.", G.BULL))
     S.append(Paragraph(
         "<b>• Bénévole</b> — visiteur qui s'est authentifié. Le lien de "
         "<b>généralisation</b> (flèche à triangle creux) indique qu'un "
-        "bénévole <i>est un</i> visiteur : il hérite de toutes ses "
-        "possibilités et y ajoute les siennes (inscription aux événements, "
-        "profil, historique, attestations, avis).", G.BULL))
+        "bénévole <i>est un</i> visiteur : il hérite de tous ses cas "
+        "d'utilisation et y ajoute les siens (gestion du profil, inscription "
+        "aux événements, historique, attestation, avis).", G.BULL))
     S.append(Paragraph(
         "<b>• Administrateur</b> — membre de Terra Sana qui gère le module "
         "depuis l'espace d'administration (événements, inscriptions, "
@@ -219,9 +219,9 @@ def build():
             "concerne un seul événement.")],
         [tb("AppUser → Review"), tb("rédige"), tb("1 → 0..*"),
          tb("Un bénévole peut rédiger plusieurs avis.")],
-        [tb("Event → Review"), tb("concerne"), tb("1 → 0..*"),
-         tb("Un avis concerne un événement ; un événement peut en recevoir "
-            "plusieurs.")],
+        [tb("Review → Event"), tb("concerne"), tb("0..* → 1"),
+         tb("Un avis concerne un seul événement ; un même événement peut en "
+            "recevoir plusieurs.")],
     ]
     S.append(grid([3.9*cm, 1.9*cm, 1.7*cm, CW-7.5*cm], rows))
     S.append(sp(0.15))
@@ -236,9 +236,9 @@ def build():
         "AppUser et Event avec ses deux clés étrangères, elle transforme une "
         "relation « plusieurs à plusieurs » (un bénévole s'inscrit à plusieurs "
         "événements, un événement accueille plusieurs bénévoles) en deux "
-        "relations « un à plusieurs » exploitables, tout en offrant un endroit "
-        "naturel pour stocker le statut et la position en liste d'attente.",
-        BODY))
+        "relations « un à plusieurs » exploitables, tout en offrant un "
+        "emplacement naturel pour stocker le statut et la position en liste "
+        "d'attente.", BODY))
     S.append(sp(0.2))
 
     S.append(Paragraph("2.4 Choix de conception", SEC2))

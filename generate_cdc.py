@@ -267,11 +267,11 @@ def diag_use_case():
     r_ucs = [
         (RX, 506, "Se connecter (admin)"),
         (RX, 430, "Gérer les événements"),
-        (RX, 354, "Valider / refuser inscriptions"),
-        (RX, 278, "Envoyer emails groupés"),
+        (RX, 354, "Valider / refuser les inscriptions"),
+        (RX, 278, "Envoyer des emails"),
         (RX, 202, "Gérer les bénévoles"),
-        (RX, 126, "Consulter le dashboard"),
-        (RX, 50,  "Exporter liste inscrits"),
+        (RX, 126, "Consulter le tableau de bord"),
+        (RX, 50,  "Exporter la liste des inscrits"),
     ]
     for cx, cy, txt in r_ucs:
         _uc(d, cx, cy, txt, rx=66, ry=17)
@@ -288,9 +288,11 @@ def diag_use_case():
     _actor(d, 432, 290, "Administrateur")
 
     # Associations
-    for _, cy, _ in l_ucs[:2]:
+    # Visiteur : consulter, créer un compte, se connecter (4 premiers)
+    for _, cy, _ in l_ucs[:4]:
         _dl(d, 50, 488, LX-66, cy, w=0.6)
-    for _, cy, _ in l_ucs[2:]:
+    # Bénévole : actions authentifiées (le reste) — hérite aussi des 4 ci-dessus
+    for _, cy, _ in l_ucs[4:]:
         _dl(d, 50, 218, LX-66, cy, w=0.6)
     for _, cy, _ in r_ucs:
         _dl(d, 414, 308, RX+66, cy, w=0.6)
