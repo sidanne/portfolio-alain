@@ -316,7 +316,7 @@ _CLASS_IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                           "assets", "diagramme_classes.png")
 
 def img_classes(max_h=600):
-    """Diagramme de classes (image de l'auteur), mis à l'échelle."""
+    """Diagramme de classes (image de l'auteur), centré et mis à l'échelle."""
     from reportlab.lib.utils import ImageReader
     iw, ih = ImageReader(_CLASS_IMG).getSize()
     ratio = ih / iw
@@ -325,7 +325,9 @@ def img_classes(max_h=600):
     if h > max_h:                  # limité par la hauteur disponible
         h = max_h
         w = h / ratio
-    return Image(_CLASS_IMG, width=w, height=h)
+    img = Image(_CLASS_IMG, width=w, height=h)
+    img.hAlign = 'CENTER'
+    return img
 
 # ─────────────────────────────────────────────────────────────
 # Construction
