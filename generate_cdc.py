@@ -208,12 +208,19 @@ def _class_box(d, x, top_y, title, attrs, methods=None, w=128):
     return nh + ah + mh  # total height
 
 def _arr_open(d, x, y, direction='up'):
-    """Open arrowhead (generalization / inheritance)."""
+    """Hollow triangle arrowhead (generalization / inheritance)."""
     if direction == 'up':
         pts = [x, y, x-6, y-10, x+6, y-10]
     else:
         pts = [x, y, x-6, y+10, x+6, y+10]
     d.add(Polygon(pts, fillColor=_WHT, strokeColor=_BLK, strokeWidth=0.8))
+
+def _arr_v(d, x, y, direction='up'):
+    """Open V arrowhead (dependency: «include» / «extend»)."""
+    if direction == 'up':
+        _dl(d, x, y, x-5, y-8, w=0.7); _dl(d, x, y, x+5, y-8, w=0.7)
+    else:
+        _dl(d, x, y, x-5, y+8, w=0.7); _dl(d, x, y, x+5, y+8, w=0.7)
 
 def _card(d, x, y, text):
     """Cardinality label near a relationship line."""
@@ -271,22 +278,33 @@ def diag_use_case():
     # Actors
     _actor(d, 36, 470, "Visiteur")
     _actor(d, 36, 200, "Bénévole")
-    # Generalisation Bénévole → Visiteur
-    _dl(d, 36, 230, 36, 435, dash=[5,3])
+    # Généralisation Bénévole → Visiteur (trait plein + triangle creux :
+    # un bénévole est un visiteur authentifié)
+    _dl(d, 36, 240, 36, 428, w=0.9)
     _arr_open(d, 36, 438, 'up')
-    _ds(d, 55, 335, "«extend»", fs=6, col=_GRY)
+    _ds(d, 60, 336, "(est un)", fs=5.5, col=_GRY)
 
     _actor(d, 432, 290, "Administrateur")
 
     # Associations
-    le = SX        # left edge of system = left edge of left ellipses (LX-66)
-    re = SX + SW   # right edge of system = right edge of right ellipses (RX+66)
     for _, cy, _ in l_ucs[:2]:
         _dl(d, 50, 488, LX-66, cy, w=0.6)
     for _, cy, _ in l_ucs[2:]:
         _dl(d, 50, 218, LX-66, cy, w=0.6)
     for _, cy, _ in r_ucs:
         _dl(d, 414, 308, RX+66, cy, w=0.6)
+
+    # Relation «extend» : Rejoindre la liste d'attente ↦ S'inscrire à un
+    # événement (comportement optionnel, déclenché si l'événement est complet)
+    _dl(d, LX, 215, LX, 233, dash=[3,2], w=0.7)
+    _arr_v(d, LX, 235, 'up')
+    _ds(d, LX+32, 227, "«extend»", fs=5.8, col=_GRN)
+
+    # Relation «include» : Valider/refuser inscriptions ↦ Envoyer emails
+    # (chaque validation/refus déclenche systématiquement une notification)
+    _dl(d, RX, 337, RX, 297, dash=[3,2], w=0.7)
+    _arr_v(d, RX, 295, 'down')
+    _ds(d, RX+34, 318, "«include»", fs=5.8, col=_GRN)
 
     return d
 
@@ -399,7 +417,6 @@ def diag_classes():
     _dl(d, 453, 493, 453, 286)
     _dl(d, 453, 286, 296, 286)
     _card(d, 380, 496, "1"); _card(d, 298, 283, "0..*")
-    _ds(d, 456, 390, "reçoit", fs=6, col=_GRY)
 
     # ── Relations avec classes existantes (pointillés) ──
     # Admin → Project  (vertical)
