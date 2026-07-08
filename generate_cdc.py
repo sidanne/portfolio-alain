@@ -11,9 +11,8 @@ from reportlab.lib.units import cm
 from reportlab.lib import colors
 from reportlab.platypus import (
     BaseDocTemplate, Frame, PageTemplate, NextPageTemplate,
-    Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, Image,
+    Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether,
 )
-import os
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY, TA_RIGHT
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.graphics.shapes import (
@@ -336,37 +335,141 @@ def diag_use_case():
 
     return d
 
-# ─── Class diagram : image fournie par l'auteur ──────────────
-_CLASS_IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                          "assets", "diagramme_classes.png")
+# ─── Class diagram : version vectorielle nette (noir & blanc) ─
+def _cbox(d, x, top, title, attrs, methods=None, w=128, fs=6.5, rh=9, nh=14):
+    """Boîte de classe UML classique (nom / attributs / méthodes),
+    un seul contour, texte vectoriel toujours net."""
+    ah = len(attrs) * rh + 6
+    mh = (len(methods) * rh + 6) if methods else 0
+    total = nh + ah + mh
+    _dr(d, x, top - total, w, total, fill=_WHT, stroke=_BLK, sw=1.0)
+    _ds(d, x + w/2, top - nh + 4, title, bold=True, fs=fs + 0.8)
+    _dl(d, x, top - nh, x + w, top - nh, w=1.0)
+    for i, a in enumerate(attrs):
+        _ds(d, x + 4, top - nh - 8 - i*rh, a, anchor='start', fs=fs)
+    if methods:
+        _dl(d, x, top - nh - ah, x + w, top - nh - ah, dash=[2, 2], w=0.7)
+        for i, m in enumerate(methods):
+            _ds(d, x + 4, top - nh - ah - 8 - i*rh, m, anchor='start', fs=fs)
+    return total
 
-def img_classes(max_h=600):
-    """Diagramme de classes (image de l'auteur), centré et mis à l'échelle."""
-    from reportlab.lib.utils import ImageReader
-    iw, ih = ImageReader(_CLASS_IMG).getSize()
-    ratio = ih / iw
-    w = CW
-    h = w * ratio
-    if h > max_h:                  # limité par la hauteur disponible
-        h = max_h
-        w = h / ratio
-    img = Image(_CLASS_IMG, width=w, height=h)
-    img.hAlign = 'CENTER'
-    return img
-
-def patch_appuser_level():
-    """Complément à AppUser (niveaux bénévole), absent du diagramme
-    d'origine : présenté à part pour ne pas modifier l'image de l'auteur."""
-    DW, DH = 300, 92
+def diag_classes():
+    DW, DH = 459, 666
     d = Drawing(DW, DH)
-    x, w = 20, 200
-    _dr(d, x, DH-24, w, 24, fill=_WHT, stroke=_BLK, sw=1.1)
-    _ds(d, x+w/2, DH-16, "AppUser (complément)", bold=True, fs=8)
-    _dr(d, x, DH-46, w, 22, fill=_WHT, stroke=_BLK, sw=1.1)
-    _ds(d, x+6, DH-38, "level : String  {Bronze/Argent/Or}",
-        anchor='start', fs=7)
-    _dr(d, x, DH-68, w, 22, fill=_WHT, stroke=_BLK, sw=1.1)
-    _ds(d, x+6, DH-60, "getLevel() : String", anchor='start', fs=7)
+    _dr(d, 0, 0, DW, DH, fill=_WHT, stroke=None)
+    rh, nh, fs = 8, 12, 6.2
+
+    # ── Admin ─ x=148, top=656 ───────────────────────────────
+    _cbox(d, 148, 656, "Admin", [
+        "id : Long  «PK»", "username : String",
+        "password : String", "role : String",
+    ], ["login() : String", "changePassword() : void", "register() : void"],
+        w=112, fs=fs, rh=rh, nh=nh)
+
+    # ── Project / BlogPost / ContactMessage ─ top=536 ────────
+    _cbox(d, 2, 536, "Project", [
+        "id : Long  «PK»", "admin_id : Long  «FK»", "name : String",
+        "description : String", "link : String",
+        "documentationLink : String", "image : String",
+        "category : String", "isActive : Boolean",
+        "createdAt : LocalDateTime",
+    ], ["activate() : void", "deactivate() : void"], w=108, fs=fs, rh=rh, nh=nh)
+
+    _cbox(d, 116, 536, "BlogPost", [
+        "id : Long  «PK»", "admin_id : Long  «FK»", "title : String",
+        "content : String", "image : String",
+        "isPublished : Boolean", "createdAt : LocalDateTime",
+    ], ["publish() : void", "unpublish() : void"], w=108, fs=fs, rh=rh, nh=nh)
+
+    _cbox(d, 230, 536, "ContactMessage", [
+        "id : Long  «PK»", "admin_id : Long  «FK»", "name : String",
+        "email : String", "message : String",
+        "isRead : Boolean", "createdAt : LocalDateTime",
+    ], ["markAsRead() : void", "reply() : void"], w=108, fs=fs, rh=rh, nh=nh)
+
+    # ── Event ─ x=342, top=536 ───────────────────────────────
+    _cbox(d, 342, 536, "Event", [
+        "id : Long  «PK»", "admin_id : Long  «FK»", "title : String",
+        "description : String", "eventDate : LocalDateTime",
+        "location : String", "maxPlaces : Integer",
+        "status : String", "imageUrl : String",
+        "createdAt : LocalDateTime",
+    ], ["getAvailablePlaces() : Integer", "updateStatus() : void",
+        "sendGroupEmail() : void", "isFull() : Boolean",
+        "exportPDF() : byte[]"], w=110, fs=fs, rh=rh, nh=nh)
+
+    # ── AppUser ─ x=2, top=368 — inclut le niveau bénévole ────
+    _cbox(d, 2, 368, "AppUser", [
+        "id : Long  «PK»", "firstName : String", "lastName : String",
+        "email : String", "password : String", "phone : String",
+        "birthDate : LocalDate", "gender : String", "city : String",
+        "postalCode : String", "skills : String", "availability : String",
+        "preferredLanguage : String", "isActive : Boolean",
+        "level : String  {Bronze/Argent/Or}",
+        "resetToken : String", "resetTokenExpiry : LocalDateTime",
+        "createdAt : LocalDateTime",
+    ], ["register() : void", "login() : String",
+        "forgotPassword() : void", "resetPassword() : void",
+        "updateProfile() : void", "getLevel() : String",
+        "downloadAttestation() : byte[]"], w=150, fs=fs, rh=rh, nh=nh)
+
+    # ── Review ─ x=192, top=368 ──────────────────────────────
+    _cbox(d, 192, 368, "Review", [
+        "id : Long  «PK»", "user_id : Long  «FK»", "event_id : Long  «FK»",
+        "rating : Integer", "comment : String", "createdAt : LocalDateTime",
+    ], ["submitReview() : void", "getAverageRating() : Double"],
+        w=118, fs=fs, rh=rh, nh=nh)
+
+    # ── Registration ─ x=190, top=124 ────────────────────────
+    _cbox(d, 190, 124, "Registration", [
+        "id : Long  «PK»", "user_id : Long  «FK»", "event_id : Long  «FK»",
+        "status : String", "position : Integer", "createdAt : LocalDateTime",
+    ], ["confirm() : void", "refuse() : void", "cancel() : void",
+        "promoteFromWaiting() : void", "sendConfirmationEmail() : void"],
+        w=142, fs=fs, rh=rh, nh=nh)
+
+    # ── Associations Admin → classes existantes ──────────────
+    # (gap admin→row2 élargi à 40pt pour loger 3 lignes de texte
+    # sans chevauchement : cardinalité / verbe / cardinalité)
+    _dl(d, 168, 578, 56, 538)
+    _card(d, 172, 571, "1"); _card(d, 50, 542, "0..*")
+    _ds(d, 106, 556, "gère", fs=6, bold=True)
+
+    _dl(d, 192, 578, 170, 538)
+    _card(d, 196, 571, "1"); _card(d, 158, 542, "0..*")
+    _ds(d, 187, 556, "publie", fs=6, bold=True)
+
+    _dl(d, 216, 578, 284, 538)
+    _card(d, 212, 571, "1"); _card(d, 288, 542, "0..*")
+    _ds(d, 258, 556, "reçoit", fs=6, bold=True)
+
+    _dl(d, 240, 578, 397, 538)
+    _card(d, 244, 571, "1"); _card(d, 392, 542, "0..*")
+    _ds(d, 330, 556, "crée", fs=6, bold=True)
+
+    # ── Associations du module TFE ────────────────────────────
+    # rédige : attache au niveau du bandeau-titre des deux boîtes,
+    # pour ne pas croiser le texte des attributs (lignes serrées à rh=8)
+    _dl(d, 152, 362, 192, 362)
+    _card(d, 154, 366, "1"); _card(d, 170, 366, "0..*")
+    _ds(d, 172, 353, "rédige", fs=6, bold=True)
+
+    _dl(d, 100, 148, 200, 126)
+    _card(d, 104, 142, "1"); _card(d, 204, 128, "0..*")
+    _ds(d, 140, 130, "effectue", fs=6, bold=True)
+
+    _dl(d, 398, 396, 332, 126)
+    _card(d, 402, 386, "1"); _card(d, 336, 128, "0..*")
+    _ds(d, 374, 260, "reçoit", fs=6, bold=True)
+
+    _dl(d, 300, 370, 420, 396)
+    _card(d, 296, 375, "0..*"); _card(d, 424, 378, "1")
+    _ds(d, 300, 382, "concerne", fs=6, bold=True)
+
+    # ── Légende ───────────────────────────────────────────────
+    _ds(d, 2, 6, "«PK» clé primaire   ·   «FK» clé étrangère   ·   "
+        "cardinalités 1 → 0..*", anchor='start', fs=6.2, col=_GRY)
+
     return d
 
 # ─────────────────────────────────────────────────────────────
@@ -869,18 +972,7 @@ def build():
         "entités AppUser, Event, Review et Registration sont créées dans le cadre du TFE ; Admin, "
         "Project, BlogPost et ContactMessage proviennent du site existant.", BODY))
     S_.append(sp(0.2))
-    S_.append(img_classes(max_h=530))
-    S_.append(sp(0.15))
-    S_.append(KeepTogether([
-        Paragraph(
-            "Complément : les <b>niveaux bénévole</b> (Bronze / Argent / Or, "
-            "section 3.7) ne figurent pas sur le schéma ci-dessus. Ils sont "
-            "portés par un attribut et une méthode supplémentaires sur "
-            "AppUser, ajoutés ici séparément pour ne pas modifier le schéma "
-            "d'origine :", NOTE),
-        sp(0.1),
-        patch_appuser_level(),
-    ]))
+    S_.append(diag_classes())
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════

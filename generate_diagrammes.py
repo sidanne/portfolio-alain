@@ -16,7 +16,7 @@ from reportlab.platypus import (
 import generate_cdc as G
 from generate_cdc import (
     W, H, ML, MR, CW,
-    diag_use_case, img_classes, patch_appuser_level,
+    diag_use_case, diag_classes,
     BODY, SEC1, SEC2, ITAL, NOTE,
     CV_TITLE, CV_SUB, CV_MOD, CV_EXT, CV_INFO, CV_INST, CV_YEAR,
     sp, grid, th, tb,
@@ -148,18 +148,7 @@ def build():
         "Registration sont créées dans le cadre du TFE ; Admin, Project, "
         "BlogPost et ContactMessage proviennent du site existant.", BODY))
     S.append(sp(0.1))
-    S.append(img_classes(max_h=500))
-    S.append(sp(0.15))
-    S.append(KeepTogether([
-        Paragraph(
-            "Complément : les <b>niveaux bénévole</b> (Bronze / Argent / Or, "
-            "CDC section 3.7) ne figurent pas sur le schéma ci-dessus. Ils "
-            "sont portés par un attribut et une méthode supplémentaires sur "
-            "AppUser, ajoutés ici séparément pour ne pas modifier le schéma "
-            "d'origine :", NOTE),
-        sp(0.1),
-        patch_appuser_level(),
-    ]))
+    S.append(diag_classes())
     S.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
