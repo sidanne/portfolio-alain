@@ -15,6 +15,10 @@ from reportlab.platypus import (
 )
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY, TA_RIGHT
 from reportlab.pdfbase.pdfmetrics import stringWidth
+from reportlab.graphics.shapes import (
+    Drawing, Rect, Ellipse, Line, String, Circle, Polygon,
+)
+from reportlab.graphics import renderPDF
 
 W, H = A4
 ML = 2.5 * cm
@@ -132,6 +136,293 @@ def toc_line(label, page, level=1):
     return t
 
 # ─────────────────────────────────────────────────────────────
+# UML diagram helpers
+# ─────────────────────────────────────────────────────────────
+_BLK = colors.black
+_GRN = colors.HexColor("#2D6A4F")
+_GRL = colors.HexColor("#E8F5ED")
+_WHT = colors.white
+_GRY = colors.HexColor("#AAAAAA")
+
+def _ds(d, x, y, t, anchor='middle', fs=7.5, bold=False, col=None):
+    fn = "Helvetica-Bold" if bold else "Helvetica"
+    d.add(String(x, y, t, textAnchor=anchor, fontSize=fs,
+                 fontName=fn, fillColor=col or _BLK))
+
+def _dl(d, x1, y1, x2, y2, dash=None, w=0.8, col=None):
+    kw = dict(strokeColor=col or _BLK, strokeWidth=w, fillColor=None)
+    if dash:
+        kw['strokeDashArray'] = dash
+    d.add(Line(x1, y1, x2, y2, **kw))
+
+def _dr(d, x, y, w, h, fill=_WHT, stroke=_BLK, sw=0.9):
+    d.add(Rect(x, y, w, h, fillColor=fill, strokeColor=stroke, strokeWidth=sw))
+
+def _actor(d, cx, cy, name):
+    """UML stick figure; cy = vertical centre of body."""
+    r = 9
+    d.add(Circle(cx, cy+28, r, fillColor=_WHT, strokeColor=_BLK, strokeWidth=0.9))
+    _dl(d, cx, cy+19, cx, cy+3)
+    _dl(d, cx-14, cy+15, cx+14, cy+15)
+    _dl(d, cx, cy+3, cx-11, cy-15)
+    _dl(d, cx, cy+3, cx+11, cy-15)
+    _ds(d, cx, cy-29, name, fs=7.5, bold=True)
+
+def _uc(d, cx, cy, text, rx=70, ry=18):
+    """Use-case ellipse with wrapped text."""
+    d.add(Ellipse(cx, cy, rx, ry, fillColor=_GRL, strokeColor=_GRN, strokeWidth=1))
+    words = text.split()
+    lines, cur = [], ""
+    for w in words:
+        t = (cur + " " + w).strip()
+        lines = lines if len(t) <= 22 else (lines + [cur])
+        cur = t if len(t) <= 22 else w
+    if cur:
+        lines.append(cur)
+    if len(lines) == 1:
+        _ds(d, cx, cy-3, lines[0])
+    elif len(lines) == 2:
+        _ds(d, cx, cy+4, lines[0])
+        _ds(d, cx, cy-7, lines[1])
+    else:
+        for i, ln in enumerate(lines[:3]):
+            _ds(d, cx, cy+6-i*10, ln, fs=7)
+
+def _class_box(d, x, top_y, title, attrs, methods=None, w=128):
+    """UML class compartment box; (x, top_y) = top-left corner."""
+    nh = 18
+    ah = len(attrs) * 11 + 7
+    mh = (len(methods) * 11 + 7) if methods else 0
+    # name
+    _dr(d, x, top_y - nh, w, nh, fill=_GRN)
+    _ds(d, x + w/2, top_y - nh + 4, title, bold=True, col=_WHT)
+    # attributes
+    _dr(d, x, top_y - nh - ah, w, ah)
+    for i, a in enumerate(attrs):
+        _ds(d, x + 4, top_y - nh - 10 - i*11, a, anchor='start', fs=6.5)
+    # methods (optional)
+    if methods:
+        _dr(d, x, top_y - nh - ah - mh, w, mh)
+        for i, m in enumerate(methods):
+            _ds(d, x + 4, top_y - nh - ah - 10 - i*11, m, anchor='start', fs=6.5)
+    return nh + ah + mh  # total height
+
+def _arr_open(d, x, y, direction='up'):
+    """Open arrowhead (generalization / inheritance)."""
+    if direction == 'up':
+        pts = [x, y, x-6, y-10, x+6, y-10]
+    else:
+        pts = [x, y, x-6, y+10, x+6, y+10]
+    d.add(Polygon(pts, fillColor=_WHT, strokeColor=_BLK, strokeWidth=0.8))
+
+def _card(d, x, y, text):
+    """Cardinality label near a relationship line."""
+    _ds(d, x, y, text, fs=6.5, col=colors.HexColor("#333333"))
+
+# ─── Use-case diagram ────────────────────────────────────────
+def diag_use_case():
+    DW, DH = 459, 575
+    d = Drawing(DW, DH)
+    _dr(d, 0, 0, DW, DH, fill=_WHT, stroke=None)
+
+    # System boundary
+    SX, SY, SW, SH = 72, 12, 318, 548
+    _dr(d, SX, SY, SW, SH, sw=1.5)
+    _ds(d, SX+SW/2, SY+SH-13,
+        "Système — Module Bénévoles & Événements", bold=True, fs=8)
+
+    # Vertical divider
+    mid = SX + SW//2
+    _dl(d, mid, SY+22, mid, SY+SH-24, dash=[4,3], w=0.5, col=_GRY)
+    _ds(d, SX + SW//4,      SY+24, "Côté bénévole", fs=6.5, bold=True, col=_GRN)
+    _ds(d, SX + 3*SW//4,    SY+24, "Administration", fs=6.5, bold=True, col=_GRN)
+
+    # Left use cases
+    LX = SX + SW//4
+    l_ucs = [
+        (LX, 522, "Consulter le site vitrine"),
+        (LX, 468, "Consulter les événements"),
+        (LX, 414, "Créer un compte"),
+        (LX, 360, "Se connecter"),
+        (LX, 306, "Gérer son profil"),
+        (LX, 252, "S'inscrire à un événement"),
+        (LX, 198, "Rejoindre la liste d'attente"),
+        (LX, 144, "Consulter son historique"),
+        (LX, 90,  "Télécharger une attestation"),
+        (LX, 36,  "Laisser un avis"),
+    ]
+    for cx, cy, txt in l_ucs:
+        _uc(d, cx, cy, txt, rx=66, ry=17)
+
+    # Right use cases
+    RX = SX + 3*SW//4
+    r_ucs = [
+        (RX, 506, "Se connecter (admin)"),
+        (RX, 430, "Gérer les événements"),
+        (RX, 354, "Valider / refuser inscriptions"),
+        (RX, 278, "Envoyer emails groupés"),
+        (RX, 202, "Gérer les bénévoles"),
+        (RX, 126, "Consulter le dashboard"),
+        (RX, 50,  "Exporter liste inscrits"),
+    ]
+    for cx, cy, txt in r_ucs:
+        _uc(d, cx, cy, txt, rx=66, ry=17)
+
+    # Actors
+    _actor(d, 36, 470, "Visiteur")
+    _actor(d, 36, 200, "Bénévole")
+    # Generalisation Bénévole → Visiteur
+    _dl(d, 36, 230, 36, 435, dash=[5,3])
+    _arr_open(d, 36, 438, 'up')
+    _ds(d, 55, 335, "«extend»", fs=6, col=_GRY)
+
+    _actor(d, 432, 290, "Administrateur")
+
+    # Associations
+    le = SX        # left edge of system = left edge of left ellipses (LX-66)
+    re = SX + SW   # right edge of system = right edge of right ellipses (RX+66)
+    for _, cy, _ in l_ucs[:2]:
+        _dl(d, 50, 488, LX-66, cy, w=0.6)
+    for _, cy, _ in l_ucs[2:]:
+        _dl(d, 50, 218, LX-66, cy, w=0.6)
+    for _, cy, _ in r_ucs:
+        _dl(d, 414, 308, RX+66, cy, w=0.6)
+
+    return d
+
+# ─── Class diagram ───────────────────────────────────────────
+def diag_classes():
+    DW, DH = 459, 605
+    d = Drawing(DW, DH)
+    _dr(d, 0, 0, DW, DH, fill=_WHT, stroke=None)
+    BW = 128
+
+    # ── Admin ─ x=10, top=595 ────────────────
+    # h = 18 + 4*11+7 + 2*11+7 = 98  → bottom=497
+    _class_box(d, 10, 595, "Admin", [
+        "id : Long",
+        "username : String",
+        "password : String  {BCrypt}",
+        "role : String",
+    ], methods=["+ login() : String", "+ changePassword() : void"], w=BW)
+
+    # ── Event ─ x=321, top=595 ───────────────
+    # h = 18 + 7*11+7 = 102  → bottom=493
+    _class_box(d, 321, 595, "Event", [
+        "id : Long",
+        "title : String",
+        "eventDate : DateTime",
+        "location : String",
+        "maxPlaces : Integer",
+        "status : String",
+        "imageUrl : String",
+    ], w=BW)
+
+    # ── Registration ─ x=168, top=475 ────────
+    # h = 18 + 4*11+7 = 69  → bottom=406
+    _class_box(d, 168, 475, "Registration", [
+        "id : Long",
+        "status : String",
+        "position : Integer",
+        "createdAt : DateTime",
+    ], w=BW)
+
+    # ── AppUser ─ x=321, top=455 ─────────────
+    # h = 18 + 6*11+7 + 2*11+7 = 120  → bottom=335
+    _class_box(d, 321, 455, "AppUser", [
+        "id : Long",
+        "email : String  {UNIQUE}",
+        "password : String  {BCrypt}",
+        "firstName, lastName : String",
+        "isActive : Boolean",
+        "createdAt : DateTime",
+    ], methods=["+ getLevel() : String", "+ generateAttestation() : PDF"], w=BW)
+
+    # ── Review ─ x=168, top=320 ──────────────
+    # h = 18 + 4*11+7 = 69  → bottom=251
+    _class_box(d, 168, 320, "Review", [
+        "id : Long",
+        "rating : Integer  {1..5}",
+        "comment : String",
+        "createdAt : DateTime",
+    ], w=BW)
+
+    # ── Separator ────────────────────────────
+    _dl(d, 10, 218, DW-10, 218, dash=[4,3], w=0.5, col=_GRY)
+    _ds(d, DW/2, 208, "Classes existantes (avant le TFE)", fs=7, col=_GRY)
+
+    # ── Project ─ x=10, top=197 ──────────────
+    _class_box(d, 10, 197, "Project", [
+        "id : Long", "name : String", "isActive : Boolean",
+    ], w=BW)   # h=58, bottom=139
+
+    # ── BlogPost ─ x=168, top=197 ────────────
+    _class_box(d, 168, 197, "BlogPost", [
+        "id : Long", "title : String", "isPublished : Boolean",
+    ], w=BW)   # bottom=139
+
+    # ── ContactMessage ─ x=321, top=197 ──────
+    _class_box(d, 321, 197, "ContactMessage", [
+        "id : Long", "email : String", "isRead : Boolean",
+    ], w=BW)   # bottom=139
+
+    # ── Note ─────────────────────────────────
+    _dr(d, 10, 0, DW-20, 55, fill=colors.HexColor("#F9F9F9"), stroke=_GRY, sw=0.5)
+    _ds(d, 15, 44, "Légende : Admin gère également Project, BlogPost et ContactMessage (1 → 0..*)", anchor='start', fs=6.5, col=_GRY)
+    _ds(d, 15, 31, "Relations principales TFE représentées en trait plein ; relations avec classes existantes en pointillés.", anchor='start', fs=6.5, col=_GRY)
+    _ds(d, 15, 18, "AppUser (Bénévole) et Event sont les nouvelles entités centrales du module TFE.", anchor='start', fs=6.5, col=_GRY)
+
+    # ── Relations TFE (trait plein) ───────────
+    # 1. Admin ─── Event  (crée, 1 → 0..*)
+    _dl(d, 138, 546, 321, 544)
+    _card(d, 143, 549, "1"); _card(d, 304, 548, "0..*")
+    _ds(d, 228, 550, "crée", fs=6, col=_GRY)
+
+    # 2. Admin ─── Registration  (1 → 0..*)
+    _dl(d, 138, 546, 168, 441)
+    _card(d, 133, 539, "1"); _card(d, 170, 444, "0..*")
+
+    # 3. Event ─── Registration  (1 → 0..*)
+    _dl(d, 321, 544, 296, 441)
+    _card(d, 316, 537, "1"); _card(d, 298, 444, "0..*")
+
+    # 4. AppUser ─── Registration  (1 → 0..*)
+    _dl(d, 321, 395, 296, 441)
+    _card(d, 316, 391, "1"); _card(d, 298, 444, "0..*")
+
+    # 5. AppUser ─── Review  (1 → 0..*)
+    _dl(d, 321, 395, 296, 286)
+    _card(d, 316, 388, "1"); _card(d, 298, 289, "0..*")
+
+    # 6. Event ─── Review  (1 → 0.*) ─ routed right
+    _dl(d, 385, 493, 453, 493)
+    _dl(d, 453, 493, 453, 286)
+    _dl(d, 453, 286, 296, 286)
+    _card(d, 380, 496, "1"); _card(d, 298, 283, "0..*")
+    _ds(d, 456, 390, "reçoit", fs=6, col=_GRY)
+
+    # ── Relations avec classes existantes (pointillés) ──
+    # Admin → Project  (vertical)
+    _dl(d, 74, 497, 74, 197, dash=[4,3])
+    _card(d, 79, 493, "1"); _card(d, 79, 200, "0..*")
+
+    # Admin → BlogPost  (bent: right then down then right)
+    _dl(d, 138, 566, 148, 566, dash=[4,3])
+    _dl(d, 148, 566, 148, 68, dash=[4,3])
+    _dl(d, 148, 68, 232, 68, dash=[4,3])
+    _dl(d, 232, 68, 232, 139, dash=[4,3])
+    _card(d, 143, 569, "1"); _card(d, 234, 142, "0..*")
+
+    # Admin → ContactMessage  (bent)
+    _dl(d, 138, 556, 158, 556, dash=[4,3])
+    _dl(d, 158, 556, 158, 60, dash=[4,3])
+    _dl(d, 158, 60, 385, 60, dash=[4,3])
+    _dl(d, 385, 60, 385, 139, dash=[4,3])
+    _card(d, 163, 559, "1"); _card(d, 387, 142, "0..*")
+
+    return d
+
+# ─────────────────────────────────────────────────────────────
 # Construction
 # ─────────────────────────────────────────────────────────────
 def build():
@@ -204,15 +495,17 @@ def build():
         ("4.1 Nouvelles tables de la base de données",            10,  2),
         ("4.2 Nouveaux endpoints API REST",                       12,  2),
         ("4.3 Nouvelles pages frontend",                          14,  2),
-        ("5. Répartition des tâches / Apport personnel",          15,  1),
-        ("5.1 Travail réalisé durant le stage",                   15,  2),
-        ("5.2 Travail à réaliser dans le cadre du TFE",           15,  2),
-        ("5.3 Tableau récapitulatif",                             16,  2),
-        ("6. Plan de travail",                                    17,  1),
-        ("6.1 Calendrier officiel",                               17,  2),
-        ("6.2 Plan de développement",                             17,  2),
-        ("6.3 Dates clés personnelles",                           17,  2),
-        ("6.4 Contraintes et risques identifiés",                 18,  2),
+        ("4.4 Diagramme de cas d'utilisation",                    15,  2),
+        ("4.5 Diagramme de classes",                              16,  2),
+        ("5. Répartition des tâches / Apport personnel",          17,  1),
+        ("5.1 Travail réalisé durant le stage",                   17,  2),
+        ("5.2 Travail à réaliser dans le cadre du TFE",           17,  2),
+        ("5.3 Tableau récapitulatif",                             18,  2),
+        ("6. Plan de travail",                                    19,  1),
+        ("6.1 Calendrier officiel",                               19,  2),
+        ("6.2 Plan de développement",                             19,  2),
+        ("6.3 Dates clés personnelles",                           19,  2),
+        ("6.4 Contraintes et risques identifiés",                 20,  2),
     ]
     for label, page, level in toc:
         S_.append(toc_line(label, page, level))
@@ -611,8 +904,28 @@ def build():
     ]))
     S_.append(PageBreak())
 
+    # P15 — 4.4 Diagramme de cas d'utilisation
+    S_.append(Paragraph("4.4 Diagramme de cas d'utilisation", SEC2))
+    S_.append(Paragraph(
+        "Le diagramme ci-dessous représente les interactions entre les acteurs du système "
+        "et les fonctionnalités offertes par le module TFE. Trois acteurs sont identifiés : "
+        "le Visiteur (non authentifié), le Bénévole (qui étend le Visiteur) et l'Administrateur.", BODY))
+    S_.append(sp(0.2))
+    S_.append(diag_use_case())
+    S_.append(PageBreak())
+
+    # P16 — 4.5 Diagramme de classes
+    S_.append(Paragraph("4.5 Diagramme de classes", SEC2))
+    S_.append(Paragraph(
+        "Le diagramme de classes présente la structure des entités Java de l'application et leurs "
+        "relations. Les cinq classes Admin, AppUser, Event, Registration et Review correspondent "
+        "aux nouvelles tables de la base de données développées dans le cadre du TFE.", BODY))
+    S_.append(sp(0.2))
+    S_.append(diag_classes())
+    S_.append(PageBreak())
+
     # ═══════════════════════════════════════════════════════
-    # P15 — 5. RÉPARTITION DES TÂCHES
+    # P17 — 5. RÉPARTITION DES TÂCHES
     # ═══════════════════════════════════════════════════════
     S_.append(Paragraph("5. Répartition des tâches / Apport personnel", SEC1))
     S_.append(Paragraph("5.1 Travail réalisé durant le stage — base technique existante", SEC2))
@@ -653,7 +966,7 @@ def build():
     ]))
     S_.append(PageBreak())
 
-    # P16 — 5.3
+    # P18 — 5.3
     S_.append(Paragraph("5.3 Tableau récapitulatif", SEC2))
     S_.append(grid([4.5*cm, 2.5*cm, CW-7.2*cm], [
         [th("Critère"),            th("Stage"),   th("TFE (apport personnel)")],
@@ -674,7 +987,7 @@ def build():
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
-    # P17 — 6. PLAN DE TRAVAIL
+    # P19 — 6. PLAN DE TRAVAIL
     # ═══════════════════════════════════════════════════════
     S_.append(Paragraph("6. Plan de travail", SEC1))
     S_.append(Paragraph("6.1 Calendrier officiel — 2ème session", SEC2))
@@ -714,7 +1027,7 @@ def build():
     ]))
     S_.append(PageBreak())
 
-    # P18 — 6.4
+    # P20 — 6.4
     S_.append(Paragraph("6.4 Contraintes et risques identifiés", SEC2))
     S_.append(Paragraph(
         "Plusieurs contraintes techniques et organisationnelles ont été anticipées dès la phase "
