@@ -486,16 +486,6 @@ def diag_classes():
     _card(d, 296, 393, "0..*"); _card(d, 424, 405, "1")
     _ds(d, 300, 397, "concerne", fs=6.2, bold=True)
 
-    # ── Note explicative (existant / nouveau) ─────────────────
-    _ds(d, 350, 108, "Admin, Project, BlogPost et", anchor='start',
-        fs=6.2, col=_GRY)
-    _ds(d, 350, 98, "ContactMessage existaient déjà.", anchor='start',
-        fs=6.2, col=_GRY)
-    _ds(d, 350, 84, "Event, AppUser, Review et Registration", anchor='start',
-        fs=6.2, col=_GRY)
-    _ds(d, 350, 74, "sont les nouvelles classes du TFE.", anchor='start',
-        fs=6.2, col=_GRY)
-
     return d
 
 # ─────────────────────────────────────────────────────────────
