@@ -224,6 +224,13 @@ def _arr_v(d, x, y, direction='up'):
     else:
         _dl(d, x, y, x-5, y+8, w=0.7); _dl(d, x, y, x+5, y+8, w=0.7)
 
+def _arr_h(d, x, y, direction='right'):
+    """Open V arrowhead pointing horizontally."""
+    if direction == 'right':
+        _dl(d, x, y, x-8, y-5, w=0.7); _dl(d, x, y, x-8, y+5, w=0.7)
+    else:
+        _dl(d, x, y, x+8, y-5, w=0.7); _dl(d, x, y, x+8, y+5, w=0.7)
+
 def _card(d, x, y, text):
     """Cardinality label near a relationship line."""
     _ds(d, x, y, text, fs=6.5, col=colors.HexColor("#333333"))
@@ -359,6 +366,20 @@ def _cbox(d, x, top, title, attrs, methods=None, w=128, fs=6.5, rh=9, nh=14):
             _ds(d, x + 4, top - nh - ah - 8 - i*rh, m, anchor='start', fs=fs)
     return total
 
+def _enumbox(d, x, top, name, values, w=78, fs=6.3, rh=7.5):
+    """Boîte d'énumération UML : «enumeration» sur 1 ligne, nom en dessous,
+    puis liste des valeurs. (x, top) = coin haut-gauche."""
+    nh = 20  # entête sur 2 lignes (stéréotype + nom)
+    vh = len(values) * rh + 6
+    total = nh + vh
+    _dr(d, x, top - total, w, total, fill=_WHT, stroke=_BLK, sw=1.0)
+    _ds(d, x + w/2, top - 7, "«enumeration»", fs=fs, col=_GRY)
+    _ds(d, x + w/2, top - 16, name, bold=True, fs=fs + 0.6)
+    _dl(d, x, top - nh, x + w, top - nh, w=1.0)
+    for i, v in enumerate(values):
+        _ds(d, x + 4, top - nh - 8 - i*rh, v, anchor='start', fs=fs)
+    return total
+
 def diag_classes():
     DW, DH = 459, 665
     d = Drawing(DW, DH)
@@ -458,14 +479,12 @@ def diag_classes():
     _ds(d, 310, 553, "crée", fs=6.2, bold=True)
 
     # Admin → Registration («valide») : ligne coudée pour ne pas
-    # traverser ContactMessage (couloir libre x≈339, entre
-    # ContactMessage et Event). Cardinalité 0..1 côté Admin placée
-    # sur la descente verticale, à droite de la ligne, pour ne pas
-    # heurter les verbes des associations horizontales (à y=553).
+    # traverser ContactMessage. Cardinalité 0..1 remontée à côté
+    # d'Admin (à l'entrée de l'association), comme demandé.
     _dl(d, 252, 566, 339, 566)
     _dl(d, 339, 566, 339, 122)
     _dl(d, 339, 122, 250, 122)
-    _card(d, 343, 385, "0..1"); _card(d, 240, 126, "0..*")
+    _card(d, 258, 561, "0..1"); _card(d, 240, 126, "0..*")
     _ds(d, 344, 350, "valide", anchor='start', fs=6.2, bold=True)
 
     # ── Associations du module TFE ────────────────────────────
@@ -488,6 +507,33 @@ def diag_classes():
     _dl(d, 300, 377, 420, 401)
     _card(d, 296, 381, "0..*"); _card(d, 424, 394, "1")
     _ds(d, 300, 388, "concerne", fs=6.2, bold=True)
+
+    # ── Énumérations ─────────────────────────────────────────
+    # Placées dans les zones libres du diagramme, avec flèches
+    # de dépendance (pointillés + pointe ouverte) partant de
+    # la classe qui utilise l'énumération.
+
+    # EventStatus : à droite du bloc central, entre Event et
+    # AppUser/Review (zone libre x=345-425, y=310-370)
+    _enumbox(d, 345, 370, "EventStatus",
+        ["OPEN", "FULL", "CANCELLED", "FINISHED"], w=80)
+    # Flèche depuis Event (bord bas) vers EventStatus (bord haut)
+    _dl(d, 397, 400, 385, 372, dash=[3, 2], w=0.7)
+    _arr_v(d, 385, 372, 'down')
+
+    # Level : dans le coin bas-gauche, sous AppUser
+    _enumbox(d, 15, 110, "Level",
+        ["BRONZE", "ARGENT", "OR"], w=68)
+    # Flèche depuis AppUser (bord bas) vers Level (bord haut)
+    _dl(d, 49, 138, 49, 112, dash=[3, 2], w=0.7)
+    _arr_v(d, 49, 112, 'down')
+
+    # RegistrationStatus : à droite de Registration
+    _enumbox(d, 345, 105, "RegistrationStatus",
+        ["CONFIRMED", "WAITING", "REFUSED"], w=95)
+    # Flèche depuis Registration (bord droit) vers RegistrationStatus (bord gauche)
+    _dl(d, 335, 82, 343, 82, dash=[3, 2], w=0.7)
+    _arr_h(d, 345, 82, 'right')
 
     return d
 

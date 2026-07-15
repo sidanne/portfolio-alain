@@ -206,14 +206,19 @@ def build():
         "diagramme (« effectue », « accueille », etc.).", G.BULL))
     S.append(Paragraph(
         "<b>• Énumérations</b> — trois attributs prennent leurs valeurs dans "
-        "un ensemble fermé et sont typés par une énumération dédiée : "
-        "<font face='Courier'>Event.status : EventStatus</font> "
-        "(OPEN / FULL / CANCELLED / FINISHED), "
-        "<font face='Courier'>Registration.status : RegistrationStatus</font> "
-        "(CONFIRMED / WAITING / REFUSED) et "
-        "<font face='Courier'>AppUser.level : Level</font> "
-        "(BRONZE / ARGENT / OR). Ce typage rend les valeurs autorisées "
-        "explicites et évite les chaînes libres.", G.BULL))
+        "un ensemble fermé et sont typés par une énumération dédiée. Chaque "
+        "énumération est représentée par sa propre boîte «enumeration» "
+        "reliée à la classe utilisatrice par une flèche de dépendance "
+        "(pointillés + pointe ouverte) : "
+        "<font face='Courier'>EventStatus</font> "
+        "(OPEN / FULL / CANCELLED / FINISHED) pour "
+        "<font face='Courier'>Event.status</font>, "
+        "<font face='Courier'>RegistrationStatus</font> "
+        "(CONFIRMED / WAITING / REFUSED) pour "
+        "<font face='Courier'>Registration.status</font>, et "
+        "<font face='Courier'>Level</font> (BRONZE / ARGENT / OR) pour "
+        "<font face='Courier'>AppUser.level</font>. Ce typage rend les "
+        "valeurs autorisées explicites et évite les chaînes libres.", G.BULL))
     S.append(Paragraph(
         "<b>• Méthodes métier</b> — <font face='Courier'>confirm()</font>, "
         "<font face='Courier'>refuse()</font>, "
