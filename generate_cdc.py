@@ -499,10 +499,12 @@ def diag_classes():
     _ds(d, 140, 129, "effectue", fs=6.2, bold=True)
 
     # Event → Registration renommée « accueille » (pour ne pas dupliquer
-    # le verbe « reçoit » déjà utilisé pour Admin → ContactMessage)
-    _dl(d, 398, 401, 330, 118)
-    _card(d, 402, 395, "1"); _card(d, 334, 122, "0..*")
-    _ds(d, 374, 260, "accueille", fs=6.2, bold=True)
+    # le verbe « reçoit » déjà utilisé pour Admin → ContactMessage).
+    # Route coudée par le bord droit pour contourner la boîte EventStatus.
+    _dl(d, 445, 401, 445, 122)
+    _dl(d, 445, 122, 335, 122)
+    _card(d, 440, 395, "1"); _card(d, 337, 128, "0..*")
+    _ds(d, 448, 260, "accueille", anchor='start', fs=6.2, bold=True)
 
     _dl(d, 300, 377, 420, 401)
     _card(d, 296, 381, "0..*"); _card(d, 424, 394, "1")
