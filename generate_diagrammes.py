@@ -144,10 +144,12 @@ def build():
     S.append(Paragraph("2. Diagramme de classes", SEC1))
     S.append(Paragraph(
         "Le diagramme présente les huit entités du modèle de données avec "
-        "leurs attributs (clés primaires «PK» et étrangères «FK»), leurs "
-        "méthodes et leurs associations nommées. AppUser, Event, Review et "
-        "Registration sont créées dans le cadre du TFE ; Admin, Project, "
-        "BlogPost et ContactMessage proviennent du site existant.", BODY))
+        "leurs attributs, leurs méthodes et leurs associations nommées. Les "
+        "liens entre classes sont représentés uniquement par les associations "
+        "(les clés étrangères ne sont donc pas affichées comme attributs). "
+        "AppUser, Event, Review et Registration sont créées dans le cadre du "
+        "TFE ; Admin, Project, BlogPost et ContactMessage proviennent du "
+        "site existant.", BODY))
     S.append(sp(0.1))
     S.append(diag_classes())
     S.append(PageBreak())
@@ -169,12 +171,11 @@ def build():
             "places, statut (ouvert / complet / clôturé), visuel. Seconde "
             "entité centrale du module.")],
         [tb("<b>Registration</b>"),
-         tb("Entité <b>associative</b> entre AppUser et Event (clés "
-            "étrangères user_id et event_id). Elle matérialise l'inscription "
-            "et porte ses propres attributs : statut (confirmée / en attente / "
-            "refusée), position dans la file d'attente, et une référence "
-            "optionnelle vers l'administrateur qui l'a traitée "
-            "(validatedBy_id, nulle tant qu'elle est en attente).")],
+         tb("Entité <b>associative</b> entre AppUser et Event. Elle "
+            "matérialise l'inscription et porte ses propres attributs : "
+            "statut (RegistrationStatus : CONFIRMED / WAITING / REFUSED) et "
+            "position dans la file d'attente. Une association « valide » avec "
+            "Admin (0..1) trace l'administrateur qui l'a traitée.")],
         [tb("<b>Review</b>"),
          tb("Un avis laissé par un bénévole sur un événement auquel il a "
             "participé (note de 1 à 5 et commentaire).")],
@@ -186,32 +187,33 @@ def build():
     S.append(grid([3.2*cm, CW-3.2*cm], rows))
     S.append(sp(0.25))
 
-    S.append(Paragraph("2.2 Attributs, clés et méthodes", SEC2))
+    S.append(Paragraph("2.2 Attributs, énumérations et méthodes", SEC2))
     S.append(Paragraph(
-        "<b>• Clés primaires et étrangères</b> — chaque classe possède un "
-        "identifiant <font face='Courier'>id : Long «PK»</font>. Les "
-        "stéréotypes <font face='Courier'>«FK»</font> "
-        "(<font face='Courier'>admin_id</font>, "
-        "<font face='Courier'>user_id</font>, "
-        "<font face='Courier'>event_id</font>, "
-        "<font face='Courier'>validatedBy_id</font>) matérialisent les liens "
-        "vers les autres tables : le diagramme se traduit ainsi directement "
-        "en schéma relationnel MySQL. "
-        "<font face='Courier'>validatedBy_id</font> est <b>nullable</b> : "
-        "une inscription encore en attente n'a pas de valeur pour ce champ.",
-        G.BULL))
+        "<b>• Identifiants</b> — chaque classe possède un identifiant "
+        "<font face='Courier'>id : Long «PK»</font>. Les liens entre "
+        "classes ne sont pas dupliqués sous forme d'attributs « clé "
+        "étrangère » : ils sont portés par les associations nommées du "
+        "diagramme (« effectue », « accueille », etc.).", G.BULL))
     S.append(Paragraph(
-        "<b>• Trois compartiments</b> — chaque classe est découpée en nom, "
-        "attributs puis méthodes. Les méthodes traduisent les traitements "
-        "métier : <font face='Courier'>confirm()</font>, "
+        "<b>• Énumérations</b> — trois attributs prennent leurs valeurs dans "
+        "un ensemble fermé et sont typés par une énumération dédiée : "
+        "<font face='Courier'>Event.status : EventStatus</font> "
+        "(OPEN / FULL / CANCELLED / FINISHED), "
+        "<font face='Courier'>Registration.status : RegistrationStatus</font> "
+        "(CONFIRMED / WAITING / REFUSED) et "
+        "<font face='Courier'>AppUser.level : Level</font> "
+        "(BRONZE / ARGENT / OR). Ce typage rend les valeurs autorisées "
+        "explicites et évite les chaînes libres.", G.BULL))
+    S.append(Paragraph(
+        "<b>• Méthodes métier</b> — <font face='Courier'>confirm()</font>, "
         "<font face='Courier'>refuse()</font>, "
         "<font face='Courier'>promoteFromWaiting()</font> et "
         "<font face='Courier'>sendConfirmationEmail()</font> sur "
         "Registration ; <font face='Courier'>getAvailablePlaces()</font>, "
         "<font face='Courier'>isFull()</font> et "
         "<font face='Courier'>exportPDF()</font> sur Event ; "
-        "<font face='Courier'>downloadAttestation()</font> sur AppUser.",
-        G.BULL))
+        "<font face='Courier'>downloadAttestation()</font> et "
+        "<font face='Courier'>getLevel()</font> sur AppUser.", G.BULL))
     S.append(Paragraph(
         "<b>• Sécurité (implémentation)</b> — les mots de passe ne sont jamais "
         "stockés en clair (hachage BCrypt côté Spring Security) et l'email de "
@@ -222,15 +224,11 @@ def build():
         "Les méthodes de Project, BlogPost et ContactMessage "
         "(<font face='Courier'>activate()</font>, "
         "<font face='Courier'>publish()</font>, "
-        "<font face='Courier'>reply()</font>, etc.), ainsi que "
-        "<font face='Courier'>Admin.changePassword()</font>, appartiennent "
-        "à des fonctionnalités du site déjà existantes, hors du périmètre "
+        "<font face='Courier'>reply()</font>, etc.) appartiennent à des "
+        "fonctionnalités du site déjà existantes, hors du périmètre "
         "« Module Bénévoles &amp; Événements » : c'est pourquoi elles "
         "n'apparaissent pas dans le diagramme de cas d'utilisation, qui ne "
-        "couvre que le nouveau module. Seul "
-        "<font face='Courier'>Admin.login()</font> y figure, car il "
-        "conditionne l'accès à l'espace d'administration du module TFE.",
-        NOTE))
+        "couvre que le nouveau module.", NOTE))
     S.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
@@ -279,13 +277,13 @@ def build():
     S.append(sp(0.15))
     S.append(Paragraph(
         "La classe <b>Registration</b> est le pivot du modèle : placée entre "
-        "AppUser et Event avec ses deux clés étrangères, elle transforme une "
-        "relation « plusieurs à plusieurs » (un bénévole s'inscrit à plusieurs "
-        "événements, un événement accueille plusieurs bénévoles) en deux "
-        "relations « un à plusieurs » exploitables, tout en offrant un "
-        "emplacement naturel pour stocker le statut et la position en liste "
-        "d'attente. La contrainte <font face='Courier'>{unique : user_id, "
-        "event_id}</font> garantit qu'un même bénévole ne peut s'inscrire "
+        "AppUser et Event, elle transforme une relation « plusieurs à "
+        "plusieurs » (un bénévole s'inscrit à plusieurs événements, un "
+        "événement accueille plusieurs bénévoles) en deux relations "
+        "« un à plusieurs » exploitables, tout en offrant un emplacement "
+        "naturel pour stocker le statut et la position en liste d'attente. "
+        "La contrainte <font face='Courier'>{unique : par bénévole et "
+        "événement}</font> garantit qu'un même bénévole ne peut s'inscrire "
         "qu'une seule fois au même événement.", BODY))
     S.append(sp(0.2))
 
@@ -294,12 +292,22 @@ def build():
         "<b>• Réutilisation de l'existant</b> — le compte Admin déjà présent "
         "pilote aussi bien les nouvelles entités que les contenus du site "
         "(Project, BlogPost, ContactMessage). On étend la base sans la "
-        "réécrire ni dupliquer un compte de gestion.", G.BULL))
+        "réécrire ni dupliquer un compte de gestion. L'attribut « rôle » a "
+        "été retiré : cette classe reprend déjà tous les comptes "
+        "administrateur, sans notion de rôle multiple.", G.BULL))
     S.append(Paragraph(
-        "<b>• Traçabilité PK / FK</b> — l'affichage explicite des clés "
-        "primaires et étrangères rend le passage au modèle relationnel MySQL "
-        "immédiat : chaque «FK» correspond à une contrainte de clé étrangère "
-        "réelle en base.", G.BULL))
+        "<b>• Associations plutôt que clés étrangères</b> — les liens entre "
+        "classes sont représentés uniquement par les associations "
+        "(cardinalités et verbes métier). Les clés étrangères, redondantes "
+        "au niveau conceptuel, ne sont plus affichées comme attributs — "
+        "elles resteront bien sûr présentes dans le schéma MySQL généré.",
+        G.BULL))
+    S.append(Paragraph(
+        "<b>• Énumérations pour les statuts et le niveau</b> — les valeurs "
+        "fermées (statuts d'événement et d'inscription, niveau de fidélité) "
+        "sont typées par des énumérations dédiées, plutôt que des chaînes "
+        "libres. Cela renforce la validité des données et facilite la "
+        "maintenance.", G.BULL))
     S.append(Paragraph(
         "<b>• Cohérence avec le code</b> — chaque classe correspond à une "
         "entité JPA (Spring Boot) et à une table MySQL ; les attributs, types "
@@ -333,6 +341,9 @@ def build():
         [tb("Télécharger une attestation"), tb("AppUser.downloadAttestation()")],
         [tb("Laisser un avis"), tb("Review.submitReview()")],
         [tb("Se connecter (admin)"), tb("Admin.login()")],
+        [tb("Réinitialiser son mot de passe (admin)"),
+         tb("Admin.forgotPassword() / resetPassword()")],
+        [tb("Gérer son profil (admin)"), tb("Admin.changePassword()")],
         [tb("Gérer les événements"), tb("Event (création / modification) ; Event.updateStatus()")],
         [tb("Valider / refuser les inscriptions"),
          tb("Registration.confirm() / refuse() ; association Admin — "

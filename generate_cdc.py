@@ -257,7 +257,9 @@ def diag_use_case():
 
     ell_top, ell_bottom = header_y - 28, SY + 26
 
-    # Left use cases (Visiteur : 0-4 ; Bénévole : 5-11, hérite de 0-4)
+    # Left use cases (Visiteur : 0-2 ; Bénévole : 3-11, hérite de 0-2)
+    # « Se connecter » et « Réinitialiser son mot de passe » appartiennent
+    # au Bénévole : dès que le Visiteur les exécute, il devient Bénévole.
     LX = SX + SW//4
     l_labels = [
         "Consulter le site vitrine",
@@ -278,10 +280,13 @@ def diag_use_case():
     for cx, cy, txt in l_ucs:
         _uc(d, cx, cy, txt, rx=64, ry=15, fs=6.6)
 
-    # Right use cases (Administration)
+    # Right use cases (Administration) — l'admin gère aussi son propre
+    # compte (mot de passe, profil), indépendamment de celui du bénévole
     RX = SX + 3*SW//4
     r_labels = [
         "Se connecter (admin)",
+        "Réinitialiser son mot de passe (admin)",
+        "Gérer son profil (admin)",
         "Gérer les événements",
         "Valider / refuser les inscriptions",
         "Envoyer un email de confirmation",
@@ -294,12 +299,12 @@ def diag_use_case():
     r_y = _evenly(ell_top, ell_bottom, len(r_labels))
     r_ucs = [(RX, y, t) for y, t in zip(r_y, r_labels)]
     for cx, cy, txt in r_ucs:
-        _uc(d, cx, cy, txt, rx=66, ry=16, fs=6.8)
+        _uc(d, cx, cy, txt, rx=66, ry=16, fs=6.6)
 
     # Actors
-    v_cy = l_y[2]          # Visiteur : centré sur ses 5 cas d'utilisation
-    b_cy = l_y[8]          # Bénévole : centré sur ses 7 cas d'utilisation
-    a_cy = r_y[3]          # Administrateur : centré sur la colonne droite
+    v_cy = l_y[1]          # Visiteur : centré sur ses 3 cas d'utilisation
+    b_cy = l_y[7]          # Bénévole : centré sur ses 9 cas d'utilisation
+    a_cy = r_y[5]          # Administrateur : centré sur la colonne droite
     _actor(d, 36, v_cy, "Visiteur")
     _actor(d, 36, b_cy, "Bénévole")
     # Généralisation Bénévole → Visiteur (trait plein + triangle creux :
@@ -311,11 +316,11 @@ def diag_use_case():
     _actor(d, 432, a_cy, "Administrateur")
 
     # Associations
-    # Visiteur : consulter, créer un compte, se connecter, mot de passe oublié
-    for _, cy, _ in l_ucs[:5]:
+    # Visiteur : consulter le site, consulter les événements, créer un compte
+    for _, cy, _ in l_ucs[:3]:
         _dl(d, 50, v_cy+18, LX-64, cy, w=0.6)
-    # Bénévole : actions authentifiées — hérite aussi des 5 ci-dessus
-    for _, cy, _ in l_ucs[5:]:
+    # Bénévole : se connecter et toutes les actions authentifiées
+    for _, cy, _ in l_ucs[3:]:
         _dl(d, 50, b_cy+18, LX-64, cy, w=0.6)
     for _, cy, _ in r_ucs:
         _dl(d, 414, a_cy+18, RX+66, cy, w=0.6)
@@ -329,7 +334,7 @@ def diag_use_case():
 
     # Relation «include» : Valider/refuser inscriptions ↦ Envoyer un email
     # de confirmation (chaque décision déclenche systématiquement un email)
-    y_valid, y_mail = r_y[2], r_y[3]
+    y_valid, y_mail = r_y[4], r_y[5]
     _dl(d, RX, y_valid-16, RX, y_mail+16, dash=[3,2], w=0.7)
     _arr_v(d, RX, y_mail+14, 'down')
     _ds(d, RX+34, (y_valid+y_mail)/2, "«include»", fs=5.8, col=_GRN)
@@ -355,60 +360,61 @@ def _cbox(d, x, top, title, attrs, methods=None, w=128, fs=6.5, rh=9, nh=14):
     return total
 
 def diag_classes():
-    DW, DH = 459, 676
+    DW, DH = 459, 665
     d = Drawing(DW, DH)
     _dr(d, 0, 0, DW, DH, fill=_WHT, stroke=None)
-    rh, nh, fs = 8.5, 12.5, 6.8   # texte et lignes agrandis (moins serré)
+    rh, nh, fs = 8.5, 12.5, 6.8
 
-    # ── Admin ─ x=148, top=667 ───────────────────────────────
-    # (register() retiré : aucun cas d'utilisation ne crée de nouveau
-    # compte administrateur — Admin est un compte existant, unique)
-    _cbox(d, 148, 667, "Admin", [
-        "id : Long  «PK»", "username : String",
-        "password : String", "role : String",
-    ], ["login() : String", "changePassword() : void"],
+    # ── Admin ─ x=148, top=660 ───────────────────────────────
+    # (rôle retiré : cette classe reprend déjà tous les comptes
+    # « administrateur » ; les clés étrangères sont retirées car
+    # les liens entre classes sont représentés par les associations.)
+    _cbox(d, 148, 660, "Admin", [
+        "id : Long  «PK»", "username : String", "password : String",
+    ], ["login() : String", "changePassword() : void",
+        "forgotPassword() : void", "resetPassword() : void"],
         w=112, fs=fs, rh=rh, nh=nh)
 
-    # ── Project / BlogPost / ContactMessage ─ top=561 ────────
-    _cbox(d, 2, 561, "Project", [
-        "id : Long  «PK»", "admin_id : Long  «FK»", "name : String",
+    # ── Project / BlogPost / ContactMessage ─ top=543 ────────
+    _cbox(d, 2, 543, "Project", [
+        "id : Long  «PK»", "name : String",
         "description : String", "link : String",
         "documentationLink : String", "image : String",
         "category : String", "isActive : Boolean",
         "createdAt : LocalDateTime",
     ], ["activate() : void", "deactivate() : void"], w=108, fs=fs, rh=rh, nh=nh)
 
-    _cbox(d, 116, 561, "BlogPost", [
-        "id : Long  «PK»", "admin_id : Long  «FK»", "title : String",
+    _cbox(d, 116, 543, "BlogPost", [
+        "id : Long  «PK»", "title : String",
         "content : String", "image : String",
         "isPublished : Boolean", "createdAt : LocalDateTime",
     ], ["publish() : void", "unpublish() : void"], w=108, fs=fs, rh=rh, nh=nh)
 
-    _cbox(d, 230, 561, "ContactMessage", [
-        "id : Long  «PK»", "admin_id : Long  «FK»", "name : String",
+    _cbox(d, 230, 543, "ContactMessage", [
+        "id : Long  «PK»", "name : String",
         "email : String", "message : String",
         "isRead : Boolean", "createdAt : LocalDateTime",
     ], ["markAsRead() : void", "reply() : void"], w=108, fs=fs, rh=rh, nh=nh)
 
-    # ── Event ─ x=342, top=561 ───────────────────────────────
-    _cbox(d, 342, 561, "Event", [
-        "id : Long  «PK»", "admin_id : Long  «FK»", "title : String",
+    # ── Event ─ x=342, top=543 ───────────────────────────────
+    _cbox(d, 342, 543, "Event", [
+        "id : Long  «PK»", "title : String",
         "description : String", "eventDate : LocalDateTime",
         "location : String", "maxPlaces : Integer",
-        "status : String", "imageUrl : String",
+        "status : EventStatus", "imageUrl : String",
         "createdAt : LocalDateTime",
     ], ["getAvailablePlaces() : Integer", "updateStatus() : void",
         "sendGroupEmail() : void", "isFull() : Boolean",
         "exportPDF() : byte[]"], w=110, fs=fs, rh=rh, nh=nh)
 
-    # ── AppUser ─ x=2, top=387 — inclut le niveau bénévole ────
-    _cbox(d, 2, 387, "AppUser", [
+    # ── AppUser ─ x=2, top=375 — inclut le niveau bénévole ────
+    _cbox(d, 2, 375, "AppUser", [
         "id : Long  «PK»", "firstName : String", "lastName : String",
         "email : String", "password : String", "phone : String",
         "birthDate : LocalDate", "gender : String", "city : String",
         "postalCode : String", "skills : String", "availability : String",
         "preferredLanguage : String", "isActive : Boolean",
-        "level : String  {Bronze/Argent/Or}",
+        "level : Level",
         "resetToken : String", "resetTokenExpiry : LocalDateTime",
         "createdAt : LocalDateTime",
     ], ["register() : void", "login() : String",
@@ -416,54 +422,49 @@ def diag_classes():
         "updateProfile() : void", "getLevel() : String",
         "downloadAttestation() : byte[]"], w=150, fs=fs, rh=rh, nh=nh)
 
-    # ── Review ─ x=192, top=387 ──────────────────────────────
-    _cbox(d, 192, 387, "Review", [
-        "id : Long  «PK»", "user_id : Long  «FK»", "event_id : Long  «FK»",
-        "rating : Integer", "comment : String", "createdAt : LocalDateTime",
+    # ── Review ─ x=192, top=375 ──────────────────────────────
+    _cbox(d, 192, 375, "Review", [
+        "id : Long  «PK»", "rating : Integer",
+        "comment : String", "createdAt : LocalDateTime",
     ], ["submitReview() : void", "getAverageRating() : Double"],
         w=118, fs=fs, rh=rh, nh=nh)
 
-    # ── Registration ─ x=190, top=134 ─────────────────────────
-    # validatedBy_id est nullable : une inscription en attente n'a
-    # pas encore été traitée par un administrateur.
-    _cbox(d, 190, 134, "Registration", [
-        "id : Long  «PK»", "user_id : Long  «FK»", "event_id : Long  «FK»",
-        "validatedBy_id : Long  «FK»  {nullable}",
-        "status : String", "position : Integer", "createdAt : LocalDateTime",
-        "{unique : user_id, event_id}",
+    # ── Registration ─ x=190, top=120 ────────────────────────
+    _cbox(d, 190, 120, "Registration", [
+        "id : Long  «PK»", "status : RegistrationStatus",
+        "position : Integer", "createdAt : LocalDateTime",
+        "{unique : par bénévole et événement}",
     ], ["confirm() : void", "refuse() : void", "cancel() : void",
         "promoteFromWaiting() : void", "sendConfirmationEmail() : void"],
-        w=155, fs=fs, rh=rh, nh=nh)
+        w=145, fs=fs, rh=rh, nh=nh)
 
     # ── Associations Admin → classes existantes ──────────────
-    # (Admin mesure désormais 75.5pt de haut sans register() : bord
-    # inférieur réel ≈ 591.5 → les points d'attache partent de y=590)
-    _dl(d, 158, 590, 56, 563)
-    _card(d, 162, 582, "1"); _card(d, 50, 567, "0..*")
-    _ds(d, 107, 574, "gère", fs=6.2, bold=True)
+    # Admin: top=660, height=84 → bottom=576. Lignes partent de y=575.
+    _dl(d, 158, 575, 56, 544)
+    _card(d, 162, 566, "1"); _card(d, 50, 550, "0..*")
+    _ds(d, 107, 558, "gère", fs=6.2, bold=True)
 
-    _dl(d, 180, 590, 170, 563)
-    _card(d, 184, 582, "1"); _card(d, 158, 567, "0..*")
-    _ds(d, 175, 574, "publie", fs=6.2, bold=True)
+    _dl(d, 180, 575, 170, 544)
+    _card(d, 184, 566, "1"); _card(d, 158, 550, "0..*")
+    _ds(d, 175, 558, "publie", fs=6.2, bold=True)
 
-    _dl(d, 202, 590, 284, 563)
-    _card(d, 198, 582, "1"); _card(d, 288, 567, "0..*")
-    _ds(d, 243, 574, "reçoit", fs=6.2, bold=True)
+    _dl(d, 202, 575, 284, 544)
+    _card(d, 198, 566, "1"); _card(d, 288, 550, "0..*")
+    _ds(d, 243, 558, "reçoit", fs=6.2, bold=True)
 
-    _dl(d, 224, 590, 397, 563)
-    _card(d, 220, 582, "1"); _card(d, 392, 567, "0..*")
-    _ds(d, 310, 574, "crée", fs=6.2, bold=True)
+    _dl(d, 224, 575, 397, 544)
+    _card(d, 220, 566, "1"); _card(d, 392, 550, "0..*")
+    _ds(d, 310, 558, "crée", fs=6.2, bold=True)
 
     # Admin → Registration («valide») : ligne coudée pour ne pas
-    # traverser ContactMessage (passe par le couloir libre x≈339,
-    # entre ContactMessage et Event). Cardinalité 0..1 côté Admin :
-    # une inscription en attente n'a pas encore été validée. Point
-    # d'attache décalé (x=252, y=588) pour ne pas chevaucher "reçoit".
-    _dl(d, 252, 590, 339, 590)
-    _dl(d, 339, 590, 339, 136)
-    _dl(d, 339, 136, 250, 136)
-    _card(d, 252, 583, "0..1"); _card(d, 240, 140, "0..*")
-    _ds(d, 344, 365, "valide", anchor='start', fs=6.2, bold=True)
+    # traverser ContactMessage (couloir libre x≈339, entre
+    # ContactMessage et Event). Cardinalité 0..1 côté Admin : une
+    # inscription en attente n'a pas encore été validée.
+    _dl(d, 252, 575, 339, 575)
+    _dl(d, 339, 575, 339, 122)
+    _dl(d, 339, 122, 250, 122)
+    _card(d, 252, 570, "0..1"); _card(d, 240, 126, "0..*")
+    _ds(d, 344, 350, "valide", anchor='start', fs=6.2, bold=True)
 
     # ── Associations du module TFE ────────────────────────────
     # rédige : attache au niveau du bandeau-titre des deux boîtes,
@@ -472,19 +473,19 @@ def diag_classes():
     _card(d, 154, 380, "1"); _card(d, 170, 380, "0..*")
     _ds(d, 172, 368, "rédige", fs=6.2, bold=True)
 
-    _dl(d, 100, 152, 200, 136)
-    _card(d, 104, 146, "1"); _card(d, 204, 140, "0..*")
-    _ds(d, 140, 141, "effectue", fs=6.2, bold=True)
+    _dl(d, 100, 140, 200, 118)
+    _card(d, 104, 134, "1"); _card(d, 204, 124, "0..*")
+    _ds(d, 140, 129, "effectue", fs=6.2, bold=True)
 
     # Event → Registration renommée « accueille » (pour ne pas dupliquer
     # le verbe « reçoit » déjà utilisé pour Admin → ContactMessage)
-    _dl(d, 398, 411, 332, 138)
-    _card(d, 402, 405, "1"); _card(d, 336, 142, "0..*")
-    _ds(d, 374, 275, "accueille", fs=6.2, bold=True)
+    _dl(d, 398, 401, 330, 118)
+    _card(d, 402, 395, "1"); _card(d, 334, 122, "0..*")
+    _ds(d, 374, 260, "accueille", fs=6.2, bold=True)
 
-    _dl(d, 300, 389, 420, 411)
-    _card(d, 296, 393, "0..*"); _card(d, 424, 405, "1")
-    _ds(d, 300, 397, "concerne", fs=6.2, bold=True)
+    _dl(d, 300, 377, 420, 401)
+    _card(d, 296, 381, "0..*"); _card(d, 424, 394, "1")
+    _ds(d, 300, 388, "concerne", fs=6.2, bold=True)
 
     return d
 
