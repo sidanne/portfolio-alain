@@ -90,21 +90,29 @@ def build():
     S.append(Paragraph(
         "Trois acteurs interagissent avec le module :", BODY))
     S.append(Paragraph(
-        "<b>• Visiteur</b> — internaute non authentifié. Il peut consulter le "
-        "site vitrine et la liste des événements, créer un compte, se "
-        "connecter et réinitialiser son mot de passe s'il l'a oublié.",
+        "<b>• Visiteur</b> — internaute non authentifié. Ses seuls cas "
+        "d'utilisation sont : consulter le site vitrine, consulter la liste "
+        "des événements et créer un compte. Dès qu'il se connecte, il "
+        "devient bénévole ; « Se connecter » et « Réinitialiser son mot de "
+        "passe » sont donc rattachés au Bénévole, pas au Visiteur.",
         G.BULL))
     S.append(Paragraph(
         "<b>• Bénévole</b> — visiteur qui s'est authentifié. Le lien de "
         "<b>généralisation</b> (flèche à triangle creux) indique qu'un "
-        "bénévole <i>est un</i> visiteur : il hérite de tous ses cas "
-        "d'utilisation et y ajoute les siens (gestion du profil, inscription "
-        "et désinscription, historique, attestation, avis).", G.BULL))
+        "bénévole <i>est un</i> visiteur : il hérite de ses cas d'utilisation "
+        "(consulter le site et les événements, créer un compte) et y ajoute "
+        "les siens : se connecter, réinitialiser son mot de passe, gérer son "
+        "profil, s'inscrire à un événement, rejoindre la liste d'attente, "
+        "se désinscrire, consulter son historique, télécharger une "
+        "attestation, laisser un avis.", G.BULL))
     S.append(Paragraph(
         "<b>• Administrateur</b> — membre de Terra Sana qui gère le module "
-        "depuis l'espace d'administration (événements, inscriptions, "
-        "communication, gestion des bénévoles, avis, tableau de bord).",
-        G.BULL))
+        "depuis l'espace d'administration. Il dispose de ses propres cas "
+        "d'authentification et de gestion de compte (se connecter, "
+        "réinitialiser son mot de passe, gérer son profil) et pilote le "
+        "module : gestion des événements, validation des inscriptions, "
+        "communication, gestion des bénévoles, consultation des avis, "
+        "tableau de bord et export.", G.BULL))
     S.append(sp(0.15))
 
     S.append(Paragraph("1.2 Les relations «include» et «extend»", SEC2))
