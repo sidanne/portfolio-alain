@@ -372,7 +372,8 @@ def diag_classes():
     _cbox(d, 148, 660, "Admin", [
         "id : Long  «PK»", "username : String", "password : String",
     ], ["login() : String", "changePassword() : void",
-        "forgotPassword() : void", "resetPassword() : void"],
+        "forgotPassword() : void", "resetPassword() : void",
+        "updateProfile() : void"],
         w=112, fs=fs, rh=rh, nh=nh)
 
     # ── Project / BlogPost / ContactMessage ─ top=543 ────────
@@ -439,31 +440,32 @@ def diag_classes():
         w=145, fs=fs, rh=rh, nh=nh)
 
     # ── Associations Admin → classes existantes ──────────────
-    # Admin: top=660, height=84 → bottom=576. Lignes partent de y=575.
-    _dl(d, 158, 575, 56, 544)
-    _card(d, 162, 566, "1"); _card(d, 50, 550, "0..*")
-    _ds(d, 107, 558, "gère", fs=6.2, bold=True)
+    # Admin: top=660, height=92.5 → bottom=567. Lignes partent de y=566.
+    _dl(d, 158, 566, 56, 544)
+    _card(d, 162, 559, "1"); _card(d, 50, 548, "0..*")
+    _ds(d, 107, 553, "gère", fs=6.2, bold=True)
 
-    _dl(d, 180, 575, 170, 544)
-    _card(d, 184, 566, "1"); _card(d, 158, 550, "0..*")
-    _ds(d, 175, 558, "publie", fs=6.2, bold=True)
+    _dl(d, 180, 566, 170, 544)
+    _card(d, 184, 559, "1"); _card(d, 158, 548, "0..*")
+    _ds(d, 175, 553, "publie", fs=6.2, bold=True)
 
-    _dl(d, 202, 575, 284, 544)
-    _card(d, 198, 566, "1"); _card(d, 288, 550, "0..*")
-    _ds(d, 243, 558, "reçoit", fs=6.2, bold=True)
+    _dl(d, 202, 566, 284, 544)
+    _card(d, 198, 559, "1"); _card(d, 288, 548, "0..*")
+    _ds(d, 243, 553, "reçoit", fs=6.2, bold=True)
 
-    _dl(d, 224, 575, 397, 544)
-    _card(d, 220, 566, "1"); _card(d, 392, 550, "0..*")
-    _ds(d, 310, 558, "crée", fs=6.2, bold=True)
+    _dl(d, 224, 566, 397, 544)
+    _card(d, 220, 559, "1"); _card(d, 392, 548, "0..*")
+    _ds(d, 310, 553, "crée", fs=6.2, bold=True)
 
     # Admin → Registration («valide») : ligne coudée pour ne pas
     # traverser ContactMessage (couloir libre x≈339, entre
-    # ContactMessage et Event). Cardinalité 0..1 côté Admin : une
-    # inscription en attente n'a pas encore été validée.
-    _dl(d, 252, 575, 339, 575)
-    _dl(d, 339, 575, 339, 122)
+    # ContactMessage et Event). Cardinalité 0..1 côté Admin placée
+    # sur la descente verticale, à droite de la ligne, pour ne pas
+    # heurter les verbes des associations horizontales (à y=553).
+    _dl(d, 252, 566, 339, 566)
+    _dl(d, 339, 566, 339, 122)
     _dl(d, 339, 122, 250, 122)
-    _card(d, 252, 570, "0..1"); _card(d, 240, 126, "0..*")
+    _card(d, 343, 385, "0..1"); _card(d, 240, 126, "0..*")
     _ds(d, 344, 350, "valide", anchor='start', fs=6.2, bold=True)
 
     # ── Associations du module TFE ────────────────────────────
@@ -984,9 +986,10 @@ def build():
     # P16 — 4.5 Diagramme de classes
     S_.append(Paragraph("4.5 Diagramme de classes", SEC2))
     S_.append(Paragraph(
-        "Le diagramme de classes présente les huit entités Java de l'application, leurs attributs "
-        "(avec clés primaires «PK» et étrangères «FK»), leurs méthodes et leurs associations. Les "
-        "entités AppUser, Event, Review et Registration sont créées dans le cadre du TFE ; Admin, "
+        "Le diagramme de classes présente les huit entités Java de l'application, leurs attributs, "
+        "leurs méthodes et leurs associations nommées. Les liens entre classes sont représentés "
+        "uniquement par les associations (les clés étrangères ne sont pas dupliquées comme attributs). "
+        "Les entités AppUser, Event, Review et Registration sont créées dans le cadre du TFE ; Admin, "
         "Project, BlogPost et ContactMessage proviennent du site existant.", BODY))
     S_.append(sp(0.2))
     S_.append(diag_classes())

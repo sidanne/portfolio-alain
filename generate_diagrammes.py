@@ -176,8 +176,8 @@ def build():
             "/ Or) et le téléchargement de l'attestation.")],
         [tb("<b>Event</b>"),
          tb("Un événement organisé par Terra Sana : date, lieu, nombre de "
-            "places, statut (ouvert / complet / clôturé), visuel. Seconde "
-            "entité centrale du module.")],
+            "places, statut (ouvert / complet / annulé / clôturé), visuel. "
+            "Seconde entité centrale du module.")],
         [tb("<b>Registration</b>"),
          tb("Entité <b>associative</b> entre AppUser et Event. Elle "
             "matérialise l'inscription et porte ses propres attributs : "
@@ -188,9 +188,11 @@ def build():
          tb("Un avis laissé par un bénévole sur un événement auquel il a "
             "participé (note de 1 à 5 et commentaire).")],
         [tb("<b>Admin</b>"),
-         tb("Compte d'administration existant qui gère l'ensemble du module "
-            "et les contenus déjà présents sur le site (Project, BlogPost, "
-            "ContactMessage).")],
+         tb("Compte d'administration existant. Il gère l'ensemble du module "
+            "(événements, inscriptions, bénévoles, avis, tableau de bord) et "
+            "les contenus déjà présents sur le site (Project, BlogPost, "
+            "ContactMessage), tout en assurant la gestion de son propre "
+            "compte (connexion, mot de passe, profil).")],
     ]
     S.append(grid([3.2*cm, CW-3.2*cm], rows))
     S.append(sp(0.25))
@@ -351,7 +353,8 @@ def build():
         [tb("Se connecter (admin)"), tb("Admin.login()")],
         [tb("Réinitialiser son mot de passe (admin)"),
          tb("Admin.forgotPassword() / resetPassword()")],
-        [tb("Gérer son profil (admin)"), tb("Admin.changePassword()")],
+        [tb("Gérer son profil (admin)"),
+         tb("Admin.updateProfile() ; Admin.changePassword()")],
         [tb("Gérer les événements"), tb("Event (création / modification) ; Event.updateStatus()")],
         [tb("Valider / refuser les inscriptions"),
          tb("Registration.confirm() / refuse() ; association Admin — "
