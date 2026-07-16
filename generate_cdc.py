@@ -543,7 +543,7 @@ def diag_classes():
 # Construction
 # ─────────────────────────────────────────────────────────────
 def build():
-    out = "/home/user/portfolio-alain/CDC_TFE_Terra_Sana_Alain_modifie.pdf"
+    out = "/home/user/portfolio-alain/Analyse_TFE_Terra_Sana_Alain.pdf"
 
     cov_fr = Frame(ML, 2.0*cm, CW, H-4.0*cm, id="cover")
     nor_fr = Frame(ML, 2.5*cm, CW, H-5.0*cm, id="normal")
@@ -566,7 +566,7 @@ def build():
     S_.append(sp(0.3))
     S_.append(Paragraph("3ème année", CV_YEAR))
     S_.append(Spacer(1, 2.2*cm))
-    S_.append(Paragraph("Rapport écrit", CV_TITLE))
+    S_.append(Paragraph("Analyse", CV_TITLE))
     S_.append(sp(0.4))
     S_.append(Paragraph("Travail de Fin d'Études — Épreuve intégrée", CV_SUB))
     S_.append(Spacer(1, 1.8*cm))
@@ -593,33 +593,31 @@ def build():
     toc = [
         ("1. Introduction",                                        3,  1),
         ("1.1 Présentation de Terra Sana ASBL",                    3,  2),
-        ("1.2 Sources d'information",                              3,  2),
-        ("1.3 Cahier des charges du TFE",                          3,  2),
-        ("1.4 Contexte du TFE",                                    4,  2),
-        ("1.5 Problématique",                                      4,  2),
-        ("2. Travail réalisé durant le stage",                     5,  1),
-        ("2.1 Composants livrés à la fin du stage",                5,  2),
-        ("2.2 Technologies utilisées",                             5,  2),
-        ("3. Nouvelles fonctionnalités du module TFE",             6,  1),
-        ("3.1 Refonte graphique",                                  6,  2),
-        ("3.2 Espace personnel bénévole",                          6,  2),
-        ("3.3 Gestion des événements",                             7,  2),
-        ("3.4 Inscription aux événements",                         7,  2),
-        ("3.5 Retours post-événement",                             8,  2),
-        ("3.6 Dashboard administrateur enrichi",                   8,  2),
-        ("3.7 Fonctionnalités avancées",                           8,  2),
-        ("3.8 Export PDF et attestation",                          8,  2),
-        ("4. Analyse fonctionnelle",                               9,  1),
-        ("4.1 Diagramme de cas d'utilisation",                     9,  2),
-        ("4.2 Règles de gestion",                                 11,  2),
-        ("5. Modèle de données",                                  13,  1),
-        ("5.1 Diagramme de classes",                              13,  2),
-        ("5.2 Dictionnaire de données",                           15,  2),
-        ("6. Apport personnel dans le cadre du TFE",              18,  1),
-        ("7. Plan de travail",                                    19,  1),
-        ("7.1 Calendrier et phases de développement",             19,  2),
-        ("7.2 Échéances officielles et dates clés",               20,  2),
-        ("7.3 Contraintes et risques identifiés",                 20,  2),
+        ("1.2 Contexte du TFE",                                    3,  2),
+        ("1.3 Problématique",                                      3,  2),
+        ("2. Travail réalisé durant le stage",                     4,  1),
+        ("2.1 Composants livrés à la fin du stage",                4,  2),
+        ("2.2 Technologies utilisées",                             4,  2),
+        ("3. Nouvelles fonctionnalités du module TFE",             5,  1),
+        ("3.1 Refonte graphique",                                  5,  2),
+        ("3.2 Espace personnel bénévole",                          5,  2),
+        ("3.3 Gestion des événements",                             6,  2),
+        ("3.4 Inscription aux événements",                         6,  2),
+        ("3.5 Retours post-événement",                             7,  2),
+        ("3.6 Dashboard administrateur enrichi",                   7,  2),
+        ("3.7 Fonctionnalités avancées",                           7,  2),
+        ("3.8 Export PDF et attestation",                          7,  2),
+        ("4. Analyse fonctionnelle",                               8,  1),
+        ("4.1 Diagramme de cas d'utilisation",                     8,  2),
+        ("4.2 Règles de gestion",                                 10,  2),
+        ("5. Modèle de données",                                  12,  1),
+        ("5.1 Diagramme de classes",                              12,  2),
+        ("5.2 Dictionnaire de données",                           14,  2),
+        ("6. Apport personnel dans le cadre du TFE",              17,  1),
+        ("7. Plan de travail",                                    18,  1),
+        ("7.1 Calendrier et phases de développement",             18,  2),
+        ("7.2 Échéances officielles et dates clés",               19,  2),
+        ("7.3 Contraintes et risques identifiés",                 19,  2),
     ]
     for label, page, level in toc:
         S_.append(toc_line(label, page, level))
@@ -629,6 +627,13 @@ def build():
     # P3 — 1. INTRODUCTION
     # ═══════════════════════════════════════════════════════
     S_.append(Paragraph("1. Introduction", SEC1))
+    S_.append(Paragraph(
+        "Le présent document constitue l'<b>analyse fonctionnelle et technique</b> du projet "
+        "TFE. Il accompagne et complète le <b>cahier des charges</b> remis en document séparé, "
+        "qui présente la mission, le périmètre et les livrables attendus. Ce document se "
+        "concentre sur l'analyse : diagrammes UML, règles de gestion, modèle de données, "
+        "apport personnel et planning technique.", ITAL))
+    S_.append(sp(0.2))
 
     S_.append(Paragraph("1.1 Présentation de Terra Sana ASBL", SEC2))
     S_.append(Paragraph(
@@ -645,54 +650,10 @@ def build():
         "et la gestion administrative reposait entièrement sur des fichiers Excel et des "
         "documents papier.", BODY))
 
-    S_.append(Paragraph("1.2 Sources d'information", SEC2))
+    S_.append(Paragraph("1.2 Contexte du TFE", SEC2))
     S_.append(Paragraph(
-        "Les informations utilisées pour concevoir l'application proviennent de plusieurs "
-        "sources complémentaires réunies pendant et après le stage :", BODY))
-    for b in [
-        "des entretiens avec Monsieur Didier Seraye (Responsable Administratif de Terra Sana) "
-        "afin de comprendre les besoins réels, le fonctionnement quotidien de l'association et "
-        "les points de friction dans la gestion actuelle des bénévoles et des événements ;",
-        "l'analyse des documents et fichiers Excel utilisés à ce jour pour identifier les "
-        "données à structurer (identité des bénévoles, historiques d'ateliers, listes d'inscrits) ;",
-        "la documentation officielle des technologies retenues (Spring Boot, React, Spring "
-        "Security, JavaMail, iText) ainsi que les bonnes pratiques REST et de sécurité ;",
-        "les consignes de l'EAFC Uccle pour la rédaction du présent rapport et la structuration "
-        "du projet de fin d'études.",
-    ]:
-        S_.append(Paragraph(f"• {b}", BULL))
-
-    S_.append(Paragraph("1.3 Cahier des charges du TFE", SEC2))
-    S_.append(Paragraph(
-        "Ce projet de TFE consiste à <b>étendre le site vitrine développé pendant le stage</b> "
-        "en y intégrant un <b>module complet de gestion des bénévoles et des événements</b>. "
-        "La demande initiale de Terra Sana ASBL est de centraliser et d'automatiser ce qui "
-        "était jusqu'ici tenu à la main dans des fichiers Excel et par email.", BODY))
-    S_.append(Paragraph(
-        "Le module à livrer doit permettre concrètement :", BODY))
-    for b in [
-        "aux bénévoles de créer un compte, se connecter, gérer leur profil et consulter leur historique ;",
-        "aux bénévoles de s'inscrire aux événements, rejoindre une liste d'attente si l'événement "
-        "est complet, se désinscrire et laisser un avis après participation ;",
-        "à l'administrateur de créer et gérer les événements, valider ou refuser les inscriptions, "
-        "notifier les bénévoles par email et exporter les listes en PDF ;",
-        "au bénévole de télécharger une attestation de participation à la fin d'un événement ;",
-        "à l'application de calculer automatiquement un niveau de fidélité (Bronze / Argent / Or) "
-        "à partir du nombre de participations confirmées.",
-    ]:
-        S_.append(Paragraph(f"• {b}", BULL))
-    S_.append(Paragraph(
-        "Ces fonctionnalités sont détaillées dans la section 3 et analysées dans les sections 4 "
-        "(diagrammes UML et règles de gestion) et 5 (modèle de données).", BODY))
-    S_.append(PageBreak())
-
-    # ═══════════════════════════════════════════════════════
-    # P4 — 1.4 Contexte du TFE + 1.5 Problématique
-    # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("1.4 Contexte du TFE", SEC2))
-    S_.append(Paragraph(
-        "Le présent rapport écrit accompagne mon Travail de Fin d'Études, réalisé dans le cadre "
-        "de l'épreuve intégrée du Bachelier en Informatique de Gestion (3ème année) à l'EAFC "
+        "Cette analyse s'inscrit dans le cadre de mon Travail de Fin d'Études, réalisé pour "
+        "l'épreuve intégrée du Bachelier en Informatique de Gestion (3ème année) à l'EAFC "
         "Uccle, pour l'année académique 2025-2026.", BODY))
     S_.append(Paragraph(
         "Mon stage s'est déroulé au sein de Terra Sana ASBL du 25 mars au 20 mai 2026, sous la "
@@ -700,11 +661,12 @@ def build():
         "de zéro un site web complet servant de vitrine institutionnelle et de hub centralisé "
         "pour les 12 applications internes de l'association.", BODY))
     S_.append(Paragraph(
-        "Le module de gestion des bénévoles et des événements est développé après le stage, "
-        "entièrement par mes soins, sans code préexistant. Le développement et la démonstration "
-        "sont réalisés en environnement local (WAMP Server sous Windows).", BODY))
+        "Le module de gestion des bénévoles et des événements — objet du présent TFE — est "
+        "développé après le stage, entièrement par mes soins, sans code préexistant. Le "
+        "développement et la démonstration sont réalisés en environnement local (WAMP Server "
+        "sous Windows).", BODY))
 
-    S_.append(Paragraph("1.5 Problématique", SEC2))
+    S_.append(Paragraph("1.3 Problématique", SEC2))
     S_.append(Paragraph(
         "Aujourd'hui, Terra Sana gère ses bénévoles et ses activités de façon entièrement "
         "manuelle. Cette organisation engendre plusieurs difficultés concrètes :", BODY))
