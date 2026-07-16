@@ -565,8 +565,8 @@ def build():
     S_.append(Paragraph("Bachelier en Informatique de Gestion", CV_SCHOOL))
     S_.append(sp(0.3))
     S_.append(Paragraph("3ème année", CV_YEAR))
-    S_.append(Spacer(1, 2.0*cm))
-    S_.append(Paragraph("Cahier des charges", CV_TITLE))
+    S_.append(Spacer(1, 2.2*cm))
+    S_.append(Paragraph("Rapport écrit", CV_TITLE))
     S_.append(sp(0.4))
     S_.append(Paragraph("Travail de Fin d'Études — Épreuve intégrée", CV_SUB))
     S_.append(Spacer(1, 1.8*cm))
@@ -592,37 +592,34 @@ def build():
     S_.append(Paragraph("Table des matières", TOC_H))
     toc = [
         ("1. Introduction",                                        3,  1),
-        ("2. Fonctionnalités développées durant le stage",         4,  1),
-        ("2.1 Contexte et objectif",                               4,  2),
-        ("2.2 Site public — 12 pages",                             4,  2),
-        ("2.3 Espace administrateur",                               4,  2),
-        ("2.4 API REST Backend — 17 endpoints",                    4,  2),
-        ("2.5 Base de données existante — 4 tables",               6,  2),
-        ("2.6 Technologies utilisées",                             6,  2),
-        ("3. Nouvelles fonctionnalités TFE",                       7,  1),
-        ("3.1 Refonte graphique",                                  7,  2),
-        ("3.2 Espace personnel bénévole",                          7,  2),
-        ("3.3 Gestion des événements — côté administrateur",       8,  2),
-        ("3.4 Inscription aux événements — côté bénévole",         8,  2),
-        ("3.5 Retours post-événement",                             9,  2),
-        ("3.6 Dashboard administrateur enrichi",                   9,  2),
-        ("3.7 Fonctionnalités avancées",                           9,  2),
-        ("3.8 Export PDF et attestation",                          9,  2),
-        ("4. Analyse technique",                                   10,  1),
-        ("4.1 Nouvelles tables de la base de données",            10,  2),
-        ("4.2 Nouveaux endpoints API REST",                       12,  2),
-        ("4.3 Nouvelles pages frontend",                          14,  2),
-        ("4.4 Diagramme de cas d'utilisation",                    15,  2),
-        ("4.5 Diagramme de classes",                              16,  2),
-        ("5. Répartition des tâches / Apport personnel",          18,  1),
-        ("5.1 Travail réalisé durant le stage",                   18,  2),
-        ("5.2 Travail à réaliser dans le cadre du TFE",           18,  2),
-        ("5.3 Tableau récapitulatif",                             19,  2),
-        ("6. Plan de travail",                                    20,  1),
-        ("6.1 Calendrier officiel",                               20,  2),
-        ("6.2 Plan de développement",                             20,  2),
-        ("6.3 Dates clés personnelles",                           20,  2),
-        ("6.4 Contraintes et risques identifiés",                 21,  2),
+        ("1.1 Présentation de Terra Sana ASBL",                    3,  2),
+        ("1.2 Sources d'information",                              3,  2),
+        ("1.3 Cahier des charges du TFE",                          3,  2),
+        ("1.4 Contexte du TFE",                                    4,  2),
+        ("1.5 Problématique",                                      4,  2),
+        ("2. Travail réalisé durant le stage",                     5,  1),
+        ("2.1 Composants livrés à la fin du stage",                5,  2),
+        ("2.2 Technologies utilisées",                             5,  2),
+        ("3. Nouvelles fonctionnalités du module TFE",             6,  1),
+        ("3.1 Refonte graphique",                                  6,  2),
+        ("3.2 Espace personnel bénévole",                          6,  2),
+        ("3.3 Gestion des événements",                             7,  2),
+        ("3.4 Inscription aux événements",                         7,  2),
+        ("3.5 Retours post-événement",                             8,  2),
+        ("3.6 Dashboard administrateur enrichi",                   8,  2),
+        ("3.7 Fonctionnalités avancées",                           8,  2),
+        ("3.8 Export PDF et attestation",                          8,  2),
+        ("4. Analyse fonctionnelle",                               9,  1),
+        ("4.1 Diagramme de cas d'utilisation",                     9,  2),
+        ("4.2 Règles de gestion",                                 11,  2),
+        ("5. Modèle de données",                                  13,  1),
+        ("5.1 Diagramme de classes",                              13,  2),
+        ("5.2 Dictionnaire de données",                           15,  2),
+        ("6. Apport personnel dans le cadre du TFE",              18,  1),
+        ("7. Plan de travail",                                    19,  1),
+        ("7.1 Calendrier et phases de développement",             19,  2),
+        ("7.2 Échéances officielles et dates clés",               20,  2),
+        ("7.3 Contraintes et risques identifiés",                 20,  2),
     ]
     for label, page, level in toc:
         S_.append(toc_line(label, page, level))
@@ -633,7 +630,7 @@ def build():
     # ═══════════════════════════════════════════════════════
     S_.append(Paragraph("1. Introduction", SEC1))
 
-    S_.append(Paragraph("<b>Présentation de Terra Sana ASBL</b>", SEC2B))
+    S_.append(Paragraph("1.1 Présentation de Terra Sana ASBL", SEC2))
     S_.append(Paragraph(
         "Terra Sana ASBL est une association sans but lucratif belge dont le siège social est "
         "situé au 19 avenue des Volontaires à Auderghem. L'association œuvre dans les domaines "
@@ -648,31 +645,74 @@ def build():
         "et la gestion administrative reposait entièrement sur des fichiers Excel et des "
         "documents papier.", BODY))
 
-    S_.append(Paragraph("<b>Contexte du TFE</b>", SEC2B))
+    S_.append(Paragraph("1.2 Sources d'information", SEC2))
     S_.append(Paragraph(
-        "Le présent document constitue le cahier des charges de mon Travail de Fin d'Études, "
-        "réalisé dans le cadre de l'épreuve intégrée du Bachelier en Informatique de Gestion "
-        "(3ème année) à l'EAFC Uccle, pour l'année académique 2025-2026.", BODY))
+        "Les informations utilisées pour concevoir l'application proviennent de plusieurs "
+        "sources complémentaires réunies pendant et après le stage :", BODY))
+    for b in [
+        "des entretiens avec Monsieur Didier Seraye (Responsable Administratif de Terra Sana) "
+        "afin de comprendre les besoins réels, le fonctionnement quotidien de l'association et "
+        "les points de friction dans la gestion actuelle des bénévoles et des événements ;",
+        "l'analyse des documents et fichiers Excel utilisés à ce jour pour identifier les "
+        "données à structurer (identité des bénévoles, historiques d'ateliers, listes d'inscrits) ;",
+        "la documentation officielle des technologies retenues (Spring Boot, React, Spring "
+        "Security, JavaMail, iText) ainsi que les bonnes pratiques REST et de sécurité ;",
+        "les consignes de l'EAFC Uccle pour la rédaction du présent rapport et la structuration "
+        "du projet de fin d'études.",
+    ]:
+        S_.append(Paragraph(f"• {b}", BULL))
+
+    S_.append(Paragraph("1.3 Cahier des charges du TFE", SEC2))
+    S_.append(Paragraph(
+        "Ce projet de TFE consiste à <b>étendre le site vitrine développé pendant le stage</b> "
+        "en y intégrant un <b>module complet de gestion des bénévoles et des événements</b>. "
+        "La demande initiale de Terra Sana ASBL est de centraliser et d'automatiser ce qui "
+        "était jusqu'ici tenu à la main dans des fichiers Excel et par email.", BODY))
+    S_.append(Paragraph(
+        "Le module à livrer doit permettre concrètement :", BODY))
+    for b in [
+        "aux bénévoles de créer un compte, se connecter, gérer leur profil et consulter leur historique ;",
+        "aux bénévoles de s'inscrire aux événements, rejoindre une liste d'attente si l'événement "
+        "est complet, se désinscrire et laisser un avis après participation ;",
+        "à l'administrateur de créer et gérer les événements, valider ou refuser les inscriptions, "
+        "notifier les bénévoles par email et exporter les listes en PDF ;",
+        "au bénévole de télécharger une attestation de participation à la fin d'un événement ;",
+        "à l'application de calculer automatiquement un niveau de fidélité (Bronze / Argent / Or) "
+        "à partir du nombre de participations confirmées.",
+    ]:
+        S_.append(Paragraph(f"• {b}", BULL))
+    S_.append(Paragraph(
+        "Ces fonctionnalités sont détaillées dans la section 3 et analysées dans les sections 4 "
+        "(diagrammes UML et règles de gestion) et 5 (modèle de données).", BODY))
+    S_.append(PageBreak())
+
+    # ═══════════════════════════════════════════════════════
+    # P4 — 1.4 Contexte du TFE + 1.5 Problématique
+    # ═══════════════════════════════════════════════════════
+    S_.append(Paragraph("1.4 Contexte du TFE", SEC2))
+    S_.append(Paragraph(
+        "Le présent rapport écrit accompagne mon Travail de Fin d'Études, réalisé dans le cadre "
+        "de l'épreuve intégrée du Bachelier en Informatique de Gestion (3ème année) à l'EAFC "
+        "Uccle, pour l'année académique 2025-2026.", BODY))
     S_.append(Paragraph(
         "Mon stage s'est déroulé au sein de Terra Sana ASBL du 25 mars au 20 mai 2026, sous la "
-        "supervision de Monsieur Didier Seraye, Responsable Administratif. Durant cette période, "
-        "j'ai conçu et développé de zéro un site web complet servant de vitrine institutionnelle "
-        "et de hub centralisé pour les 12 applications internes de l'association.", BODY))
+        "supervision de Monsieur Didier Seraye. Durant cette période, j'ai conçu et développé "
+        "de zéro un site web complet servant de vitrine institutionnelle et de hub centralisé "
+        "pour les 12 applications internes de l'association.", BODY))
     S_.append(Paragraph(
-        "Pour le TFE, je propose d'étendre ce projet en y intégrant un module complet de gestion "
-        "des bénévoles et des événements. L'intégralité de ce module sera développée par mes "
-        "soins, sans code préexistant. Le développement et la démonstration seront réalisés "
-        "entièrement en environnement local (WAMP Server sous Windows).", BODY))
+        "Le module de gestion des bénévoles et des événements est développé après le stage, "
+        "entièrement par mes soins, sans code préexistant. Le développement et la démonstration "
+        "sont réalisés en environnement local (WAMP Server sous Windows).", BODY))
 
-    S_.append(Paragraph("<b>Problématique</b>", SEC2B))
+    S_.append(Paragraph("1.5 Problématique", SEC2))
     S_.append(Paragraph(
         "Aujourd'hui, Terra Sana gère ses bénévoles et ses activités de façon entièrement "
         "manuelle. Cette organisation engendre plusieurs difficultés concrètes :", BODY))
     for b in [
-        "des doublons et pertes d'information quand plusieurs personnes modifient les mêmes fichiers",
-        "aucune vue d'ensemble des places disponibles, d'où des activités surchargées ou sous-remplies",
-        "des confirmations et relances envoyées une à une, un travail répétitif et chronophage",
-        "aucun historique de participation, ni moyen de remercier les bénévoles ou de leur délivrer une attestation",
+        "des doublons et pertes d'information quand plusieurs personnes modifient les mêmes fichiers ;",
+        "aucune vue d'ensemble des places disponibles, d'où des activités surchargées ou sous-remplies ;",
+        "des confirmations et relances envoyées une à une, un travail répétitif et chronophage ;",
+        "aucun historique de participation, ni moyen de remercier les bénévoles ou de leur délivrer une attestation.",
     ]:
         S_.append(Paragraph(f"• {b}", BULL))
     S_.append(Paragraph(
@@ -683,90 +723,51 @@ def build():
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
-    # P4 — 2. FONCTIONNALITÉS STAGE
+    # P5 — 2. TRAVAIL RÉALISÉ DURANT LE STAGE (compact)
     # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("2. Fonctionnalités développées durant le stage", SEC1))
-    S_.append(Paragraph("2.1 Contexte et objectif", SEC2))
+    S_.append(Paragraph("2. Travail réalisé durant le stage", SEC1))
     S_.append(Paragraph(
         "L'association Terra Sana ASBL ne disposait d'aucune présence numérique avant le stage. "
         "L'objectif était de concevoir et développer un site web moderne, multilingue et évolutif, "
         "permettant de présenter l'association au public et de centraliser l'accès à ses "
-        "12 applications internes via un hub de projets.", BODY))
+        "12 applications internes via un hub de projets. Le module TFE, développé après le stage, "
+        "s'ajoute à cette base et ne se substitue pas à elle.", BODY))
 
-    S_.append(Paragraph("2.2 Site public — 12 pages développées", SEC2))
-    c2 = [3.8*cm, CW-3.8*cm]
-    S_.append(grid(c2, [
-        [th("Page"), th("Description")],
-        [tb("Accueil"),         tb("Hero section, statistiques clés, aperçu des projets")],
-        [tb("À propos"),        tb("Mission, valeurs, engagements de l'association")],
-        [tb("Projets (Hub)"),   tb("Liste des 12 applications avec recherche et filtres")],
-        [tb("Détail projet"),   tb("Page individuelle par application")],
-        [tb("Blog"),            tb("Articles publiés par l'administrateur")],
-        [tb("Contact"),         tb("Formulaire avec validation et compteur de caractères")],
-        [tb("Bénévolat"),       tb("Formulaire de candidature bénévole")],
-        [tb("Sponsors"),        tb("Présentation des partenaires")],
-        [tb("Confidentialité"), tb("Politique de confidentialité")],
-        [tb("Conditions"),      tb("Conditions générales d'utilisation")],
-        [tb("Cookies"),         tb("Politique de gestion des cookies")],
-        [tb("Aide / FAQ"),      tb("Questions fréquentes")],
+    S_.append(Paragraph("2.1 Composants livrés à la fin du stage", SEC2))
+    S_.append(grid([4.2*cm, CW-4.2*cm], [
+        [th("Composant"),             th("Description")],
+        [tb("Site public multilingue"),
+         tb("12 pages React (Accueil, À propos, Projets, Détail projet, Blog, Contact, "
+            "Bénévolat, Sponsors, Confidentialité, Conditions, Cookies, Aide/FAQ), "
+            "trilingue FR / EN / NL avec sélecteur de langue.")],
+        [tb("Hub des 12 applications"),
+         tb("Affichage dynamique de l'ensemble des applications internes de l'association, "
+            "avec recherche et filtres par catégorie.")],
+        [tb("Espace administrateur"),
+         tb("Deux pages sécurisées : connexion (JWT 24h) et dashboard permettant la gestion "
+            "des projets, des articles de blog, des messages de contact et le changement "
+            "de mot de passe.")],
+        [tb("API REST backend"),
+         tb("17 endpoints exposés sur 4 ressources (auth, projects, posts, contact), "
+            "sécurisés par JWT et rôle administrateur.")],
+        [tb("Base de données"),
+         tb("Base MySQL comprenant 4 tables : admin, project, blog_post et contact_message "
+            "(le schéma détaillé est repris dans le dictionnaire de données, section 5.2).")],
+        [tb("Envoi d'e-mails"),
+         tb("Réponse aux messages de contact via Gmail SMTP.")],
     ]))
     S_.append(sp(0.3))
-    S_.append(Paragraph("<i>Le site est entièrement multilingue FR / EN / NL avec sélecteur "
-                        "de langue dans la barre de navigation.</i>", ITAL))
 
-    S_.append(Paragraph("2.3 Espace administrateur — 2 pages sécurisées", SEC2))
-    S_.append(grid(c2, [
-        [th("Page"), th("Description")],
-        [tb("Connexion (/login)"), tb("Authentification par identifiant + mot de passe, token JWT 24h")],
-        [tb("Dashboard (/admin)"), tb("Gestion projets, articles de blog, messages reçus, changement de mot de passe")],
-    ]))
-    S_.append(Paragraph("2.4 API REST Backend — 17 endpoints", SEC2))
-    S_.append(PageBreak())
-
-    # P5 — endpoints existants
-    cep = [2.3*cm, CW-5.5*cm, 3.0*cm]
-    S_.append(grid(cep, [
-        [th("Méthode"), th("Endpoint"), th("Accès")],
-        [tb("POST"),   tb("/api/auth/login"),           tb("Public")],
-        [tb("PUT"),    tb("/api/auth/changePassword"),  tb("Admin")],
-        [tb("GET"),    tb("/api/projects"),             tb("Public")],
-        [tb("GET"),    tb("/api/projects/{id}"),        tb("Public")],
-        [tb("POST"),   tb("/api/projects"),             tb("Admin")],
-        [tb("PUT"),    tb("/api/projects/{id}"),        tb("Admin")],
-        [tb("DELETE"), tb("/api/projects/{id}"),        tb("Admin")],
-        [tb("GET"),    tb("/api/posts"),                tb("Public")],
-        [tb("GET"),    tb("/api/posts/{id}"),           tb("Public")],
-        [tb("POST"),   tb("/api/posts"),                tb("Admin")],
-        [tb("PUT"),    tb("/api/posts/{id}"),           tb("Admin")],
-        [tb("DELETE"), tb("/api/posts/{id}"),           tb("Admin")],
-        [tb("GET"),    tb("/api/contact"),              tb("Admin")],
-        [tb("POST"),   tb("/api/contact"),              tb("Public")],
-        [tb("PUT"),    tb("/api/contact/{id}/read"),    tb("Admin")],
-        [tb("POST"),   tb("/api/contact/{id}/reply"),   tb("Admin")],
-        [tb("DELETE"), tb("/api/contact/{id}"),         tb("Admin")],
-    ]))
-    S_.append(PageBreak())
-
-    # P6 — 2.5 et 2.6
-    S_.append(Paragraph("2.5 Base de données existante — 4 tables", SEC2))
-    S_.append(grid([3.2*cm, CW-7.2*cm, 3.8*cm], [
-        [th("Table"), th("Champs principaux"), th("Rôle")],
-        [tb("admin"),           tb("id, username, password, role"), tb("Compte administrateur unique, mot de passe haché (BCrypt)")],
-        [tb("project"),         tb("id, name, description, link, documentationLink, image, category, isActive, createdAt"), tb("Applications du hub")],
-        [tb("blog_post"),       tb("id, title, content, image, isPublished, createdAt"), tb("Articles du blog")],
-        [tb("contact_message"), tb("id, name, email, message, isRead, createdAt"), tb("Messages des visiteurs")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("2.6 Technologies utilisées", SEC2))
+    S_.append(Paragraph("2.2 Technologies utilisées", SEC2))
     S_.append(grid([4.0*cm, 2.5*cm, CW-6.7*cm], [
-        [th("Technologie"),        th("Version"), th("Usage")],
-        [tb("React.js"),           tb("18.2.0"), tb("Frontend — pages, navigation, composants")],
-        [tb("Spring Boot"),        tb("Java 21"), tb("Backend — API REST, logique métier")],
-        [tb("Spring Security + JWT"), tb("0.11.5"), tb("Authentification et sécurisation")],
-        [tb("MySQL"),              tb("9.1.0"),  tb("Base de données relationnelle")],
-        [tb("BCrypt"),             tb("—"),      tb("Hachage sécurisé des mots de passe")],
-        [tb("Git / GitHub"),       tb("—"),      tb("Versioning et hébergement du code source")],
-        [tb("WAMP Server"),        tb("3.3.7"),  tb("Environnement local MySQL sous Windows")],
+        [th("Technologie"),           th("Version"), th("Usage")],
+        [tb("React.js"),              tb("18.2.0"),  tb("Frontend — pages, navigation, composants")],
+        [tb("Spring Boot"),           tb("Java 21"), tb("Backend — API REST, logique métier")],
+        [tb("Spring Security + JWT"), tb("0.11.5"),  tb("Authentification et sécurisation")],
+        [tb("MySQL"),                 tb("9.1.0"),   tb("Base de données relationnelle")],
+        [tb("BCrypt"),                tb("—"),       tb("Hachage sécurisé des mots de passe")],
+        [tb("Git / GitHub"),          tb("—"),       tb("Versioning et hébergement du code source")],
+        [tb("WAMP Server"),           tb("3.3.7"),   tb("Environnement local MySQL sous Windows")],
     ]))
     S_.append(PageBreak())
 
@@ -878,293 +879,342 @@ def build():
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
-    # P10 — 4.1 TABLES BD
+    # SECTION 4. ANALYSE FONCTIONNELLE
+    # (cas d'utilisation + règles de gestion)
     # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("4. Analyse technique", SEC1))
-    S_.append(Paragraph("4.1 Nouvelles tables de la base de données — 4 tables", SEC2))
-    cbd = [3.3*cm, 3.0*cm, 3.2*cm, CW-9.7*cm]
-
-    S_.append(Paragraph("Table app_users — Bénévoles", SEC2B))
-    S_.append(grid(cbd, [
-        [th("Champ"),           th("Type"),        th("Contrainte"),       th("Description")],
-        [tb("id"),              tb("BIGINT"),      tb("PK, AUTO_INCREMENT"),tb("Identifiant unique")],
-        [tb("firstName"),       tb("VARCHAR(100)"),tb("NOT NULL"),          tb("Prénom")],
-        [tb("lastName"),        tb("VARCHAR(100)"),tb("NOT NULL"),          tb("Nom de famille")],
-        [tb("email"),           tb("VARCHAR(200)"),tb("NOT NULL, UNIQUE"),  tb("Email de connexion")],
-        [tb("password"),        tb("VARCHAR(255)"),tb("NOT NULL"),          tb("Mot de passe haché (BCrypt)")],
-        [tb("phone"),           tb("VARCHAR(30)"), tb("NULL"),              tb("Numéro de téléphone (facultatif)")],
-        [tb("birthDate"),       tb("DATE"),        tb("NULL"),              tb("Date de naissance (facultatif)")],
-        [tb("gender"),          tb("VARCHAR(20)"), tb("NULL"),              tb("Sexe (facultatif)")],
-        [tb("city"),            tb("VARCHAR(120)"),tb("NULL"),              tb("Ville (facultatif)")],
-        [tb("postalCode"),      tb("VARCHAR(10)"), tb("NULL"),              tb("Code postal (facultatif)")],
-        [tb("skills"),          tb("TEXT"),        tb("NULL"),              tb("Compétences")],
-        [tb("availability"),    tb("VARCHAR(200)"),tb("NULL"),              tb("Disponibilités")],
-        [tb("preferredLanguage"),tb("VARCHAR(5)"), tb("DEFAULT fr"),        tb("Langue préférée")],
-        [tb("isActive"),        tb("BOOLEAN"),     tb("DEFAULT TRUE"),      tb("Compte actif ou désactivé")],
-        [tb("resetToken"),      tb("VARCHAR(255)"),tb("NULL"),              tb("Token de réinitialisation")],
-        [tb("resetTokenExpiry"),tb("DATETIME"),    tb("NULL"),              tb("Expiration du token")],
-        [tb("createdAt"),       tb("DATETIME"),    tb("NOT NULL"),          tb("Date d'inscription")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("Table events — Événements (début)", SEC2B))
-    S_.append(grid(cbd, [
-        [th("Champ"),    th("Type"),   th("Contrainte"),       th("Description")],
-        [tb("id"),       tb("BIGINT"), tb("PK, AUTO_INCREMENT"),tb("Identifiant unique")],
-        [tb("admin_id"), tb("BIGINT"), tb("FK → admin"),       tb("Administrateur créateur")],
-    ]))
-    S_.append(PageBreak())
-
-    # P11
-    S_.append(grid(cbd, [
-        [th("Champ"),      th("Type"),          th("Contrainte"),   th("Description")],
-        [tb("title"),      tb("VARCHAR(200)"),  tb("NOT NULL"),     tb("Titre de l'événement")],
-        [tb("description"),tb("TEXT"),          tb("NOT NULL"),     tb("Description complète")],
-        [tb("eventDate"),  tb("DATETIME"),      tb("NOT NULL"),     tb("Date et heure")],
-        [tb("location"),   tb("VARCHAR(300)"),  tb("NOT NULL"),     tb("Lieu")],
-        [tb("maxPlaces"),  tb("INT"),           tb("NOT NULL"),     tb("Nombre maximum de participants")],
-        [tb("status"),     tb("VARCHAR(20)"),   tb("DEFAULT OPEN"), tb("OPEN / FULL / CANCELLED / FINISHED")],
-        [tb("imageUrl"),   tb("VARCHAR(500)"),  tb("NULL"),         tb("Photo de l'événement")],
-        [tb("createdAt"),  tb("DATETIME"),      tb("NOT NULL"),     tb("Date de création")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("Table registrations — Inscriptions et liste d'attente", SEC2B))
-    S_.append(grid(cbd, [
-        [th("Champ"),    th("Type"),        th("Contrainte"),       th("Description")],
-        [tb("id"),       tb("BIGINT"),      tb("PK, AUTO_INCREMENT"),tb("Identifiant unique")],
-        [tb("user_id"),  tb("BIGINT"),      tb("FK → app_users"),   tb("Bénévole inscrit")],
-        [tb("event_id"), tb("BIGINT"),      tb("FK → events"),      tb("Événement concerné")],
-        [tb("status"),   tb("VARCHAR(20)"), tb("NOT NULL"),         tb("CONFIRMED / WAITING / PENDING / REFUSED")],
-        [tb("position"), tb("INT"),         tb("NULL"),             tb("Position dans la file d'attente (si WAITING)")],
-        [tb("createdAt"),tb("DATETIME"),    tb("NOT NULL"),         tb("Date d'inscription")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("Table reviews — Retours post-événement", SEC2B))
-    S_.append(grid(cbd, [
-        [th("Champ"),    th("Type"),        th("Contrainte"),       th("Description")],
-        [tb("id"),       tb("BIGINT"),      tb("PK, AUTO_INCREMENT"),tb("Identifiant unique")],
-        [tb("user_id"),  tb("BIGINT"),      tb("FK → app_users"),   tb("Bénévole ayant laissé l'avis")],
-        [tb("event_id"), tb("BIGINT"),      tb("FK → events"),      tb("Événement évalué")],
-        [tb("rating"),   tb("INT"),         tb("NOT NULL (1-5)"),   tb("Note de 1 à 5 étoiles")],
-        [tb("comment"),  tb("TEXT"),        tb("NULL"),             tb("Commentaire libre")],
-        [tb("createdAt"),tb("DATETIME"),    tb("NOT NULL"),         tb("Date de l'avis")],
-    ]))
-    S_.append(PageBreak())
-
-    # P12 — 4.2 endpoints (1)
-    S_.append(Paragraph("4.2 Nouveaux endpoints API REST — 30 endpoints", SEC2))
-    cep2 = [2.3*cm, CW-6.1*cm, 3.6*cm]
-
-    S_.append(Paragraph("Bénévoles — authentification et profil", SEC2B))
-    S_.append(grid(cep2, [
-        [th("Méthode"), th("Endpoint"),                       th("Accès")],
-        [tb("POST"),    tb("/api/benevoles/register"),        tb("Public")],
-        [tb("POST"),    tb("/api/benevoles/login"),           tb("Public")],
-        [tb("POST"),    tb("/api/benevoles/forgot-password"), tb("Public")],
-        [tb("POST"),    tb("/api/benevoles/reset-password"),  tb("Public")],
-        [tb("GET"),     tb("/api/benevoles/profile"),         tb("Bénévole connecté")],
-        [tb("PUT"),     tb("/api/benevoles/profile"),         tb("Bénévole connecté")],
-        [tb("PUT"),     tb("/api/benevoles/changePassword"),  tb("Bénévole connecté")],
-        [tb("GET"),     tb("/api/benevoles/level"),           tb("Bénévole connecté")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("Événements", SEC2B))
-    S_.append(grid(cep2, [
-        [th("Méthode"), th("Endpoint"),                th("Accès")],
-        [tb("GET"),     tb("/api/events"),             tb("Public")],
-        [tb("GET"),     tb("/api/events/{id}"),        tb("Public")],
-        [tb("POST"),    tb("/api/events"),             tb("Admin")],
-        [tb("PUT"),     tb("/api/events/{id}"),        tb("Admin")],
-        [tb("DELETE"),  tb("/api/events/{id}"),        tb("Admin")],
-        [tb("PUT"),     tb("/api/events/{id}/status"), tb("Admin")],
-        [tb("POST"),    tb("/api/events/{id}/email"),  tb("Admin")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("Inscriptions", SEC2B))
-    S_.append(grid(cep2, [
-        [th("Méthode"), th("Endpoint"),                             th("Accès")],
-        [tb("POST"),    tb("/api/registrations/{eventId}"),         tb("Bénévole connecté")],
-        [tb("DELETE"),  tb("/api/registrations/{eventId}"),         tb("Bénévole connecté")],
-        [tb("GET"),     tb("/api/registrations/mes-inscriptions"),  tb("Bénévole connecté")],
-        [tb("GET"),     tb("/api/registrations/event/{id}"),        tb("Admin")],
-        [tb("PUT"),     tb("/api/registrations/{id}/validate"),     tb("Admin")],
-        [tb("PUT"),     tb("/api/registrations/{id}/refuse"),       tb("Admin")],
-    ]))
-    S_.append(PageBreak())
-
-    # P13 — 4.2 (suite)
-    S_.append(Paragraph("Retours, export et statistiques", SEC2B))
-    S_.append(grid(cep2, [
-        [th("Méthode"), th("Endpoint"),                        th("Accès")],
-        [tb("POST"),    tb("/api/reviews"),                    tb("Bénévole connecté")],
-        [tb("GET"),     tb("/api/reviews/event/{id}"),         tb("Public")],
-        [tb("GET"),     tb("/api/reviews/admin"),              tb("Admin")],
-        [tb("GET"),     tb("/api/benevoles/attestation"),      tb("Bénévole connecté")],
-        [tb("GET"),     tb("/api/admin/events/{id}/export"),   tb("Admin")],
-        [tb("GET"),     tb("/api/admin/benevoles"),            tb("Admin")],
-        [tb("GET"),     tb("/api/admin/stats/inscriptions"),   tb("Admin")],
-        [tb("GET"),     tb("/api/admin/stats/participation"),  tb("Admin")],
-        [tb("GET"),     tb("/api/admin/notifications/count"),  tb("Admin")],
-    ]))
-    S_.append(PageBreak())
-
-    # P14 — 4.3
-    S_.append(Paragraph("4.3 Nouvelles pages frontend — 7 pages", SEC2))
-    S_.append(grid([5.0*cm, CW-9.0*cm, 3.8*cm], [
-        [th("Route"),                          th("Page"),                                              th("Accès")],
-        [tb("/benevoles/inscription"),          tb("Formulaire d'inscription bénévole"),               tb("Public")],
-        [tb("/benevoles/connexion"),            tb("Connexion bénévole"),                              tb("Public")],
-        [tb("/benevoles/mot-de-passe-oublie"), tb("Demande de réinitialisation du mot de passe"),     tb("Public")],
-        [tb("/benevoles/reinitialiser"),        tb("Saisie du nouveau mot de passe (via lien email)"), tb("Public")],
-        [tb("/benevoles/mon-espace"),           tb("Profil, historique, attestation, niveau bénévole"),tb("Bénévole connecté")],
-        [tb("/evenements"),                     tb("Liste des événements avec filtres et pagination"),  tb("Public")],
-        [tb("/evenements/:id"),                 tb("Détail d'un événement + inscription"),             tb("Public / Bénévole")],
-    ]))
-    S_.append(PageBreak())
-
-    # P15 — 4.4 Diagramme de cas d'utilisation
-    S_.append(Paragraph("4.4 Diagramme de cas d'utilisation", SEC2))
+    S_.append(Paragraph("4. Analyse fonctionnelle", SEC1))
+    S_.append(Paragraph("4.1 Diagramme de cas d'utilisation", SEC2))
     S_.append(Paragraph(
         "Le diagramme ci-dessous représente les interactions entre les acteurs du système "
         "et les fonctionnalités offertes par le module TFE. Trois acteurs sont identifiés : "
-        "le Visiteur (non authentifié), le Bénévole (qui étend le Visiteur) et l'Administrateur.", BODY))
+        "le Visiteur (non authentifié, qui devient bénévole dès qu'il crée un compte), le "
+        "Bénévole (qui étend le Visiteur par généralisation) et l'Administrateur.", BODY))
     S_.append(sp(0.2))
     S_.append(diag_use_case())
     S_.append(PageBreak())
 
-    # P16 — 4.5 Diagramme de classes
-    S_.append(Paragraph("4.5 Diagramme de classes", SEC2))
+    # ═══════════════════════════════════════════════════════
+    # 4.2 RÈGLES DE GESTION
+    # ═══════════════════════════════════════════════════════
+    S_.append(Paragraph("4.2 Règles de gestion", SEC2))
     S_.append(Paragraph(
-        "Le diagramme de classes présente les huit entités Java de l'application, leurs attributs, "
-        "leurs méthodes et leurs associations nommées. Les liens entre classes sont représentés "
-        "uniquement par les associations (les clés étrangères ne sont pas dupliquées comme attributs). "
-        "Les entités AppUser, Event, Review et Registration sont créées dans le cadre du TFE ; Admin, "
-        "Project, BlogPost et ContactMessage proviennent du site existant.", BODY))
+        "Les règles de gestion décrivent les contraintes métier que l'application doit "
+        "respecter. Elles complètent les cas d'utilisation en explicitant les conditions et "
+        "les invariants attendus. Elles sont regroupées ci-dessous par thématique.", BODY))
+
+    S_.append(Paragraph("Comptes bénévoles", SEC2B))
+    for r in [
+        "<b>RG-01</b> — L'adresse email d'un bénévole est unique dans le système : elle sert "
+        "d'identifiant de connexion et empêche la création de doublons.",
+        "<b>RG-02</b> — Le mot de passe compte au moins 8 caractères et est stocké haché "
+        "(BCrypt) ; il n'est jamais consultable en clair.",
+        "<b>RG-03</b> — Un compte bénévole peut être désactivé sans être supprimé "
+        "(<font face='Courier'>isActive = false</font>), afin de conserver l'historique des "
+        "inscriptions passées.",
+        "<b>RG-04</b> — La demande de réinitialisation du mot de passe utilise un jeton "
+        "à usage unique valable 30 minutes, envoyé par email.",
+    ]:
+        S_.append(Paragraph(f"• {r}", BULL))
+
+    S_.append(Paragraph("Événements", SEC2B))
+    for r in [
+        "<b>RG-05</b> — Chaque événement porte obligatoirement une date, un lieu et un nombre "
+        "maximum de participants.",
+        "<b>RG-06</b> — Le statut d'un événement évolue automatiquement : <b>OPEN</b> par défaut, "
+        "<b>FULL</b> dès que toutes les places sont prises, <b>FINISHED</b> une fois la date "
+        "passée, <b>CANCELLED</b> uniquement sur décision explicite de l'administrateur.",
+        "<b>RG-07</b> — Un événement passé (FINISHED ou CANCELLED) n'accepte plus de "
+        "nouvelles inscriptions.",
+    ]:
+        S_.append(Paragraph(f"• {r}", BULL))
+
+    S_.append(Paragraph("Inscriptions et liste d'attente", SEC2B))
+    for r in [
+        "<b>RG-08</b> — Un bénévole ne peut s'inscrire qu'une seule fois au même événement "
+        "(contrainte d'unicité sur le couple bénévole + événement).",
+        "<b>RG-09</b> — Si l'événement est complet au moment de l'inscription, le bénévole "
+        "est placé automatiquement en liste d'attente (<font face='Courier'>status = WAITING</font>) "
+        "avec une position calculée en fonction de l'ordre d'arrivée.",
+        "<b>RG-10</b> — Toute inscription reste en attente de validation ; l'administrateur "
+        "doit explicitement la confirmer ou la refuser.",
+        "<b>RG-11</b> — Un email de confirmation est envoyé automatiquement au bénévole lors "
+        "de chaque validation ou refus.",
+        "<b>RG-12</b> — Lorsqu'une place se libère (désinscription confirmée), le premier "
+        "bénévole en liste d'attente est promu automatiquement (WAITING → CONFIRMED) et notifié "
+        "par email.",
+        "<b>RG-13</b> — Le bénévole peut se désinscrire librement tant que l'événement n'est "
+        "pas commencé.",
+    ]:
+        S_.append(Paragraph(f"• {r}", BULL))
+    S_.append(PageBreak())
+
+    # 4.2 suite — règles de gestion (2ème page)
+    S_.append(Paragraph("Avis (retours post-événement)", SEC2B))
+    for r in [
+        "<b>RG-14</b> — Seul un bénévole ayant effectivement participé à un événement "
+        "(inscription <font face='Courier'>CONFIRMED</font>) peut laisser un avis.",
+        "<b>RG-15</b> — Un avis ne peut être laissé qu'après la fin de l'événement "
+        "(<font face='Courier'>status = FINISHED</font>).",
+        "<b>RG-16</b> — Un bénévole ne peut laisser qu'un seul avis par événement.",
+        "<b>RG-17</b> — La note est obligatoirement comprise entre 1 et 5.",
+    ]:
+        S_.append(Paragraph(f"• {r}", BULL))
+
+    S_.append(Paragraph("Niveau de fidélité", SEC2B))
+    for r in [
+        "<b>RG-18</b> — Le niveau du bénévole est calculé automatiquement à partir de son "
+        "nombre de participations confirmées : <b>BRONZE</b> (1 à 2 événements), "
+        "<b>ARGENT</b> (3 à 6), <b>OR</b> (7 et plus).",
+        "<b>RG-19</b> — Un email de notification est envoyé au bénévole lors du passage à "
+        "un nouveau niveau.",
+    ]:
+        S_.append(Paragraph(f"• {r}", BULL))
+
+    S_.append(Paragraph("Attestations et exports", SEC2B))
+    for r in [
+        "<b>RG-20</b> — Une attestation PDF de participation ne peut être générée que si le "
+        "bénévole a au moins une participation confirmée à un événement terminé.",
+        "<b>RG-21</b> — L'export PDF de la liste des inscrits d'un événement est réservé à "
+        "l'administrateur.",
+    ]:
+        S_.append(Paragraph(f"• {r}", BULL))
+
+    S_.append(Paragraph("Sécurité et accès", SEC2B))
+    for r in [
+        "<b>RG-22</b> — Toute action nécessitant un compte est protégée par un jeton JWT "
+        "valable 24 heures ; l'expiration force la reconnexion.",
+        "<b>RG-23</b> — Les endpoints d'administration sont accessibles uniquement aux "
+        "comptes disposant du rôle administrateur.",
+        "<b>RG-24</b> — Les tokens de bénévole et d'administrateur sont émis séparément, "
+        "avec des secrets et des durées de vie distincts.",
+    ]:
+        S_.append(Paragraph(f"• {r}", BULL))
+    S_.append(PageBreak())
+
+    # ═══════════════════════════════════════════════════════
+    # SECTION 5. MODÈLE DE DONNÉES
+    # (diagramme de classes + dictionnaire de données)
+    # ═══════════════════════════════════════════════════════
+    S_.append(Paragraph("5. Modèle de données", SEC1))
+    S_.append(Paragraph("5.1 Diagramme de classes", SEC2))
+    S_.append(Paragraph(
+        "Le diagramme de classes présente les huit entités du modèle, leurs attributs, leurs "
+        "méthodes et leurs associations nommées. Les liens entre classes sont représentés "
+        "uniquement par les associations (les clés étrangères ne sont pas dupliquées comme "
+        "attributs). Les entités AppUser, Event, Review et Registration sont créées dans le "
+        "cadre du TFE ; Admin, Project, BlogPost et ContactMessage proviennent du site "
+        "existant. Trois énumérations (EventStatus, RegistrationStatus, Level) typent les "
+        "attributs à valeurs fermées et sont reliées aux classes qui les utilisent par une "
+        "flèche de dépendance.", BODY))
     S_.append(sp(0.2))
     S_.append(diag_classes())
     S_.append(PageBreak())
 
-    # ═══════════════════════════════════════════════════════
-    # P17 — 5. RÉPARTITION DES TÂCHES
-    # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("5. Répartition des tâches / Apport personnel", SEC1))
-    S_.append(Paragraph("5.1 Travail réalisé durant le stage — base technique existante", SEC2))
-    S_.append(grid([3.8*cm, CW-6.8*cm, 2.8*cm], [
-        [th("Composant"),               th("Description"),                                                           th("Statut")],
-        [tb("Site public multilingue"), tb("12 pages React (Accueil, À propos, Projets, Blog, Contact, Bénévolat…)"),tb("Existant")],
-        [tb("Hub des 12 applications"), tb("Affichage dynamique avec recherche et filtres par catégorie"),           tb("Existant")],
-        [tb("Panel administrateur"),    tb("Dashboard complet : projets, blog, messages, changement de mot de passe"),tb("Existant")],
-        [tb("Authentification JWT"),    tb("Connexion admin sécurisée avec BCrypt"),                                tb("Existant")],
-        [tb("API REST backend"),        tb("17 endpoints sur 4 ressources"),                                         tb("Existant")],
-        [tb("Base de données MySQL"),   tb("4 tables : admin, project, blog_post, contact_message"),                tb("Existant")],
-        [tb("Envoi d'emails"),          tb("Réponse aux messages via Gmail SMTP"),                                   tb("Existant")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("5.2 Travail à réaliser dans le cadre du TFE", SEC2))
+    # 5.2 Dictionnaire de données (tables existantes + nouvelles)
+    S_.append(Paragraph("5.2 Dictionnaire de données", SEC2))
     S_.append(Paragraph(
-        "Tout ce qui suit sera développé entièrement par moi, à domicile. Aucune de ces "
-        "fonctionnalités n'existait à la fin du stage.", BODY))
-    ctfe = [3.8*cm, CW-7.8*cm, 3.8*cm]
-    S_.append(grid(ctfe, [
-        [th("Composant"),                th("Description"),                                               th("Technologie")],
-        [tb("Refonte graphique"),        tb("Nouvelle charte sur toutes les pages (public + admin)"),    tb("React / CSS")],
-        [tb("Espace bénévole"),          tb("Inscription, connexion, profil, mot de passe oublié, niveau"),tb("React + Spring Boot")],
-        [tb("Gestion événements"),       tb("CRUD admin, email groupé, export PDF liste inscrits"),      tb("React + Spring Boot")],
-        [tb("Page événements"),          tb("Liste publique avec filtres, pagination, détail"),          tb("React")],
-        [tb("Système inscription"),      tb("Inscription + email de confirmation automatique"),          tb("Spring Boot + JavaMail")],
-        [tb("Liste d'attente"),          tb("status = WAITING + position dans Registration"),            tb("Spring Boot")],
-        [tb("Retours événement"),        tb("Formulaire d'avis (note + commentaire)"),                  tb("React + Spring Boot")],
-        [tb("Dashboard enrichi"),        tb("Onglets bénévoles + événements + statistiques"),           tb("React + Spring Boot")],
-        [tb("Graphiques Chart.js"),      tb("Dashboard admin : courbes et statistiques"),               tb("Chart.js")],
-        [tb("Pagination"),               tb("Événements et liste bénévoles"),                           tb("Spring Pageable")],
-        [tb("Badge notification"),       tb("Inscriptions en attente dans la navbar admin"),            tb("React + API")],
-        [tb("Niveaux bénévole"),         tb("Bronze / Argent / Or calculé automatiquement"),            tb("Spring Boot")],
-        [tb("Export PDF"),               tb("Attestation + liste inscrits par événement"),              tb("iText / JasperReports")],
-        [tb("4 nouvelles tables BD"),    tb("app_users, events, registrations, reviews"),               tb("MySQL")],
-        [tb("30 nouveaux endpoints"),    tb("API REST couvrant toutes les nouvelles fonctionnalités"),  tb("Spring Boot REST")],
-        [tb("7 nouvelles pages"),        tb("Espace bénévole + pages événements"),                      tb("React")],
+        "Le dictionnaire ci-dessous reprend l'ensemble des tables de la base MySQL, à la fois "
+        "celles héritées du stage et les quatre nouvelles tables créées pour le module TFE. "
+        "Il précise, pour chaque champ, le type, les contraintes et le rôle métier.", BODY))
+    cbd = [3.3*cm, 3.0*cm, 3.2*cm, CW-9.7*cm]
+
+    # Tables existantes (compact)
+    S_.append(Paragraph("Tables héritées du stage", SEC2B))
+    S_.append(grid(cbd, [
+        [th("Champ"), th("Type"), th("Contrainte"), th("Description")],
+        [tb("<b>admin</b>"), tb(""), tb(""), tb("Compte administrateur unique.")],
+        [tb("id"),       tb("BIGINT"),        tb("PK, AUTO_INCREMENT"), tb("Identifiant.")],
+        [tb("username"), tb("VARCHAR(100)"),  tb("NOT NULL, UNIQUE"),    tb("Identifiant de connexion.")],
+        [tb("password"), tb("VARCHAR(255)"),  tb("NOT NULL"),            tb("Mot de passe haché (BCrypt).")],
+        [tb("<b>project</b>"),        tb(""), tb(""), tb("Applications du hub.")],
+        [tb("id"),           tb("BIGINT"),       tb("PK, AUTO_INCREMENT"),   tb("Identifiant.")],
+        [tb("name"),         tb("VARCHAR(200)"), tb("NOT NULL"),             tb("Nom de l'application.")],
+        [tb("description"),  tb("TEXT"),         tb("NOT NULL"),             tb("Présentation.")],
+        [tb("link, documentationLink"), tb("VARCHAR(500)"), tb("NULL"),      tb("URL vers l'app et sa doc.")],
+        [tb("image, category"),         tb("VARCHAR"),      tb("NULL"),      tb("Illustration et catégorie.")],
+        [tb("isActive"),     tb("BOOLEAN"),      tb("DEFAULT TRUE"),         tb("Visible ou non sur le hub.")],
+        [tb("createdAt"),    tb("DATETIME"),     tb("NOT NULL"),             tb("Date de création.")],
+        [tb("<b>blog_post</b>"), tb(""), tb(""), tb("Articles du blog.")],
+        [tb("id"),           tb("BIGINT"),       tb("PK, AUTO_INCREMENT"),   tb("Identifiant.")],
+        [tb("title, content, image"), tb("VARCHAR/TEXT"), tb("NOT NULL"),    tb("Contenu de l'article.")],
+        [tb("isPublished"),  tb("BOOLEAN"),      tb("DEFAULT FALSE"),        tb("Publié ou brouillon.")],
+        [tb("createdAt"),    tb("DATETIME"),     tb("NOT NULL"),             tb("Date de rédaction.")],
+        [tb("<b>contact_message</b>"), tb(""), tb(""), tb("Messages du formulaire de contact.")],
+        [tb("id"),           tb("BIGINT"),       tb("PK, AUTO_INCREMENT"),   tb("Identifiant.")],
+        [tb("name, email, message"),  tb("VARCHAR/TEXT"), tb("NOT NULL"),    tb("Contenu du message.")],
+        [tb("isRead"),       tb("BOOLEAN"),      tb("DEFAULT FALSE"),        tb("Traité ou non.")],
+        [tb("createdAt"),    tb("DATETIME"),     tb("NOT NULL"),             tb("Date de réception.")],
     ]))
     S_.append(PageBreak())
 
-    # P18 — 5.3
-    S_.append(Paragraph("5.3 Tableau récapitulatif", SEC2))
+    # Nouvelles tables TFE (détaillées)
+    S_.append(Paragraph("Nouvelles tables du module TFE", SEC2B))
+    S_.append(Paragraph("<b>app_users</b> — Bénévoles", SEC2B))
+    S_.append(grid(cbd, [
+        [th("Champ"),           th("Type"),        th("Contrainte"),        th("Description")],
+        [tb("id"),              tb("BIGINT"),      tb("PK, AUTO_INCREMENT"), tb("Identifiant.")],
+        [tb("firstName"),       tb("VARCHAR(100)"),tb("NOT NULL"),           tb("Prénom.")],
+        [tb("lastName"),        tb("VARCHAR(100)"),tb("NOT NULL"),           tb("Nom.")],
+        [tb("email"),           tb("VARCHAR(200)"),tb("NOT NULL, UNIQUE"),   tb("Email de connexion (RG-01).")],
+        [tb("password"),        tb("VARCHAR(255)"),tb("NOT NULL"),           tb("Haché BCrypt (RG-02).")],
+        [tb("phone, birthDate, gender"), tb("—"), tb("NULL"),                tb("Coordonnées facultatives.")],
+        [tb("city, postalCode"),tb("VARCHAR"),     tb("NULL"),               tb("Localité.")],
+        [tb("skills, availability"), tb("TEXT / VARCHAR"), tb("NULL"),       tb("Compétences et disponibilités.")],
+        [tb("preferredLanguage"),tb("VARCHAR(5)"), tb("DEFAULT fr"),         tb("Langue préférée (FR/EN/NL).")],
+        [tb("level"),           tb("VARCHAR(10)"), tb("DEFAULT BRONZE"),     tb("BRONZE / ARGENT / OR (RG-18).")],
+        [tb("isActive"),        tb("BOOLEAN"),     tb("DEFAULT TRUE"),       tb("Compte actif (RG-03).")],
+        [tb("resetToken"),      tb("VARCHAR(255)"),tb("NULL"),               tb("Jeton de réinitialisation (RG-04).")],
+        [tb("resetTokenExpiry"),tb("DATETIME"),    tb("NULL"),               tb("Expiration du jeton.")],
+        [tb("createdAt"),       tb("DATETIME"),    tb("NOT NULL"),           tb("Date d'inscription.")],
+    ]))
+    S_.append(sp(0.3))
+    S_.append(Paragraph("<b>events</b> — Événements", SEC2B))
+    S_.append(grid(cbd, [
+        [th("Champ"),      th("Type"),         th("Contrainte"),   th("Description")],
+        [tb("id"),         tb("BIGINT"),       tb("PK, AUTO_INCREMENT"), tb("Identifiant.")],
+        [tb("admin_id"),   tb("BIGINT"),       tb("FK → admin"),   tb("Administrateur créateur.")],
+        [tb("title"),      tb("VARCHAR(200)"), tb("NOT NULL"),     tb("Titre.")],
+        [tb("description"),tb("TEXT"),         tb("NOT NULL"),     tb("Description complète.")],
+        [tb("eventDate"),  tb("DATETIME"),     tb("NOT NULL"),     tb("Date et heure (RG-05).")],
+        [tb("location"),   tb("VARCHAR(300)"), tb("NOT NULL"),     tb("Lieu.")],
+        [tb("maxPlaces"),  tb("INT"),          tb("NOT NULL"),     tb("Nombre de places (RG-05).")],
+        [tb("status"),     tb("VARCHAR(20)"),  tb("DEFAULT OPEN"), tb("OPEN/FULL/CANCELLED/FINISHED (RG-06).")],
+        [tb("imageUrl"),   tb("VARCHAR(500)"), tb("NULL"),         tb("Illustration.")],
+        [tb("createdAt"),  tb("DATETIME"),     tb("NOT NULL"),     tb("Date de création.")],
+    ]))
+    S_.append(PageBreak())
+
+    S_.append(Paragraph("<b>registrations</b> — Inscriptions et liste d'attente", SEC2B))
+    S_.append(grid(cbd, [
+        [th("Champ"),        th("Type"),       th("Contrainte"),                            th("Description")],
+        [tb("id"),           tb("BIGINT"),     tb("PK, AUTO_INCREMENT"),                    tb("Identifiant.")],
+        [tb("user_id"),      tb("BIGINT"),     tb("FK → app_users"),                        tb("Bénévole inscrit.")],
+        [tb("event_id"),     tb("BIGINT"),     tb("FK → events"),                           tb("Événement concerné.")],
+        [tb("validatedBy_id"),tb("BIGINT"),    tb("FK → admin, NULL"),                      tb("Admin ayant traité (RG-10).")],
+        [tb("status"),       tb("VARCHAR(20)"),tb("NOT NULL"),                              tb("CONFIRMED/WAITING/REFUSED.")],
+        [tb("position"),     tb("INT"),        tb("NULL"),                                  tb("Position en liste (RG-09).")],
+        [tb("createdAt"),    tb("DATETIME"),   tb("NOT NULL"),                              tb("Date d'inscription.")],
+        [tb("—"),            tb("—"),          tb("UNIQUE(user_id, event_id)"),             tb("Contrainte d'unicité (RG-08).")],
+    ]))
+    S_.append(sp(0.3))
+    S_.append(Paragraph("<b>reviews</b> — Retours post-événement", SEC2B))
+    S_.append(grid(cbd, [
+        [th("Champ"),     th("Type"),      th("Contrainte"),        th("Description")],
+        [tb("id"),        tb("BIGINT"),    tb("PK, AUTO_INCREMENT"), tb("Identifiant.")],
+        [tb("user_id"),   tb("BIGINT"),    tb("FK → app_users"),     tb("Auteur (RG-14).")],
+        [tb("event_id"),  tb("BIGINT"),    tb("FK → events"),        tb("Événement évalué.")],
+        [tb("rating"),    tb("INT"),       tb("NOT NULL, CHECK 1..5"),tb("Note (RG-17).")],
+        [tb("comment"),   tb("TEXT"),      tb("NULL"),               tb("Commentaire libre.")],
+        [tb("createdAt"), tb("DATETIME"),  tb("NOT NULL"),           tb("Date de l'avis.")],
+        [tb("—"),         tb("—"),         tb("UNIQUE(user_id, event_id)"), tb("Un seul avis par événement (RG-16).")],
+    ]))
+    S_.append(PageBreak())
+
+    # ═══════════════════════════════════════════════════════
+    # SECTION 6. APORT PERSONNEL (compact, sans répétition)
+    # ═══════════════════════════════════════════════════════
+    S_.append(Paragraph("6. Apport personnel dans le cadre du TFE", SEC1))
+    S_.append(Paragraph(
+        "Le travail réalisé durant le stage (section 2) constitue la fondation technique du "
+        "projet : site public, hub des applications, panel administrateur, authentification "
+        "JWT et base de données de départ. Toutes les fonctionnalités présentées en section 3 "
+        "sont, elles, entièrement conçues et développées par moi, à domicile, après le stage, "
+        "à partir de cette base. Le tableau ci-dessous en donne une vue synthétique et chiffrée.",
+        BODY))
+    S_.append(sp(0.2))
     S_.append(grid([4.5*cm, 2.5*cm, CW-7.2*cm], [
-        [th("Critère"),            th("Stage"),   th("TFE (apport personnel)")],
-        [tb("Tables BD"),          tb("4"),       tb("+4 nouvelles (8 au total)")],
-        [tb("Endpoints API"),      tb("17"),      tb("+30 nouveaux (47 au total)")],
-        [tb("Pages frontend"),     tb("14"),      tb("+7 nouvelles (21 au total)")],
-        [tb("Pages redessinées"),  tb("0"),       tb("14 pages existantes refaites")],
-        [tb("Module bénévoles"),   tb("Aucun"),   tb("Module complet (inscription, profil, niveaux)")],
-        [tb("Gestion événements"), tb("Aucune"),  tb("Module complet (CRUD, inscriptions, retours)")],
+        [th("Critère"),                th("Stage"),   th("TFE (apport personnel)")],
+        [tb("Tables BD"),              tb("4"),       tb("+4 nouvelles (8 au total)")],
+        [tb("Endpoints API REST"),     tb("17"),      tb("+30 nouveaux (47 au total)")],
+        [tb("Pages frontend"),         tb("14"),      tb("+7 nouvelles (21 au total)")],
+        [tb("Pages redessinées"),      tb("0"),       tb("14 pages existantes refaites")],
+        [tb("Module bénévoles"),       tb("aucun"),   tb("module complet (inscription, profil, niveaux)")],
+        [tb("Gestion des événements"), tb("aucune"),  tb("module complet (CRUD, inscriptions, retours)")],
+        [tb("Envois d'e-mails automatiques"), tb("réponses au contact"),
+                                                     tb("confirmation, liste d'attente, groupe, réinitialisation, changement de niveau")],
+        [tb("Export PDF"),             tb("aucun"),   tb("attestation bénévole + liste inscrits par événement")],
     ]))
-    S_.append(sp(0.4))
+    S_.append(sp(0.3))
     S_.append(Paragraph(
-        "Le travail réalisé durant le stage constitue la fondation technique du projet "
-        "(architecture, base de données initiale, site public, panel administrateur). Le TFE "
-        "consiste à étendre significativement cette base en y ajoutant un module entièrement "
-        "nouveau, ainsi qu'une refonte complète de l'interface graphique. L'intégralité du module "
-        "TFE est développée de zéro par l'étudiant.", BODY))
+        "Les bibliothèques et outils spécifiques ajoutés pour le TFE, en complément de la pile "
+        "technique du stage (section 2.2), sont : <b>JavaMail / Gmail SMTP</b> pour les emails, "
+        "<b>Chart.js</b> pour les graphiques du dashboard, <b>Spring Pageable</b> pour la "
+        "pagination et <b>iText / JasperReports</b> pour la génération des PDF.", BODY))
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
-    # P19 — 6. PLAN DE TRAVAIL
+    # SECTION 7. PLAN DE TRAVAIL
     # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("6. Plan de travail", SEC1))
-    S_.append(Paragraph("6.1 Calendrier officiel — 2ème session", SEC2))
-    ccal = [3.0*cm, CW-3.0*cm]
-    S_.append(grid(ccal, [
-        [th("Date limite"), th("Échéance")],
-        [tb("03/07/2026"),  tb("Remise du cahier des charges (PDF)")],
-        [tb("28/08/2026"),  tb("Validation de l'analyse par l'encadreur scolaire")],
-        [tb("15/09/2026"),  tb("Validation de l'application")],
-        [tb("22/09/2026"),  tb("Remise du rapport écrit provisoire (PDF sur Teams)")],
-        [tb("29/09/2026"),  tb("Remise du rapport écrit définitif (PDF + 5 exemplaires + GitHub)")],
-        [tb("13/10/2026"),  tb("Défenses orales")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("6.2 Plan de développement", SEC2))
-    S_.append(grid([4.2*cm, CW-9.5*cm, 3.2*cm, 1.9*cm], [
-        [th("Phase"),                             th("Contenu"),                                                   th("Période"),          th("Statut")],
-        [tb("Phase 1 — Analyse & CDC"),            tb("Analyse de l'existant, rédaction du cahier des charges"),   tb("Mai – Juil. 2026"), tb("En cours")],
-        [tb("Phase 2 — Refonte graphique"),        tb("Application de la charte sur toutes les pages"),            tb("Début juil. 2026"), tb("À faire")],
-        [tb("Phase 3 — Backend"),                  tb("Entités Java, repositories, controllers, JWT, Gmail SMTP"), tb("Juillet 2026"),     tb("À faire")],
-        [tb("Phase 4 — Frontend bénévoles"),       tb("Inscription, connexion, profil, mot de passe oublié"),      tb("Juil. – Août 2026"),tb("À faire")],
-        [tb("Phase 5 — Frontend événements"),      tb("Liste, détail, inscription, retours"),                      tb("Août 2026"),        tb("À faire")],
-        [tb("Phase 6 — Fonctionnalités avancées"), tb("Chart.js, pagination, badge, filtres, niveaux"),            tb("Août – Sept. 2026"),tb("À faire")],
-        [tb("Phase 7 — Tests & corrections"),      tb("Tests complets, corrections, validation encadreur"),        tb("Septembre 2026"),   tb("À faire")],
-        [tb("Phase 8 — Rapport & finalisation"),   tb("Rapport écrit, GitHub, 5 exemplaires, soutenance"),         tb("Sept. – Oct. 2026"),tb("À faire")],
-    ]))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("6.3 Dates clés personnelles", SEC2))
-    S_.append(grid(ccal, [
-        [th("Date"),       th("Action")],
-        [tb("03/07/2026"), tb("Envoi du CDC finalisé à Madame Marie-Christine Namur")],
-        [tb("28/08/2026"), tb("Présentation de l'analyse validée (schéma BD + architecture)")],
-        [tb("15/09/2026"), tb("Application complète et fonctionnelle")],
-        [tb("22/09/2026"), tb("Rapport provisoire soumis sur Teams")],
-        [tb("29/09/2026"), tb("Rapport définitif + code GitHub + 5 exemplaires au secrétariat")],
-        [tb("13/10/2026"), tb("Défense orale devant le jury")],
+    S_.append(Paragraph("7. Plan de travail", SEC1))
+
+    S_.append(Paragraph("7.1 Calendrier et phases de développement", SEC2))
+    S_.append(Paragraph(
+        "Le tableau ci-dessous combine les échéances officielles de la 2ème session et le "
+        "découpage du travail en phases. Chaque phase est positionnée dans la période "
+        "correspondante pour tenir les remises fixées par l'EAFC Uccle.", BODY))
+    S_.append(grid([4.3*cm, CW-9.5*cm, 3.4*cm, 1.8*cm], [
+        [th("Phase"),                             th("Contenu"),
+         th("Période"),           th("Statut")],
+        [tb("Phase 1 — Analyse & rapport écrit"),
+         tb("Analyse de l'existant, cahier des charges, diagrammes UML, dictionnaire de données"),
+         tb("Mai – juil. 2026"),  tb("En cours")],
+        [tb("Phase 2 — Refonte graphique"),
+         tb("Application de la nouvelle charte sur toutes les pages (public + admin)"),
+         tb("Début juil. 2026"),  tb("À faire")],
+        [tb("Phase 3 — Backend TFE"),
+         tb("Entités JPA, repositories, controllers, sécurité JWT, envoi d'e-mails Gmail SMTP"),
+         tb("Juillet 2026"),      tb("À faire")],
+        [tb("Phase 4 — Frontend bénévoles"),
+         tb("Inscription, connexion, profil, mot de passe oublié, espace personnel"),
+         tb("Juil. – août 2026"), tb("À faire")],
+        [tb("Phase 5 — Frontend événements"),
+         tb("Liste, détail, inscription, liste d'attente, retours post-événement"),
+         tb("Août 2026"),         tb("À faire")],
+        [tb("Phase 6 — Fonctionnalités avancées"),
+         tb("Chart.js, pagination, badges, filtres, niveaux, export PDF"),
+         tb("Août – sept. 2026"), tb("À faire")],
+        [tb("Phase 7 — Tests & corrections"),
+         tb("Tests complets, corrections, validation par l'encadreur"),
+         tb("Septembre 2026"),    tb("À faire")],
+        [tb("Phase 8 — Finalisation"),
+         tb("Rapport écrit définitif, dépôt GitHub, 5 exemplaires, préparation soutenance"),
+         tb("Sept. – oct. 2026"), tb("À faire")],
     ]))
     S_.append(PageBreak())
 
-    # P20 — 6.4
-    S_.append(Paragraph("6.4 Contraintes et risques identifiés", SEC2))
+    S_.append(Paragraph("7.2 Échéances officielles et dates clés personnelles", SEC2))
+    S_.append(Paragraph(
+        "Les échéances officielles imposées par l'EAFC Uccle pour la 2ème session sont reprises "
+        "ci-dessous, avec l'action personnelle correspondante :", BODY))
+    S_.append(grid([2.8*cm, 3.5*cm, CW-6.3*cm], [
+        [th("Date limite"), th("Échéance officielle"),                             th("Action personnelle prévue")],
+        [tb("03/07/2026"),  tb("Remise du rapport écrit (analyse)"),               tb("Envoi de la version validée à l'encadreur.")],
+        [tb("28/08/2026"),  tb("Validation de l'analyse par l'encadreur"),         tb("Prise en compte des retours, correctifs.")],
+        [tb("15/09/2026"),  tb("Validation de l'application"),                     tb("Application complète et fonctionnelle en local.")],
+        [tb("22/09/2026"),  tb("Rapport écrit provisoire (PDF sur Teams)"),        tb("Version relue soumise sur Teams.")],
+        [tb("29/09/2026"),  tb("Rapport écrit définitif (PDF + 5 exemplaires + GitHub)"), tb("Dépôt secrétariat + push final GitHub.")],
+        [tb("13/10/2026"),  tb("Défense orale"),                                   tb("Préparation de la présentation et démonstration.")],
+    ]))
+    S_.append(sp(0.4))
+
+    S_.append(Paragraph("7.3 Contraintes et risques identifiés", SEC2))
     S_.append(Paragraph(
         "Plusieurs contraintes techniques et organisationnelles ont été anticipées dès la phase "
-        "d'analyse. Le tableau ci-dessous recense les principaux risques susceptibles d'affecter "
-        "le projet, ainsi que les mesures concrètes prévues pour les limiter.", BODY))
+        "d'analyse. Le tableau ci-dessous recense les principaux risques et les mesures "
+        "prévues pour les limiter.", BODY))
     S_.append(grid([5.0*cm, CW-5.0*cm], [
         [th("Contrainte / Risque"), th("Mesure prévue")],
-        [tb("Délai serré de la 2ème session\n(juillet à octobre 2026)"),
-         tb("Découpage du travail en huit phases planifiées (point 6.2) afin de garantir les fonctionnalités essentielles en priorité.")],
+        [tb("Délai serré de la 2ème session (juillet à octobre 2026)"),
+         tb("Découpage du travail en huit phases planifiées (section 7.1) afin de garantir les fonctionnalités essentielles en priorité.")],
         [tb("Dépendance au service Gmail SMTP pour l'envoi des e-mails"),
          tb("Utilisation d'un mot de passe d'application dédié ; en cas d'indisponibilité, les notifications restent consultables directement dans l'espace bénévole.")],
         [tb("Sécurité des données personnelles des bénévoles"),
-         tb("Mots de passe chiffrés avec BCrypt, authentification par jeton JWT et contrôle des accès par rôle (administrateur / bénévole).")],
+         tb("Mots de passe chiffrés avec BCrypt, authentification par jeton JWT et contrôle des accès par rôle (règles RG-02, RG-22, RG-23).")],
         [tb("Compatibilité navigateurs et affichage multilingue (FR/EN/NL)"),
          tb("Interface responsive testée sur les principaux navigateurs et relecture systématique des trois versions linguistiques avant la remise.")],
         [tb("Perte de code ou de données"),
          tb("Versionnage sur GitHub avec sauvegardes régulières et base de données exportée à chaque étape importante.")],
-        [tb("Environnement de développement\net de démonstration"),
+        [tb("Environnement de développement et de démonstration"),
          tb("L'application est développée et présentée en environnement local (WAMP Server sous Windows). Aucun déploiement en ligne n'est prévu dans le cadre de ce TFE.")],
     ]))
     S_.append(PageBreak())
