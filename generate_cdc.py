@@ -612,14 +612,14 @@ def build():
         ("4. Analyse fonctionnelle",                               9,  1),
         ("4.1 Diagramme de cas d'utilisation",                     9,  2),
         ("4.2 Règles de gestion",                                 11,  2),
-        ("5. Modèle de données",                                  13,  1),
+        ("5. Persistance des données",                             13,  1),
         ("5.1 Diagramme de classes",                              13,  2),
         ("5.2 Dictionnaire de données",                           15,  2),
-        ("6. Apport personnel dans le cadre du TFE",              18,  1),
-        ("7. Plan de travail",                                    19,  1),
-        ("7.1 Calendrier et phases de développement",             19,  2),
-        ("7.2 Échéances officielles et dates clés",               20,  2),
-        ("7.3 Contraintes et risques identifiés",                 20,  2),
+        ("6. Apport personnel dans le cadre du TFE",              19,  1),
+        ("7. Plan de travail",                                    20,  1),
+        ("7.1 Calendrier et phases de développement",             20,  2),
+        ("7.2 Échéances officielles et dates clés",               21,  2),
+        ("7.3 Contraintes et risques identifiés",                 21,  2),
     ]
     for label, page, level in toc:
         S_.append(toc_line(label, page, level))
@@ -995,7 +995,7 @@ def build():
     # SECTION 5. MODÈLE DE DONNÉES
     # (diagramme de classes + dictionnaire de données)
     # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("5. Modèle de données", SEC1))
+    S_.append(Paragraph("5. Persistance des données", SEC1))
     S_.append(Paragraph("5.1 Diagramme de classes", SEC2))
     S_.append(Paragraph(
         "Le diagramme de classes présente les huit entités du modèle, leurs attributs, leurs "
@@ -1018,15 +1018,19 @@ def build():
         "Il précise, pour chaque champ, le type, les contraintes et le rôle métier.", BODY))
     cbd = [3.3*cm, 3.0*cm, 3.2*cm, CW-9.7*cm]
 
-    # Tables existantes (compact)
+    # Tables existantes (séparées, une par une, comme les nouvelles tables)
     S_.append(Paragraph("Tables héritées du stage", SEC2B))
+    S_.append(Paragraph("<b>admin</b> — Compte administrateur unique", SEC2B))
     S_.append(grid(cbd, [
         [th("Champ"), th("Type"), th("Contrainte"), th("Description")],
-        [tb("<b>admin</b>"), tb(""), tb(""), tb("Compte administrateur unique.")],
         [tb("id"),       tb("BIGINT"),        tb("PK, AUTO_INCREMENT"), tb("Identifiant.")],
         [tb("username"), tb("VARCHAR(100)"),  tb("NOT NULL, UNIQUE"),    tb("Identifiant de connexion.")],
         [tb("password"), tb("VARCHAR(255)"),  tb("NOT NULL"),            tb("Mot de passe haché (BCrypt).")],
-        [tb("<b>project</b>"),        tb(""), tb(""), tb("Applications du hub.")],
+    ]))
+    S_.append(sp(0.3))
+    S_.append(Paragraph("<b>project</b> — Applications du hub", SEC2B))
+    S_.append(grid(cbd, [
+        [th("Champ"), th("Type"), th("Contrainte"), th("Description")],
         [tb("id"),           tb("BIGINT"),       tb("PK, AUTO_INCREMENT"),   tb("Identifiant.")],
         [tb("name"),         tb("VARCHAR(200)"), tb("NOT NULL"),             tb("Nom de l'application.")],
         [tb("description"),  tb("TEXT"),         tb("NOT NULL"),             tb("Présentation.")],
@@ -1034,12 +1038,21 @@ def build():
         [tb("image, category"),         tb("VARCHAR"),      tb("NULL"),      tb("Illustration et catégorie.")],
         [tb("isActive"),     tb("BOOLEAN"),      tb("DEFAULT TRUE"),         tb("Visible ou non sur le hub.")],
         [tb("createdAt"),    tb("DATETIME"),     tb("NOT NULL"),             tb("Date de création.")],
-        [tb("<b>blog_post</b>"), tb(""), tb(""), tb("Articles du blog.")],
+    ]))
+    S_.append(PageBreak())
+    S_.append(Paragraph("<b>blog_post</b> — Articles du blog", SEC2B))
+    S_.append(grid(cbd, [
+        [th("Champ"), th("Type"), th("Contrainte"), th("Description")],
         [tb("id"),           tb("BIGINT"),       tb("PK, AUTO_INCREMENT"),   tb("Identifiant.")],
+        [tb("admin_id"),     tb("BIGINT"),       tb("FK → admin"),           tb("Auteur de l'article.")],
         [tb("title, content, image"), tb("VARCHAR/TEXT"), tb("NOT NULL"),    tb("Contenu de l'article.")],
         [tb("isPublished"),  tb("BOOLEAN"),      tb("DEFAULT FALSE"),        tb("Publié ou brouillon.")],
         [tb("createdAt"),    tb("DATETIME"),     tb("NOT NULL"),             tb("Date de rédaction.")],
-        [tb("<b>contact_message</b>"), tb(""), tb(""), tb("Messages du formulaire de contact.")],
+    ]))
+    S_.append(sp(0.3))
+    S_.append(Paragraph("<b>contact_message</b> — Messages du formulaire de contact", SEC2B))
+    S_.append(grid(cbd, [
+        [th("Champ"), th("Type"), th("Contrainte"), th("Description")],
         [tb("id"),           tb("BIGINT"),       tb("PK, AUTO_INCREMENT"),   tb("Identifiant.")],
         [tb("name, email, message"),  tb("VARCHAR/TEXT"), tb("NOT NULL"),    tb("Contenu du message.")],
         [tb("isRead"),       tb("BOOLEAN"),      tb("DEFAULT FALSE"),        tb("Traité ou non.")],
