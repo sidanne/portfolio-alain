@@ -35,6 +35,7 @@ CREAM   = colors.HexColor("#F8F4E3")
 C_GRAY  = colors.Color(0.88, 0.88, 0.88)
 C_LGRAY = colors.Color(0.95, 0.95, 0.95)
 C_WHITE = colors.white
+EAFC_BLUE = colors.HexColor("#2B6EA2")   # EAFC teal-blue (parallelogramme page de garde)
 
 # ─────────────────────────────────────────────────────────────
 # Pied de page
@@ -44,11 +45,115 @@ def _footer(canvas, doc):
     canvas.setFont("Helvetica", 8.5)
     y = 1.5 * cm
     canvas.drawString(ML, y, f"p. {doc.page}")
-    canvas.drawCentredString(W / 2, y, "Youndjeu Tchouapi Alain")
+    canvas.drawCentredString(W / 2, y, "Alain Youndjeu Tchouapi")
     canvas.drawRightString(W - MR, y, "EAFC Uccle")
     canvas.restoreState()
 
 def _no_footer(canvas, doc): pass
+
+def _draw_cover(canvas, doc):
+    """Page de garde style EAFC — logo + titre + parallelogramme bleu + infos."""
+    canvas.saveState()
+    W_pt, H_pt = A4   # 595.28 x 841.89 pt
+
+    # ── 1. Logo EAFC (centré en haut) ──────────────────────────
+    logo_path = "/home/user/portfolio-alain/assets/eafc_logo.jpeg"
+    logo_w = 6.5 * cm
+    logo_h = logo_w * (191 / 606)
+    canvas.drawImage(logo_path,
+                     (W_pt - logo_w) / 2,
+                     H_pt - 3.0 * cm - logo_h,
+                     width=logo_w, height=logo_h,
+                     preserveAspectRatio=True, mask="auto")
+
+    # ── 2. Titre (gras, centré, deux lignes) ────────────────────
+    canvas.setFillColor(colors.black)
+    canvas.setFont("Helvetica-Bold", 13)
+    title_y = H_pt - 6.2 * cm
+    canvas.drawCentredString(W_pt / 2, title_y,
+        "ANALYSE — MODULE DE GESTION DES BÉNÉVOLES")
+    canvas.drawCentredString(W_pt / 2, title_y - 18,
+        "ET DE RÉSERVATION DES ÉVÉNEMENTS")
+
+    # ── 3. Parallelogramme bleu (bas-gauche) ────────────────────
+    by_top = H_pt * 0.575
+    by_bot = H_pt * 0.415
+    bx_tr  = W_pt * 0.32   # coin haut-droit (plus étroit)
+    bx_br  = W_pt * 0.40   # coin bas-droit  (plus large)
+
+    canvas.setFillColor(EAFC_BLUE)
+    p = canvas.beginPath()
+    p.moveTo(0,      by_bot)
+    p.lineTo(bx_br,  by_bot)
+    p.lineTo(bx_tr,  by_top)
+    p.lineTo(0,      by_top)
+    p.close()
+    canvas.drawPath(p, fill=1, stroke=0)
+
+    # ── 4. Texte blanc dans le parallelogramme ──────────────────
+    canvas.setFillColor(colors.white)
+    lx = 1.5 * cm
+    ty = by_top - 0.9 * cm
+
+    canvas.setFont("Helvetica-Bold", 11)
+    canvas.drawString(lx, ty, "Étudiant :")
+    ty -= 17
+    canvas.setFont("Helvetica", 11)
+    canvas.drawString(lx, ty, "Alain Youndjeu Tchouapi")
+    ty -= 27
+    canvas.setFont("Helvetica-Bold", 11)
+    canvas.drawString(lx, ty, "Encadrement :")
+    ty -= 17
+    canvas.setFont("Helvetica", 11)
+    canvas.drawString(lx, ty, "Marie-Christine Namur")
+    ty -= 15
+    canvas.drawString(lx, ty, "(professeure)")
+
+    # ── 5. Colonne droite (texte noir) ──────────────────────────
+    canvas.setFillColor(colors.black)
+    rx      = W_pt * 0.44
+    mid_y   = (by_top + by_bot) / 2
+    ry_top  = mid_y + 0.45 * cm
+
+    # Bachelier souligné
+    canvas.setFont("Helvetica", 12)
+    txt = "Bachelier en Informatique de Gestion"
+    sw  = canvas.stringWidth(txt, "Helvetica", 12)
+    canvas.drawString(rx, ry_top, txt)
+    canvas.setStrokeColor(colors.black)
+    canvas.setLineWidth(0.6)
+    canvas.line(rx, ry_top - 2, rx + sw, ry_top - 2)
+
+    # Type de document
+    canvas.setFont("Helvetica", 12)
+    canvas.drawString(rx, ry_top - 30, "Analyse")
+
+    # ── 6. Année académique (centrée, bas de page) ─────────────────
+    ay = H_pt * 0.165
+    canvas.setFont("Helvetica-Bold", 11)
+    canvas.setFillColor(colors.black)
+    label_ann = "Année académique"
+    val_ann   = " : 2025 – 2026"
+    sw_bold   = canvas.stringWidth(label_ann, "Helvetica-Bold", 11)
+    sw_reg    = canvas.stringWidth(val_ann,   "Helvetica",      11)
+    total_w   = sw_bold + sw_reg
+    ax        = W_pt / 2 - total_w / 2
+    canvas.drawString(ax, ay, label_ann)
+    canvas.setFont("Helvetica", 11)
+    canvas.drawString(ax + sw_bold, ay, val_ann)
+
+    # ── 7. Pied de garde : libellé + trait ──────────────────────
+    fy = 1.8 * cm
+    footer_lbl = "Analyse TFE"
+    canvas.setFont("Helvetica-Bold", 9.5)
+    flw = canvas.stringWidth(footer_lbl, "Helvetica-Bold", 9.5)
+    canvas.setFillColor(colors.black)
+    canvas.drawCentredString(W_pt / 2, fy, footer_lbl)
+    canvas.setStrokeColor(colors.black)
+    canvas.setLineWidth(0.8)
+    canvas.line(W_pt / 2 - flw * 0.8, fy - 4, W_pt / 2 + flw * 0.8, fy - 4)
+
+    canvas.restoreState()
 
 # ─────────────────────────────────────────────────────────────
 # Styles
@@ -552,37 +657,15 @@ def build():
         leftMargin=ML, rightMargin=MR,
         topMargin=2.5*cm, bottomMargin=2.5*cm)
     doc.addPageTemplates([
-        PageTemplate(id="Cover",  frames=[cov_fr], onPage=_no_footer),
+        PageTemplate(id="Cover",  frames=[cov_fr], onPage=_draw_cover),
         PageTemplate(id="Normal", frames=[nor_fr], onPage=_footer),
     ])
 
     S_ = []   # story
 
     # ═══════════════════════════════════════════════════════
-    # P1 — COUVERTURE
+    # P1 — COUVERTURE  (dessinée entièrement par _draw_cover)
     # ═══════════════════════════════════════════════════════
-    S_.append(Spacer(1, 1.8*cm))
-    S_.append(Paragraph("Bachelier en Informatique de Gestion", CV_SCHOOL))
-    S_.append(sp(0.3))
-    S_.append(Paragraph("3ème année", CV_YEAR))
-    S_.append(Spacer(1, 2.2*cm))
-    S_.append(Paragraph("Rapport écrit", CV_TITLE))
-    S_.append(sp(0.4))
-    S_.append(Paragraph("Travail de Fin d'Études — Épreuve intégrée", CV_SUB))
-    S_.append(Spacer(1, 1.8*cm))
-    S_.append(Paragraph("Module de gestion des bénévoles et des événements", CV_MOD))
-    S_.append(sp(0.3))
-    S_.append(Paragraph("Extension du site web vitrine de Terra Sana ASBL", CV_EXT))
-    S_.append(Spacer(1, 2.5*cm))
-    S_.append(Paragraph("Encadreur scolaire : Marie-Christine Namur", CV_INFO))
-    S_.append(sp(0.2))
-    S_.append(Paragraph("Maître de stage : Didier Seraye", CV_INFO))
-    S_.append(sp(0.2))
-    S_.append(Paragraph("Travail présenté par Youndjeu Tchouapi Alain", CV_INFO))
-    S_.append(Spacer(1, 2.5*cm))
-    S_.append(Paragraph("<b>EAFC Uccle</b>", CV_INST))
-    S_.append(sp(0.3))
-    S_.append(Paragraph("2025-2026", CV_YEAR))
     S_.append(NextPageTemplate("Normal"))
     S_.append(PageBreak())
 
