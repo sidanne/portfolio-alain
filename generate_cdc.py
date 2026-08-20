@@ -593,10 +593,8 @@ def build():
     toc = [
         ("1. Introduction",                                        3,  1),
         ("1.1 Présentation de Terra Sana ASBL",                    3,  2),
-        ("1.2 Sources d'information",                              3,  2),
-        ("1.3 Cahier des charges du TFE",                          3,  2),
-        ("1.4 Contexte du TFE",                                    4,  2),
-        ("1.5 Problématique",                                      4,  2),
+        ("1.2 Problématique",                                      3,  2),
+        ("1.3 Sources d'information",                              4,  2),
         ("2. Travail réalisé durant le stage",                     5,  1),
         ("2.1 Composants livrés à la fin du stage",                5,  2),
         ("2.2 Technologies utilisées",                             5,  2),
@@ -632,6 +630,10 @@ def build():
 
     S_.append(Paragraph("1.1 Présentation de Terra Sana ASBL", SEC2))
     S_.append(Paragraph(
+        "Le présent rapport écrit accompagne mon Travail de Fin d'Études, réalisé dans le cadre "
+        "de l'épreuve intégrée du Bachelier en Informatique de Gestion (3ème année) à l'EAFC "
+        "Uccle, pour l'année académique 2025-2026.", BODY))
+    S_.append(Paragraph(
         "Terra Sana ASBL est une association sans but lucratif belge dont le siège social est "
         "situé au 19 avenue des Volontaires à Auderghem. L'association œuvre dans les domaines "
         "de la santé naturelle, de l'alimentation saine et du bien-être global. Elle organise "
@@ -640,71 +642,17 @@ def build():
         "l'association dispose de 12 applications internes spécialisées, dont l'accès est "
         "centralisé depuis le site web développé durant le stage.", BODY))
     S_.append(Paragraph(
-        "Avant le stage, Terra Sana ne possédait aucune présence numérique. La communication "
-        "avec les bénévoles et le public se faisait exclusivement par téléphone et par email, "
-        "et la gestion administrative reposait entièrement sur des fichiers Excel et des "
-        "documents papier.", BODY))
-
-    S_.append(Paragraph("1.2 Sources d'information", SEC2))
-    S_.append(Paragraph(
-        "Les informations utilisées pour concevoir l'application proviennent de plusieurs "
-        "sources complémentaires réunies pendant et après le stage :", BODY))
-    for b in [
-        "des entretiens avec Monsieur Didier Seraye (Responsable Administratif de Terra Sana) "
-        "afin de comprendre les besoins réels, le fonctionnement quotidien de l'association et "
-        "les points de friction dans la gestion actuelle des bénévoles et des événements ;",
-        "l'analyse des documents et fichiers Excel utilisés à ce jour pour identifier les "
-        "données à structurer (identité des bénévoles, historiques d'ateliers, listes d'inscrits) ;",
-        "la documentation officielle des technologies retenues (Spring Boot, React, Spring "
-        "Security, JavaMail, iText) ainsi que les bonnes pratiques REST et de sécurité ;",
-        "les consignes de l'EAFC Uccle pour la rédaction du présent rapport et la structuration "
-        "du projet de fin d'études.",
-    ]:
-        S_.append(Paragraph(f"• {b}", BULL))
-
-    S_.append(Paragraph("1.3 Cahier des charges du TFE", SEC2))
-    S_.append(Paragraph(
-        "Ce projet de TFE consiste à <b>étendre le site vitrine développé pendant le stage</b> "
-        "en y intégrant un <b>module complet de gestion des bénévoles et des événements</b>. "
-        "La demande initiale de Terra Sana ASBL est de centraliser et d'automatiser ce qui "
-        "était jusqu'ici tenu à la main dans des fichiers Excel et par email.", BODY))
-    S_.append(Paragraph(
-        "Le module à livrer doit permettre concrètement :", BODY))
-    for b in [
-        "aux bénévoles de créer un compte, se connecter, gérer leur profil et consulter leur historique ;",
-        "aux bénévoles de s'inscrire aux événements, rejoindre une liste d'attente si l'événement "
-        "est complet, se désinscrire et laisser un avis après participation ;",
-        "à l'administrateur de créer et gérer les événements, valider ou refuser les inscriptions, "
-        "notifier les bénévoles par email et exporter les listes en PDF ;",
-        "au bénévole de télécharger une attestation de participation à la fin d'un événement ;",
-        "à l'application de calculer automatiquement un niveau de fidélité (Bronze / Argent / Or) "
-        "à partir du nombre de participations confirmées.",
-    ]:
-        S_.append(Paragraph(f"• {b}", BULL))
-    S_.append(Paragraph(
-        "Ces fonctionnalités sont détaillées dans la section 3 et analysées dans les sections 4 "
-        "(diagrammes UML et règles de gestion) et 5 (modèle de données).", BODY))
-    S_.append(PageBreak())
-
-    # ═══════════════════════════════════════════════════════
-    # P4 — 1.4 Contexte du TFE + 1.5 Problématique
-    # ═══════════════════════════════════════════════════════
-    S_.append(Paragraph("1.4 Contexte du TFE", SEC2))
-    S_.append(Paragraph(
-        "Le présent rapport écrit accompagne mon Travail de Fin d'Études, réalisé dans le cadre "
-        "de l'épreuve intégrée du Bachelier en Informatique de Gestion (3ème année) à l'EAFC "
-        "Uccle, pour l'année académique 2025-2026.", BODY))
-    S_.append(Paragraph(
         "Mon stage s'est déroulé au sein de Terra Sana ASBL du 25 mars au 20 mai 2026, sous la "
         "supervision de Monsieur Didier Seraye. Durant cette période, j'ai conçu et développé "
         "de zéro un site web complet servant de vitrine institutionnelle et de hub centralisé "
         "pour les 12 applications internes de l'association.", BODY))
-    S_.append(Paragraph(
-        "Le module de gestion des bénévoles et des événements est développé après le stage, "
-        "entièrement par mes soins, sans code préexistant. Le développement et la démonstration "
-        "sont réalisés en environnement local (WAMP Server sous Windows).", BODY))
 
-    S_.append(Paragraph("1.5 Problématique", SEC2))
+    S_.append(Paragraph("1.2 Problématique", SEC2))
+    S_.append(Paragraph(
+        "Avant le stage, Terra Sana ne possédait aucune présence numérique. La communication "
+        "avec les bénévoles et le public se faisait exclusivement par téléphone et par email, "
+        "et la gestion administrative reposait entièrement sur des fichiers Excel et des "
+        "documents papier.", BODY))
     S_.append(Paragraph(
         "Aujourd'hui, Terra Sana gère ses bénévoles et ses activités de façon entièrement "
         "manuelle. Cette organisation engendre plusieurs difficultés concrètes :", BODY))
@@ -720,6 +668,31 @@ def build():
         "espace bénévole en ligne, gestion des événements avec places et liste d'attente, "
         "emails de confirmation automatiques et historique exploitable (niveaux, attestations). "
         "L'association gagne ainsi en temps et en fiabilité.", BODY))
+    S_.append(Paragraph(
+        "Le module de gestion des bénévoles et des événements est développé après le stage, "
+        "entièrement par mes soins, sans code préexistant. Le développement et la démonstration "
+        "sont réalisés en environnement local (WAMP Server sous Windows).", BODY))
+    S_.append(PageBreak())
+
+    # ═══════════════════════════════════════════════════════
+    # P4 — 1.3 Sources d'information
+    # ═══════════════════════════════════════════════════════
+    S_.append(Paragraph("1.3 Sources d'information", SEC2))
+    S_.append(Paragraph(
+        "Les informations utilisées pour concevoir l'application proviennent de plusieurs "
+        "sources complémentaires réunies pendant et après le stage :", BODY))
+    for b in [
+        "des entretiens avec Monsieur Didier Seraye (Responsable Administratif de Terra Sana) "
+        "afin de comprendre les besoins réels, le fonctionnement quotidien de l'association et "
+        "les points de friction dans la gestion actuelle des bénévoles et des événements ;",
+        "l'analyse des documents et fichiers Excel utilisés à ce jour pour identifier les "
+        "données à structurer (identité des bénévoles, historiques d'ateliers, listes d'inscrits) ;",
+        "la documentation officielle des technologies retenues (Spring Boot, React, Spring "
+        "Security, JavaMail, iText) ainsi que les bonnes pratiques REST et de sécurité ;",
+        "les consignes de l'EAFC Uccle pour la rédaction du présent rapport et la structuration "
+        "du projet de fin d'études.",
+    ]:
+        S_.append(Paragraph(f"• {b}", BULL))
     S_.append(PageBreak())
 
     # ═══════════════════════════════════════════════════════
@@ -889,6 +862,30 @@ def build():
         "et les fonctionnalités offertes par le module TFE. Trois acteurs sont identifiés : "
         "le Visiteur (non authentifié, qui devient bénévole dès qu'il crée un compte), le "
         "Bénévole (qui étend le Visiteur par généralisation) et l'Administrateur.", BODY))
+
+    S_.append(Paragraph("Cahier des charges du TFE", SEC2B))
+    S_.append(Paragraph(
+        "Ce projet de TFE consiste à <b>étendre le site vitrine développé pendant le stage</b> "
+        "en y intégrant un <b>module complet de gestion des bénévoles et des événements</b>. "
+        "La demande initiale de Terra Sana ASBL est de centraliser et d'automatiser ce qui "
+        "était jusqu'ici tenu à la main dans des fichiers Excel et par email.", BODY))
+    S_.append(Paragraph(
+        "Le module à livrer doit permettre concrètement :", BODY))
+    for b in [
+        "aux bénévoles de créer un compte, se connecter, gérer leur profil et consulter leur historique ;",
+        "aux bénévoles de s'inscrire aux événements, rejoindre une liste d'attente si l'événement "
+        "est complet, se désinscrire et laisser un avis après participation ;",
+        "à l'administrateur de créer et gérer les événements, valider ou refuser les inscriptions, "
+        "notifier les bénévoles par email et exporter les listes en PDF ;",
+        "au bénévole de télécharger une attestation de participation à la fin d'un événement ;",
+        "à l'application de calculer automatiquement un niveau de fidélité (Bronze / Argent / Or) "
+        "à partir du nombre de participations confirmées.",
+    ]:
+        S_.append(Paragraph(f"• {b}", BULL))
+    S_.append(Paragraph(
+        "Ces fonctionnalités sont détaillées dans la section 3 et analysées ci-dessous "
+        "(diagramme de cas d'utilisation et règles de gestion) ainsi qu'en section 5 "
+        "(modèle de données).", BODY))
     S_.append(sp(0.2))
     S_.append(diag_use_case())
     S_.append(PageBreak())
