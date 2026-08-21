@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:#f7f5f0;color:#1a1a1a;width:1440px;height:900px;overflow:hidden;}
+  a{color:#1c6b3a;} a:hover{color:#2a8a4d;}
+  .layout{display:flex;width:1440px;height:900px;}
+  .sidebar{width:256px;flex-shrink:0;background:#133d24;display:flex;flex-direction:column;}
+  .sb-logo{padding:26px 22px 22px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .sb-logomark{width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+  .sb-name{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;}
+  .sb-tag{font-size:10.5px;color:rgba(255,255,255,.45);margin-top:2px;letter-spacing:.04em;text-transform:uppercase;}
+  .sb-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:1px;}
+  .sb-section{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;padding:14px 12px 4px;font-weight:600;}
+  .sb-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:13.5px;color:rgba(255,255,255,.68);cursor:pointer;}
+  .sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
+  .sb-item.on{background:rgba(255,255,255,.14);color:#fff;font-weight:600;}
+  .sb-ico{width:17px;height:17px;flex-shrink:0;}
+  .sb-foot{padding:14px 10px;border-top:1px solid rgba(255,255,255,.1);}
+  .sb-user{display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.07);border-radius:10px;}
+  .sb-av{width:34px;height:34px;background:#2a8a4d;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+  .sb-uname{font-size:13px;color:#fff;font-weight:500;}
+  .sb-urole{font-size:11px;color:rgba(255,255,255,.45);}
+  .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+  .topbar{height:64px;background:#fff;border-bottom:1px solid #e8e3db;display:flex;align-items:center;padding:0 30px;justify-content:space-between;flex-shrink:0;}
+  .pg-title{font-family:'DM Serif Display',serif;font-size:21px;color:#1a1a1a;}
+  .content{flex:1;overflow-y:auto;padding:24px 30px;display:flex;flex-direction:column;gap:20px;}
+
+  /* TOOLBAR */
+  .toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;}
+  .filters{display:flex;align-items:center;gap:8px;}
+  .pill{padding:6px 15px;border-radius:20px;font-size:13px;cursor:pointer;font-weight:500;}
+  .pill.on{background:#1c6b3a;color:#fff;}
+  .pill.off{background:#fff;color:#6b7280;border:1px solid #e8e3db;}
+  .pill.off:hover{border-color:#1c6b3a;color:#1c6b3a;}
+  .search-box{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e8e3db;border-radius:9px;padding:8px 14px;width:240px;}
+  .search-box input{border:none;outline:none;font-size:13.5px;font-family:'DM Sans',sans-serif;color:#1a1a1a;background:transparent;width:100%;}
+  .search-box input::placeholder{color:#9ca3af;}
+  .btn-primary{display:flex;align-items:center;gap:8px;background:#1c6b3a;color:#fff;border:none;padding:9px 18px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+  .btn-primary:hover{background:#2a8a4d;}
+
+  /* EVENTS GRID */
+  .evgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .evcard{background:#fff;border-radius:12px;border:1px solid #e8e3db;overflow:hidden;cursor:pointer;transition:box-shadow .15s;}
+  .evcard:hover{box-shadow:0 4px 16px rgba(0,0,0,.07);}
+  .evc-img{height:120px;position:relative;display:flex;align-items:flex-end;padding:14px;}
+  .img-harvest{background:linear-gradient(160deg,#2d5a1b 0%,#4a8c2a 60%,#6aad40 100%);}
+  .img-compost{background:linear-gradient(160deg,#5a3a1b 0%,#8c6a2a 60%,#c4a040 100%);}
+  .img-market{background:linear-gradient(160deg,#1b3a5a 0%,#2a6a8c 60%,#40a0c4 100%);}
+  .img-online{background:linear-gradient(160deg,#1b1b4a 0%,#2a2a8c 60%,#5050c4 100%);}
+  .img-orchard{background:linear-gradient(160deg,#5a1b1b 0%,#8c2a2a 60%,#c44040 100%);}
+  .img-garden{background:linear-gradient(160deg,#1b3a2a 0%,#2a6a4a 60%,#40c480 100%);}
+  .evc-badges{display:flex;gap:6px;}
+  .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:500;}
+  .bg{background:#e8f5ec;color:#1c6b3a;} .ba{background:#fdf0e0;color:#d4750a;} .bgr{background:#f3f4f6;color:#6b7280;} .bbl{background:rgba(255,255,255,.2);color:#fff;font-size:11px;}
+  .evc-body{padding:16px;}
+  .evc-title{font-size:14.5px;font-weight:600;color:#1a1a1a;line-height:1.3;}
+  .evc-meta{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
+  .evc-row{display:flex;align-items:center;gap:7px;font-size:12.5px;color:#6b7280;}
+  .evc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid #f2ece4;}
+  .progress-wrap{flex:1;height:6px;background:#f0ebe3;border-radius:3px;overflow:hidden;margin-right:10px;}
+  .progress-fill{height:100%;border-radius:3px;}
+  .pf-g{background:#1c6b3a;} .pf-a{background:#d4750a;}
+  .evc-count{font-size:12px;font-weight:600;color:#1a1a1a;white-space:nowrap;}
+  .evc-action{font-size:12px;color:#1c6b3a;font-weight:500;cursor:pointer;}
+</style>
+</helmet>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logomark">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 3C6.5 3 4 6 4 10s3 7 6 7" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M10 3C13.5 3 16 6 16 10" stroke="rgba(255,255,255,.45)" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="10" cy="10" r="2.5" fill="white"/>
+        </svg>
+      </div>
+      <div class="sb-name">Terra Sana</div>
+      <div class="sb-tag">Module Bénévoles</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Principal</div>
+      <div class="sb-item">
+        <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.5" fill="rgba(255,255,255,.4)"/><rect x="10" y="1.5" width="5.5" height="5.5" rx="1.5" fill="rgba(255,255,255,.4)"/><rect x="1.5" y="10" width="5.5" height="5.5" rx="1.5" fill="rgba(255,255,255,.4)"/><rect x="10" y="10" width="5.5" height="5.5" rx="1.5" fill="rgba(255,255,255,.4)"/></svg>
+        Tableau de bord
+      </div>
+      <div class="sb-item on">
+        <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><rect x="1.5" y="3.5" width="14" height="11" rx="2" stroke="white" stroke-width="1.3"/><path d="M1.5 7h14" stroke="white" stroke-width="1.3"/><path d="M5.5 1.5v3M11.5 1.5v3" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Événements
+      </div>
+      <div class="sb-item">
+        <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="5.5" r="3" stroke="rgba(255,255,255,.7)" stroke-width="1.3"/><path d="M2 15.5c0-3 2.9-5.5 6.5-5.5s6.5 2.5 6.5 5.5" stroke="rgba(255,255,255,.7)" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Bénévoles
+      </div>
+      <div class="sb-item">
+        <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><path d="M3 4.5h11M3 8.5h8M3 12.5h9" stroke="rgba(255,255,255,.7)" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Inscriptions
+      </div>
+      <div class="sb-item">
+        <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><path d="M8.5 2l1.6 5H15l-4 3 1.5 5-4-3-4 3 1.5-5-4-3h4.9z" stroke="rgba(255,255,255,.7)" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Retours post-événement
+      </div>
+      <div class="sb-section" style="margin-top:6px;">Rapports</div>
+      <div class="sb-item">
+        <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><rect x="3" y="1.5" width="11" height="14" rx="1.5" stroke="rgba(255,255,255,.7)" stroke-width="1.3"/><path d="M5.5 5.5h6M5.5 8.5h6M5.5 11.5h4" stroke="rgba(255,255,255,.7)" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Attestations PDF
+      </div>
+      <div class="sb-item">
+        <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><path d="M2 13l3-4 3 2.5 3-5 3 3" stroke="rgba(255,255,255,.7)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Statistiques
+      </div>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-user">
+        <div class="sb-av">DS</div>
+        <div><div class="sb-uname">Didier Seraye</div><div class="sb-urole">Administrateur</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="pg-title">Gestion des événements</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-size:12.5px;color:#6b7280;">7 événements à venir</div>
+        <button class="btn-primary">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          Nouvel événement
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="toolbar">
+        <div class="filters">
+          <div class="pill on">Tous (7)</div>
+          <div class="pill off">Ouverts (4)</div>
+          <div class="pill off">Complets (1)</div>
+          <div class="pill off">À venir (2)</div>
+          <div class="pill off">Passés</div>
+        </div>
+        <div class="search-box">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="#9ca3af" stroke-width="1.4"/><path d="M10.5 10.5l3 3" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input type="text" placeholder="Rechercher un événement…" readonly>
+        </div>
+      </div>
+
+      <div class="evgrid">
+        <div class="evcard">
+          <div class="evc-img img-harvest">
+            <div class="evc-badges">
+              <span class="badge bbl">Récolte</span>
+              <span class="badge bg" style="background:rgba(232,245,236,.9);">Ouvert</span>
+            </div>
+          </div>
+          <div class="evc-body">
+            <div class="evc-title">Récolte de légumes — Ferme Sud</div>
+            <div class="evc-meta">
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2.5" width="11" height="9" rx="1.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M1 6h11" stroke="#9ca3af" stroke-width="1.2"/><path d="M4.5 1v3M8.5 1v3" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Dim. 24 août 2025 · 09h00 – 13h00
+              </div>
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1C4.5 1 3 2.7 3 4.8c0 3.1 3.5 7.2 3.5 7.2s3.5-4.1 3.5-7.2C10 2.7 8.5 1 6.5 1z" stroke="#9ca3af" stroke-width="1.2"/><circle cx="6.5" cy="4.8" r="1.3" stroke="#9ca3af" stroke-width="1.2"/></svg>
+                Uccle, Bruxelles
+              </div>
+            </div>
+            <div class="evc-foot">
+              <div style="flex:1;display:flex;align-items:center;gap:8px;">
+                <div class="progress-wrap"><div class="progress-fill pf-g" style="width:66%;"></div></div>
+                <div class="evc-count">8 / 12</div>
+              </div>
+              <div class="evc-action">Gérer →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="evcard">
+          <div class="evc-img img-compost">
+            <div class="evc-badges">
+              <span class="badge bbl">Atelier</span>
+              <span class="badge ba" style="background:rgba(253,240,224,.9);">Complet</span>
+            </div>
+          </div>
+          <div class="evc-body">
+            <div class="evc-title">Atelier compost &amp; jardinage</div>
+            <div class="evc-meta">
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2.5" width="11" height="9" rx="1.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M1 6h11" stroke="#9ca3af" stroke-width="1.2"/><path d="M4.5 1v3M8.5 1v3" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Sam. 30 août 2025 · 14h00 – 17h00
+              </div>
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1C4.5 1 3 2.7 3 4.8c0 3.1 3.5 7.2 3.5 7.2s3.5-4.1 3.5-7.2C10 2.7 8.5 1 6.5 1z" stroke="#9ca3af" stroke-width="1.2"/><circle cx="6.5" cy="4.8" r="1.3" stroke="#9ca3af" stroke-width="1.2"/></svg>
+                Ixelles, Bruxelles
+              </div>
+            </div>
+            <div class="evc-foot">
+              <div style="flex:1;display:flex;align-items:center;gap:8px;">
+                <div class="progress-wrap"><div class="progress-fill pf-a" style="width:100%;"></div></div>
+                <div class="evc-count">12 / 12</div>
+              </div>
+              <div class="evc-action">Gérer →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="evcard">
+          <div class="evc-img img-market">
+            <div class="evc-badges">
+              <span class="badge bbl">Distribution</span>
+              <span class="badge bg" style="background:rgba(232,245,236,.9);">Ouvert</span>
+            </div>
+          </div>
+          <div class="evc-body">
+            <div class="evc-title">Distribution CSA — Marché local</div>
+            <div class="evc-meta">
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2.5" width="11" height="9" rx="1.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M1 6h11" stroke="#9ca3af" stroke-width="1.2"/><path d="M4.5 1v3M8.5 1v3" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Sam. 6 sept. 2025 · 08h30 – 13h00
+              </div>
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1C4.5 1 3 2.7 3 4.8c0 3.1 3.5 7.2 3.5 7.2s3.5-4.1 3.5-7.2C10 2.7 8.5 1 6.5 1z" stroke="#9ca3af" stroke-width="1.2"/><circle cx="6.5" cy="4.8" r="1.3" stroke="#9ca3af" stroke-width="1.2"/></svg>
+                Etterbeek, Bruxelles
+              </div>
+            </div>
+            <div class="evc-foot">
+              <div style="flex:1;display:flex;align-items:center;gap:8px;">
+                <div class="progress-wrap"><div class="progress-fill pf-g" style="width:30%;"></div></div>
+                <div class="evc-count">3 / 10</div>
+              </div>
+              <div class="evc-action">Gérer →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="evcard">
+          <div class="evc-img img-online">
+            <div class="evc-badges">
+              <span class="badge bbl">Formation</span>
+              <span class="badge bgr" style="background:rgba(243,244,246,.9);color:#6b7280;">À venir</span>
+            </div>
+          </div>
+          <div class="evc-body">
+            <div class="evc-title">Formation bénévoles — Hygiène alimentaire</div>
+            <div class="evc-meta">
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2.5" width="11" height="9" rx="1.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M1 6h11" stroke="#9ca3af" stroke-width="1.2"/><path d="M4.5 1v3M8.5 1v3" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Ven. 12 sept. 2025 · 10h00 – 12h00
+              </div>
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="1.5" width="10" height="10" rx="2" stroke="#9ca3af" stroke-width="1.2"/><path d="M4.5 6.5h4M4.5 4.5h4M4.5 8.5h2" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Réunion en ligne (lien envoyé par mail)
+              </div>
+            </div>
+            <div class="evc-foot">
+              <div style="flex:1;display:flex;align-items:center;gap:8px;">
+                <div class="progress-wrap"><div class="progress-fill pf-g" style="width:0%;"></div></div>
+                <div class="evc-count" style="color:#9ca3af;">0 / 20</div>
+              </div>
+              <div class="evc-action">Gérer →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="evcard">
+          <div class="evc-img img-orchard">
+            <div class="evc-badges">
+              <span class="badge bbl">Récolte</span>
+              <span class="badge bg" style="background:rgba(232,245,236,.9);">Ouvert</span>
+            </div>
+          </div>
+          <div class="evc-body">
+            <div class="evc-title">Récolte pommes — Verger Terra Sana</div>
+            <div class="evc-meta">
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2.5" width="11" height="9" rx="1.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M1 6h11" stroke="#9ca3af" stroke-width="1.2"/><path d="M4.5 1v3M8.5 1v3" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Sam. 20 sept. 2025 · 09h00 – 16h00
+              </div>
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1C4.5 1 3 2.7 3 4.8c0 3.1 3.5 7.2 3.5 7.2s3.5-4.1 3.5-7.2C10 2.7 8.5 1 6.5 1z" stroke="#9ca3af" stroke-width="1.2"/><circle cx="6.5" cy="4.8" r="1.3" stroke="#9ca3af" stroke-width="1.2"/></svg>
+                Waterloo
+              </div>
+            </div>
+            <div class="evc-foot">
+              <div style="flex:1;display:flex;align-items:center;gap:8px;">
+                <div class="progress-wrap"><div class="progress-fill pf-g" style="width:33%;"></div></div>
+                <div class="evc-count">5 / 15</div>
+              </div>
+              <div class="evc-action">Gérer →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="evcard">
+          <div class="evc-img img-garden">
+            <div class="evc-badges">
+              <span class="badge bbl">Atelier</span>
+              <span class="badge bgr" style="background:rgba(243,244,246,.9);color:#6b7280;">À venir</span>
+            </div>
+          </div>
+          <div class="evc-body">
+            <div class="evc-title">Atelier jardinage naturel — Permaculture</div>
+            <div class="evc-meta">
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2.5" width="11" height="9" rx="1.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M1 6h11" stroke="#9ca3af" stroke-width="1.2"/><path d="M4.5 1v3M8.5 1v3" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Dim. 5 oct. 2025 · 10h00 – 15h00
+              </div>
+              <div class="evc-row">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1C4.5 1 3 2.7 3 4.8c0 3.1 3.5 7.2 3.5 7.2s3.5-4.1 3.5-7.2C10 2.7 8.5 1 6.5 1z" stroke="#9ca3af" stroke-width="1.2"/><circle cx="6.5" cy="4.8" r="1.3" stroke="#9ca3af" stroke-width="1.2"/></svg>
+                Uccle, Bruxelles
+              </div>
+            </div>
+            <div class="evc-foot">
+              <div style="flex:1;display:flex;align-items:center;gap:8px;">
+                <div class="progress-wrap"><div class="progress-fill pf-g" style="width:12%;"></div></div>
+                <div class="evc-count">2 / 16</div>
+              </div>
+              <div class="evc-action">Gérer →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "artboards": [
+    { "file": "Accueil.dc.html", "x": 0, "y": 0, "w": 1440, "h": 3100, "title": "Page d'accueil publique", "expand": "fill" }
+  ],
+  "launch": { "view": "focused", "file": "Accueil.dc.html" }
+}

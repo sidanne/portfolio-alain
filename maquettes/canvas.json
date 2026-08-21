@@ -1,0 +1,15 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",        "x": 0,    "y": 0,    "w": 1440, "h": 900, "title": "Dashboard — Admin" },
+    { "file": "Evenements.dc.html",  "x": 1520, "y": 0,    "w": 1440, "h": 900, "title": "Gestion des événements" },
+    { "file": "Benevole.dc.html",    "x": 0,    "y": 980,  "w": 1440, "h": 900, "title": "Espace bénévole" },
+    { "file": "Inscription.dc.html", "x": 1520, "y": 980,  "w": 1440, "h": 900, "title": "Inscription à un événement" }
+  ],
+  "annotations": [
+    { "id": "admin-note",  "x": 0,    "y": -80,  "w": 260, "text": "VUE ADMINISTRATEUR\nTableau de bord principal avec KPIs, liste des événements à venir et actions rapides." },
+    { "id": "events-note", "x": 1520, "y": -80,  "w": 280, "text": "VUE ADMINISTRATEUR\nGestion des événements : vue en grille avec filtres, statuts et taux de remplissage." },
+    { "id": "benv-note",   "x": 0,    "y": 900,  "w": 280, "text": "VUE BÉNÉVOLE\nEspace personnel : profil, badges, événements à venir et historique de participation." },
+    { "id": "insc-note",   "x": 1520, "y": 900,  "w": 300, "text": "VUE BÉNÉVOLE\nFormulaire d'inscription avec infos pré-remplies depuis le profil et détail de l'événement." }
+  ],
+  "launch": { "view": "canvas" }
+}
