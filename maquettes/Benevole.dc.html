@@ -10,12 +10,12 @@
 <helmet>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'DM Sans',system-ui,sans-serif;background:#f7f5f0;color:#1a1a1a;width:1440px;height:900px;overflow:hidden;}
-  a{color:#1c6b3a;} a:hover{color:#2a8a4d;}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:#F8F4E3;color:#1B1B1B;width:1440px;height:900px;overflow:hidden;}
+  a{color:#2D6A4F;} a:hover{color:#3D8064;}
   .layout{display:flex;width:1440px;height:900px;}
 
   /* NAV BÉNÉVOLE (top horizontal) */
-  .topnav{width:100%;height:60px;background:#133d24;display:flex;align-items:center;padding:0 30px;justify-content:space-between;flex-shrink:0;}
+  .topnav{width:100%;height:60px;background:#1D4533;display:flex;align-items:center;padding:0 30px;justify-content:space-between;flex-shrink:0;}
   .tn-logo{display:flex;align-items:center;gap:10px;}
   .tn-lm{width:32px;height:32px;background:rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;}
   .tn-name{font-family:'DM Serif Display',serif;font-size:16px;color:#fff;}
@@ -24,80 +24,87 @@
   .tn-item:hover{background:rgba(255,255,255,.08);color:#fff;}
   .tn-item.on{background:rgba(255,255,255,.15);color:#fff;font-weight:600;}
   .tn-right{display:flex;align-items:center;gap:12px;}
-  .tn-av{width:34px;height:34px;background:#2a8a4d;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;}
+  .tn-av{width:34px;height:34px;background:#3D8064;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;}
   .tn-uname{font-size:13px;color:rgba(255,255,255,.85);}
   .icon-btn{width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
-  .notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:#d4750a;border-radius:50%;border:2px solid #133d24;}
+  .notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:#D4A017;border-radius:50%;border:2px solid #1D4533;}
 
   .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
   .content{flex:1;overflow-y:auto;padding:28px 36px;display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;align-items:start;}
 
   /* LEFT PROFILE */
-  .profile-card{background:#fff;border-radius:14px;border:1px solid #e8e3db;overflow:hidden;}
-  .profile-banner{height:80px;background:linear-gradient(135deg,#133d24 0%,#2a8a4d 100%);}
+  .profile-card{background:#fff;border-radius:14px;border:1px solid #E7DFC7;overflow:hidden;}
+  .profile-banner{height:80px;background:linear-gradient(135deg,#1D4533 0%,#3D8064 100%);}
   .profile-body{padding:0 22px 22px;}
   .profile-av-wrap{margin-top:-30px;margin-bottom:12px;}
-  .profile-av{width:60px;height:60px;background:#1c6b3a;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;}
-  .profile-name{font-family:'DM Serif Display',serif;font-size:18px;color:#1a1a1a;}
+  .profile-av{width:60px;height:60px;background:#2D6A4F;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;}
+  .profile-name{font-family:'DM Serif Display',serif;font-size:18px;color:#1B1B1B;}
   .profile-email{font-size:12.5px;color:#6b7280;margin-top:2px;}
   .profile-since{font-size:12px;color:#9ca3af;margin-top:6px;}
   .profile-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
-  .tag{padding:4px 10px;border-radius:20px;font-size:11.5px;font-weight:500;background:#e8f5ec;color:#1c6b3a;}
-  .profile-divider{height:1px;background:#f2ece4;margin:16px 0;}
+  .tag{padding:4px 10px;border-radius:20px;font-size:11.5px;font-weight:500;background:#E6F1EB;color:#2D6A4F;}
+  .profile-divider{height:1px;background:#F0E9D6;margin:16px 0;}
   .stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
   .pstat{text-align:center;}
-  .pstat-val{font-family:'DM Serif Display',serif;font-size:22px;color:#1a1a1a;}
+  .pstat-val{font-family:'DM Serif Display',serif;font-size:22px;color:#1B1B1B;}
   .pstat-lbl{font-size:11px;color:#6b7280;margin-top:2px;}
 
+  .level-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:#FBF1DC;color:#8a6b0f;margin-top:8px;}
+
   .badges-section{margin-top:18px;}
-  .bs-title{font-size:12.5px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;}
-  .badges-row{display:flex;gap:10px;}
-  .badge-item{display:flex;flex-direction:column;align-items:center;gap:4px;}
-  .badge-ico{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-  .bi-gold{background:#fdf0e0;}
-  .bi-silver{background:#f3f4f6;}
-  .bi-green{background:#e8f5ec;}
-  .badge-lbl{font-size:10.5px;color:#6b7280;text-align:center;line-height:1.2;}
+  .bs-title{font-size:12.5px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;}
+  .bs-hint{font-size:11px;color:#9ca3af;margin-bottom:12px;}
+  .tier-row{display:flex;flex-direction:column;gap:8px;}
+  .tier-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;background:#F8F4E3;}
+  .tier-item.active{background:#FBF1DC;border:1px solid #D4A017;}
+  .tier-ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .ti-bronze{background:#EFE1D3;}
+  .ti-argent{background:#E9EBEE;}
+  .ti-or{background:#FBF1DC;}
+  .tier-info{flex:1;}
+  .tier-name{font-size:12.5px;font-weight:600;color:#1B1B1B;}
+  .tier-range{font-size:10.5px;color:#6b7280;}
+  .tier-check{width:18px;height:18px;flex-shrink:0;}
 
   /* RIGHT */
   .right-col{display:flex;flex-direction:column;gap:20px;}
 
-  .card{background:#fff;border-radius:12px;border:1px solid #e8e3db;overflow:hidden;}
-  .ch{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #f2ece4;}
-  .ct{font-size:14.5px;font-weight:600;color:#1a1a1a;}
-  .ca{font-size:12.5px;color:#1c6b3a;font-weight:500;cursor:pointer;}
+  .card{background:#fff;border-radius:12px;border:1px solid #E7DFC7;overflow:hidden;}
+  .ch{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #F0E9D6;}
+  .ct{font-size:14.5px;font-weight:600;color:#1B1B1B;}
+  .ca{font-size:12.5px;color:#2D6A4F;font-weight:500;cursor:pointer;}
 
   /* UPCOMING EVENTS */
   .ev-list{display:flex;flex-direction:column;}
-  .ev-item{display:flex;align-items:stretch;gap:0;border-bottom:1px solid #f7f5f0;}
+  .ev-item{display:flex;align-items:stretch;gap:0;border-bottom:1px solid #F8F4E3;}
   .ev-item:last-child{border-bottom:none;}
-  .ev-left{width:6px;background:#1c6b3a;flex-shrink:0;}
-  .ev-left.amber{background:#d4750a;}
+  .ev-left{width:6px;background:#2D6A4F;flex-shrink:0;}
+  .ev-left.amber{background:#D4A017;}
   .ev-mid{flex:1;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;}
-  .ev-date-box{width:42px;height:42px;border-radius:9px;background:#e8f5ec;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
-  .ev-dd{font-size:17px;font-weight:700;color:#1c6b3a;line-height:1;}
-  .ev-dm{font-size:9.5px;color:#1c6b3a;text-transform:uppercase;font-weight:600;}
-  .ev-date-box.amb{background:#fdf0e0;}
-  .ev-dd.a{color:#d4750a;} .ev-dm.a{color:#d4750a;}
+  .ev-date-box{width:42px;height:42px;border-radius:9px;background:#E6F1EB;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+  .ev-dd{font-size:17px;font-weight:700;color:#2D6A4F;line-height:1;}
+  .ev-dm{font-size:9.5px;color:#2D6A4F;text-transform:uppercase;font-weight:600;}
+  .ev-date-box.amb{background:#FBF1DC;}
+  .ev-dd.a{color:#D4A017;} .ev-dm.a{color:#D4A017;}
   .ev-info{}
-  .ev-title{font-size:13.5px;font-weight:600;color:#1a1a1a;}
+  .ev-title{font-size:13.5px;font-weight:600;color:#1B1B1B;}
   .ev-sub{font-size:12px;color:#6b7280;margin-top:3px;display:flex;gap:10px;}
   .ev-right{padding:14px 18px;display:flex;align-items:center;gap:10px;}
   .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:500;}
-  .bg{background:#e8f5ec;color:#1c6b3a;} .ba{background:#fdf0e0;color:#d4750a;} .bgr{background:#f3f4f6;color:#6b7280;}
+  .bg{background:#E6F1EB;color:#2D6A4F;} .ba{background:#FBF1DC;color:#D4A017;} .bgr{background:#f3f4f6;color:#6b7280;}
   .btn-sm{padding:6px 13px;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
-  .btn-sec{background:#f7f5f0;color:#1a1a1a;border:1px solid #e8e3db;}
+  .btn-sec{background:#F8F4E3;color:#1B1B1B;border:1px solid #E7DFC7;}
 
   /* HISTORY */
   .hist-table{width:100%;border-collapse:collapse;}
-  .hist-table th{text-align:left;padding:10px 20px;font-size:10.5px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;font-weight:600;background:#fafaf8;border-bottom:1px solid #f2ece4;}
-  .hist-table td{padding:12px 20px;border-bottom:1px solid #f7f5f0;font-size:13px;}
+  .hist-table th{text-align:left;padding:10px 20px;font-size:10.5px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;font-weight:600;background:#fafaf8;border-bottom:1px solid #F0E9D6;}
+  .hist-table td{padding:12px 20px;border-bottom:1px solid #F8F4E3;font-size:13px;}
   .hist-table tr:last-child td{border-bottom:none;}
   .hist-table tr:hover td{background:#fafaf8;}
   .star-row{display:flex;gap:2px;}
-  .star{color:#d4750a;font-size:13px;}
-  .star-e{color:#e8e3db;font-size:13px;}
-  .attestation-link{font-size:12px;color:#1c6b3a;font-weight:500;cursor:pointer;}
+  .star{color:#D4A017;font-size:13px;}
+  .star-e{color:#E7DFC7;font-size:13px;}
+  .attestation-link{font-size:12px;color:#2D6A4F;font-weight:500;cursor:pointer;}
 </style>
 </helmet>
 
@@ -141,16 +148,15 @@
           <div class="profile-name">Alain Youndjeu Tchouapi</div>
           <div class="profile-email">alain.youndjeu@eafc-uccle.be</div>
           <div class="profile-since">Bénévole depuis février 2024</div>
-          <div class="profile-tags">
-            <span class="tag">Récolte</span>
-            <span class="tag">Distribution</span>
-            <span class="tag">Atelier</span>
+          <div class="level-chip">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1l1.6 4.7H13l-4 2.9 1.6 4.7-4-2.9-4 2.9 1.6-4.7L0 5.7h4.9z" fill="#D4A017"/></svg>
+            Niveau OR
           </div>
           <div class="profile-divider"></div>
           <div class="stat-row">
             <div class="pstat">
               <div class="pstat-val">23</div>
-              <div class="pstat-lbl">événements</div>
+              <div class="pstat-lbl">particip. confirmées</div>
             </div>
             <div class="pstat">
               <div class="pstat-val">148</div>
@@ -163,25 +169,28 @@
           </div>
           <div class="profile-divider"></div>
           <div class="badges-section">
-            <div class="bs-title">Mes badges</div>
-            <div class="badges-row">
-              <div class="badge-item">
-                <div class="badge-ico bi-gold">
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2l2.5 7.5H21l-6.5 5 2.5 7.5L11 17.5 4 22l2.5-7.5L0 9.5h7.5z" fill="#d4750a"/></svg>
+            <div class="bs-title">Niveau de fidélité</div>
+            <div class="bs-hint">Calculé automatiquement selon le nombre de participations confirmées (RG-18)</div>
+            <div class="tier-row">
+              <div class="tier-item">
+                <div class="tier-ico ti-bronze">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" fill="#B08D57"/></svg>
                 </div>
-                <div class="badge-lbl">Super<br>bénévole</div>
+                <div class="tier-info"><div class="tier-name">Bronze</div><div class="tier-range">1 à 2 événements</div></div>
+                <svg class="tier-check" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2D6A4F"/><path d="M5 9l2.5 2.5L13 6" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
-              <div class="badge-item">
-                <div class="badge-ico bi-green">
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3C7 3 5 7 5 11c2 0 4-1 5-3-1 3-1 5 1 8 2-3 2-5 1-8 1 2 3 3 5 3 0-4-2-8-6-8z" fill="#1c6b3a"/></svg>
+              <div class="tier-item">
+                <div class="tier-ico ti-argent">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" fill="#9CA3AF"/></svg>
                 </div>
-                <div class="badge-lbl">Main<br>verte</div>
+                <div class="tier-info"><div class="tier-name">Argent</div><div class="tier-range">3 à 6 événements</div></div>
+                <svg class="tier-check" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2D6A4F"/><path d="M5 9l2.5 2.5L13 6" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
-              <div class="badge-item">
-                <div class="badge-ico bi-silver">
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="7" stroke="#9ca3af" stroke-width="2"/><path d="M11 7v5l3 2" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="tier-item active">
+                <div class="tier-ico ti-or">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" fill="#D4A017"/></svg>
                 </div>
-                <div class="badge-lbl">100h<br>bénévolat</div>
+                <div class="tier-info"><div class="tier-name">Or — niveau actuel</div><div class="tier-range">7 événements et plus</div></div>
               </div>
             </div>
           </div>

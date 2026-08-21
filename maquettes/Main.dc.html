@@ -10,12 +10,12 @@
 <helmet>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'DM Sans',system-ui,sans-serif;background:#f7f5f0;color:#1a1a1a;width:1440px;height:900px;overflow:hidden;}
-  a{color:#1c6b3a;} a:hover{color:#2a8a4d;}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:#F8F4E3;color:#1B1B1B;width:1440px;height:900px;overflow:hidden;}
+  a{color:#2D6A4F;} a:hover{color:#3D8064;}
   .layout{display:flex;width:1440px;height:900px;}
 
   /* SIDEBAR */
-  .sidebar{width:256px;flex-shrink:0;background:#133d24;display:flex;flex-direction:column;}
+  .sidebar{width:256px;flex-shrink:0;background:#1D4533;display:flex;flex-direction:column;}
   .sb-logo{padding:26px 22px 22px;border-bottom:1px solid rgba(255,255,255,.1);}
   .sb-logomark{width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
   .sb-name{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;line-height:1.2;}
@@ -28,67 +28,73 @@
   .sb-ico{width:17px;height:17px;flex-shrink:0;}
   .sb-foot{padding:14px 10px;border-top:1px solid rgba(255,255,255,.1);}
   .sb-user{display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.07);border-radius:10px;}
-  .sb-av{width:34px;height:34px;background:#2a8a4d;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+  .sb-av{width:34px;height:34px;background:#3D8064;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
   .sb-uname{font-size:13px;color:#fff;font-weight:500;}
   .sb-urole{font-size:11px;color:rgba(255,255,255,.45);}
 
   /* MAIN */
   .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-  .topbar{height:64px;background:#fff;border-bottom:1px solid #e8e3db;display:flex;align-items:center;padding:0 30px;justify-content:space-between;flex-shrink:0;}
-  .pg-title{font-family:'DM Serif Display',serif;font-size:21px;color:#1a1a1a;}
+  .topbar{height:64px;background:#fff;border-bottom:1px solid #E7DFC7;display:flex;align-items:center;padding:0 30px;justify-content:space-between;flex-shrink:0;}
+  .pg-title{font-family:'DM Serif Display',serif;font-size:21px;color:#1B1B1B;}
   .tb-right{display:flex;align-items:center;gap:14px;}
-  .date-chip{font-size:12.5px;color:#6b7280;background:#f7f5f0;padding:5px 13px;border-radius:20px;}
-  .icon-btn{width:34px;height:34px;background:#f7f5f0;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
-  .notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:#d4750a;border-radius:50%;border:2px solid #fff;}
+  .date-chip{font-size:12.5px;color:#6b7280;background:#F8F4E3;padding:5px 13px;border-radius:20px;}
+  .icon-btn{width:34px;height:34px;background:#F8F4E3;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
+  .notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:#D4A017;border-radius:50%;border:2px solid #fff;}
   .content{flex:1;overflow-y:auto;padding:26px 30px;display:flex;flex-direction:column;gap:22px;}
 
   /* STATS */
   .stats-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
-  .sc{background:#fff;border-radius:12px;padding:20px 22px;border:1px solid #e8e3db;}
+  .sc{background:#fff;border-radius:12px;padding:20px 22px;border:1px solid #E7DFC7;}
   .sc-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
-  .bg-g{background:#e8f5ec;} .bg-a{background:#fdf0e0;} .bg-b{background:#e8f0fd;} .bg-p{background:#f0e8fd;}
+  .bg-g{background:#E6F1EB;} .bg-a{background:#FBF1DC;} .bg-b{background:#FBF1DC;} .bg-p{background:#EDEEF0;}
+  .sb-badge{margin-left:auto;background:#D4A017;color:#1D4533;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;}
+  .chart-card{background:#fff;border-radius:12px;border:1px solid #E7DFC7;overflow:hidden;}
+  .chart-body{padding:8px 22px 20px;}
+  .chart-legend{display:flex;align-items:center;gap:16px;padding:0 22px 4px;}
+  .lg-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#6b7280;}
+  .lg-dot{width:8px;height:8px;border-radius:50%;}
   .sc-lbl{font-size:11px;color:#6b7280;font-weight:500;letter-spacing:.03em;text-transform:uppercase;}
-  .sc-val{font-family:'DM Serif Display',serif;font-size:34px;color:#1a1a1a;margin-top:5px;line-height:1;}
+  .sc-val{font-family:'DM Serif Display',serif;font-size:34px;color:#1B1B1B;margin-top:5px;line-height:1;}
   .sc-del{font-size:12px;margin-top:7px;display:flex;align-items:center;gap:4px;}
-  .up{color:#1c6b3a;} .neu{color:#6b7280;}
+  .up{color:#2D6A4F;} .neu{color:#6b7280;}
 
   /* GRID */
   .mg{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;}
-  .card{background:#fff;border-radius:12px;border:1px solid #e8e3db;overflow:hidden;}
-  .ch{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #f2ece4;}
-  .ct{font-size:14.5px;font-weight:600;color:#1a1a1a;}
-  .ca{font-size:12.5px;color:#1c6b3a;font-weight:500;cursor:pointer;}
+  .card{background:#fff;border-radius:12px;border:1px solid #E7DFC7;overflow:hidden;}
+  .ch{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #F0E9D6;}
+  .ct{font-size:14.5px;font-weight:600;color:#1B1B1B;}
+  .ca{font-size:12.5px;color:#2D6A4F;font-weight:500;cursor:pointer;}
   table{width:100%;border-collapse:collapse;}
-  th{text-align:left;padding:11px 22px;font-size:10.5px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;font-weight:600;background:#fafaf8;border-bottom:1px solid #f2ece4;}
-  td{padding:13px 22px;border-bottom:1px solid #f7f5f0;font-size:13.5px;}
+  th{text-align:left;padding:11px 22px;font-size:10.5px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;font-weight:600;background:#fafaf8;border-bottom:1px solid #F0E9D6;}
+  td{padding:13px 22px;border-bottom:1px solid #F8F4E3;font-size:13.5px;}
   tr:last-child td{border-bottom:none;}
   tr:hover td{background:#fafaf8;}
-  .en{font-weight:500;color:#1a1a1a;}
+  .en{font-weight:500;color:#1B1B1B;}
   .es{font-size:12px;color:#6b7280;margin-top:1px;}
   .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:500;}
-  .bg{background:#e8f5ec;color:#1c6b3a;} .ba{background:#fdf0e0;color:#d4750a;} .bgr{background:#f3f4f6;color:#6b7280;}
+  .bg{background:#E6F1EB;color:#2D6A4F;} .ba{background:#FBF1DC;color:#D4A017;} .bgr{background:#f3f4f6;color:#6b7280;}
   .lnk{font-size:12px;color:#9ca3af;cursor:pointer;}
 
   /* RIGHT */
   .ps{display:flex;flex-direction:column;gap:18px;}
   .ul{}
-  .ui{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-bottom:1px solid #f7f5f0;}
+  .ui{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-bottom:1px solid #F8F4E3;}
   .ui:last-child{border-bottom:none;}
   .db{width:42px;height:42px;flex-shrink:0;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-  .dbg{background:#e8f5ec;} .dba{background:#fdf0e0;}
+  .dbg{background:#E6F1EB;} .dba{background:#FBF1DC;}
   .dd{font-size:17px;font-weight:700;line-height:1;}
   .dm{font-size:9.5px;text-transform:uppercase;font-weight:600;letter-spacing:.03em;}
-  .ddg{color:#1c6b3a;} .dda{color:#d4750a;}
-  .ut{font-size:13px;font-weight:600;color:#1a1a1a;}
+  .ddg{color:#2D6A4F;} .dda{color:#D4A017;}
+  .ut{font-size:13px;font-weight:600;color:#1B1B1B;}
   .us{font-size:12px;color:#6b7280;margin-top:1px;}
   .uc{font-size:12px;margin-top:3px;font-weight:500;}
-  .ucg{color:#1c6b3a;} .uca{color:#d4750a;}
+  .ucg{color:#2D6A4F;} .uca{color:#D4A017;}
 
   /* ACTIONS */
   .ag{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:14px;}
   .ab{padding:13px 10px;border-radius:9px;cursor:pointer;font-size:12.5px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:5px;}
-  .ap{background:#1c6b3a;color:#fff;}
-  .as{background:#f7f5f0;color:#1a1a1a;border:1px solid #e8e3db;}
+  .ap{background:#2D6A4F;color:#fff;}
+  .as{background:#F8F4E3;color:#1B1B1B;border:1px solid #E7DFC7;}
 </style>
 </helmet>
 
@@ -122,10 +128,11 @@
       <div class="sb-item">
         <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><path d="M3 4.5h11M3 8.5h8M3 12.5h9" stroke="rgba(255,255,255,.7)" stroke-width="1.3" stroke-linecap="round"/></svg>
         Inscriptions
+        <span class="sb-badge">12</span>
       </div>
       <div class="sb-item">
         <svg class="sb-ico" viewBox="0 0 17 17" fill="none"><path d="M8.5 2l1.6 5H15l-4 3 1.5 5-4-3-4 3 1.5-5-4-3h4.9z" stroke="rgba(255,255,255,.7)" stroke-width="1.3" stroke-linejoin="round"/></svg>
-        Retours post-événement
+        Avis &amp; retours
       </div>
       <div class="sb-section" style="margin-top:6px;">Rapports</div>
       <div class="sb-item">
@@ -155,7 +162,7 @@
         <div class="date-chip">Jeudi 21 août 2025</div>
         <div class="icon-btn">
           <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M8.5 1.5a4.5 4.5 0 0 0-4.5 4.5v2.3L2.5 10.5h12L13 8.3V6a4.5 4.5 0 0 0-4.5-4.5z" stroke="#6b7280" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 12.5a1.5 1.5 0 0 0 3 0" stroke="#6b7280" stroke-width="1.3"/></svg>
-          <div class="notif-dot"></div>
+          <span class="sb-badge" style="position:absolute;top:-6px;right:-6px;">12</span>
         </div>
         <div class="icon-btn">
           <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="5.5" r="3" stroke="#6b7280" stroke-width="1.3"/><path d="M2 15.5c0-3 2.9-5.5 6.5-5.5s6.5 2.5 6.5 5.5" stroke="#6b7280" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -166,28 +173,58 @@
     <div class="content">
       <div class="stats-row">
         <div class="sc">
-          <div class="sc-icon bg-g"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><circle cx="9.5" cy="6.5" r="3.5" stroke="#1c6b3a" stroke-width="1.4"/><path d="M2.5 17c0-3.5 3.1-6.5 7-6.5s7 3 7 6.5" stroke="#1c6b3a" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          <div class="sc-icon bg-g"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><circle cx="9.5" cy="6.5" r="3.5" stroke="#2D6A4F" stroke-width="1.4"/><path d="M2.5 17c0-3.5 3.1-6.5 7-6.5s7 3 7 6.5" stroke="#2D6A4F" stroke-width="1.4" stroke-linecap="round"/></svg></div>
           <div class="sc-lbl">Bénévoles actifs</div>
           <div class="sc-val">48</div>
-          <div class="sc-del up"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 2v7M2 5l3.5-3 3.5 3" stroke="#1c6b3a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>+6 ce mois</div>
+          <div class="sc-del up"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 2v7M2 5l3.5-3 3.5 3" stroke="#2D6A4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>+6 ce mois</div>
         </div>
         <div class="sc">
-          <div class="sc-icon bg-a"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><rect x="2" y="4" width="15" height="13" rx="2" stroke="#d4750a" stroke-width="1.4"/><path d="M2 8h15" stroke="#d4750a" stroke-width="1.4"/><path d="M6.5 2v3.5M12.5 2v3.5" stroke="#d4750a" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          <div class="sc-icon bg-a"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><rect x="2" y="4" width="15" height="13" rx="2" stroke="#D4A017" stroke-width="1.4"/><path d="M2 8h15" stroke="#D4A017" stroke-width="1.4"/><path d="M6.5 2v3.5M12.5 2v3.5" stroke="#D4A017" stroke-width="1.4" stroke-linecap="round"/></svg></div>
           <div class="sc-lbl">Événements à venir</div>
           <div class="sc-val">7</div>
           <div class="sc-del neu">4 ce mois-ci</div>
         </div>
         <div class="sc">
-          <div class="sc-icon bg-b"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><path d="M3 6h13M3 9.5h9M3 13h11" stroke="#2563eb" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          <div class="sc-icon bg-b"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><path d="M3 6h13M3 9.5h9M3 13h11" stroke="#D4A017" stroke-width="1.4" stroke-linecap="round"/></svg></div>
           <div class="sc-lbl">Inscriptions en attente</div>
           <div class="sc-val">12</div>
-          <div class="sc-del up"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 2v7M2 5l3.5-3 3.5 3" stroke="#1c6b3a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>+3 aujourd'hui</div>
+          <div class="sc-del up"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 2v7M2 5l3.5-3 3.5 3" stroke="#2D6A4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>+3 aujourd'hui</div>
         </div>
         <div class="sc">
-          <div class="sc-icon bg-p"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><path d="M9.5 2l2 6h6.3L13 11.5l2 5.8-5.5-3.5-5.5 3.5 2-5.8L1.2 8h6.3z" stroke="#7c3aed" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+          <div class="sc-icon bg-p"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><path d="M9.5 2l2 6h6.3L13 11.5l2 5.8-5.5-3.5-5.5 3.5 2-5.8L1.2 8h6.3z" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
           <div class="sc-lbl">Heures bénévolat</div>
           <div class="sc-val">324</div>
-          <div class="sc-del up"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 2v7M2 5l3.5-3 3.5 3" stroke="#1c6b3a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>+42 ce mois</div>
+          <div class="sc-del up"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 2v7M2 5l3.5-3 3.5 3" stroke="#2D6A4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>+42 ce mois</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="ch">
+          <div class="ct">Inscriptions par mois</div>
+          <div class="chart-legend">
+            <div class="lg-item"><span class="lg-dot" style="background:#2D6A4F;"></span>Confirmées</div>
+            <div class="lg-item"><span class="lg-dot" style="background:#D4A017;"></span>Liste d'attente</div>
+          </div>
+        </div>
+        <div class="chart-body">
+          <svg width="100%" height="150" viewBox="0 0 1120 150" preserveAspectRatio="none">
+            <line x1="0" y1="0" x2="1120" y2="0" stroke="#F0E9D6" stroke-width="1"/>
+            <line x1="0" y1="37.5" x2="1120" y2="37.5" stroke="#F0E9D6" stroke-width="1"/>
+            <line x1="0" y1="75" x2="1120" y2="75" stroke="#F0E9D6" stroke-width="1"/>
+            <line x1="0" y1="112.5" x2="1120" y2="112.5" stroke="#F0E9D6" stroke-width="1"/>
+            <polyline points="20,110 180,95 340,80 500,60 660,68 820,40 980,30 1100,20" fill="none" stroke="#2D6A4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="20,135 180,128 340,132 500,118 660,122 820,105 980,110 1100,98" fill="none" stroke="#D4A017" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div style="display:flex;justify-content:space-between;padding:0 6px;margin-top:6px;">
+            <span style="font-size:10.5px;color:#9ca3af;">Fév</span>
+            <span style="font-size:10.5px;color:#9ca3af;">Mars</span>
+            <span style="font-size:10.5px;color:#9ca3af;">Avr</span>
+            <span style="font-size:10.5px;color:#9ca3af;">Mai</span>
+            <span style="font-size:10.5px;color:#9ca3af;">Juin</span>
+            <span style="font-size:10.5px;color:#9ca3af;">Juil</span>
+            <span style="font-size:10.5px;color:#9ca3af;">Août</span>
+            <span style="font-size:10.5px;color:#9ca3af;">Sept</span>
+          </div>
         </div>
       </div>
 
@@ -197,11 +234,11 @@
           <table>
             <thead><tr><th>Événement</th><th>Date</th><th>Bénévoles</th><th>Statut</th><th></th></tr></thead>
             <tbody>
-              <tr><td><div class="en">Récolte de légumes — Ferme Sud</div><div class="es">Uccle, Bruxelles</div></td><td style="font-size:13px;">24 août 2025</td><td style="font-size:13px;color:#1c6b3a;font-weight:500;">8 / 12</td><td><span class="badge bg">Ouvert</span></td><td><span class="lnk">Gérer →</span></td></tr>
-              <tr><td><div class="en">Atelier compost &amp; jardinage</div><div class="es">Ixelles, Bruxelles</div></td><td style="font-size:13px;">30 août 2025</td><td style="font-size:13px;color:#d4750a;font-weight:500;">12 / 12</td><td><span class="badge ba">Complet</span></td><td><span class="lnk">Gérer →</span></td></tr>
-              <tr><td><div class="en">Distribution CSA — Marché local</div><div class="es">Etterbeek, Bruxelles</div></td><td style="font-size:13px;">6 sept. 2025</td><td style="font-size:13px;color:#1c6b3a;font-weight:500;">3 / 10</td><td><span class="badge bg">Ouvert</span></td><td><span class="lnk">Gérer →</span></td></tr>
+              <tr><td><div class="en">Récolte de légumes — Ferme Sud</div><div class="es">Uccle, Bruxelles</div></td><td style="font-size:13px;">24 août 2025</td><td style="font-size:13px;color:#2D6A4F;font-weight:500;">8 / 12</td><td><span class="badge bg">Ouvert</span></td><td><span class="lnk">Gérer →</span></td></tr>
+              <tr><td><div class="en">Atelier compost &amp; jardinage</div><div class="es">Ixelles, Bruxelles</div></td><td style="font-size:13px;">30 août 2025</td><td style="font-size:13px;color:#D4A017;font-weight:500;">12 / 12</td><td><span class="badge ba">Complet</span></td><td><span class="lnk">Gérer →</span></td></tr>
+              <tr><td><div class="en">Distribution CSA — Marché local</div><div class="es">Etterbeek, Bruxelles</div></td><td style="font-size:13px;">6 sept. 2025</td><td style="font-size:13px;color:#2D6A4F;font-weight:500;">3 / 10</td><td><span class="badge bg">Ouvert</span></td><td><span class="lnk">Gérer →</span></td></tr>
               <tr><td><div class="en">Formation bénévoles — Hygiène alimentaire</div><div class="es">En ligne</div></td><td style="font-size:13px;">12 sept. 2025</td><td style="font-size:13px;color:#6b7280;font-weight:500;">0 / 20</td><td><span class="badge bgr">À venir</span></td><td><span class="lnk">Gérer →</span></td></tr>
-              <tr><td><div class="en">Récolte pommes — Verger Terra Sana</div><div class="es">Waterloo</div></td><td style="font-size:13px;">20 sept. 2025</td><td style="font-size:13px;color:#1c6b3a;font-weight:500;">5 / 15</td><td><span class="badge bg">Ouvert</span></td><td><span class="lnk">Gérer →</span></td></tr>
+              <tr><td><div class="en">Récolte pommes — Verger Terra Sana</div><div class="es">Waterloo</div></td><td style="font-size:13px;">20 sept. 2025</td><td style="font-size:13px;color:#2D6A4F;font-weight:500;">5 / 15</td><td><span class="badge bg">Ouvert</span></td><td><span class="lnk">Gérer →</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -228,15 +265,15 @@
                 Nouvel événement
               </div>
               <div class="ab as">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7.5" r="3.5" stroke="#1a1a1a" stroke-width="1.4"/><path d="M4 18c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/></svg>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7.5" r="3.5" stroke="#1B1B1B" stroke-width="1.4"/><path d="M4 18c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#1B1B1B" stroke-width="1.4" stroke-linecap="round"/></svg>
                 Ajouter bénévole
               </div>
               <div class="ab as">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="2.5" width="12" height="15" rx="1.5" stroke="#1a1a1a" stroke-width="1.4"/><path d="M7 7h6M7 10h6M7 13h4" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/></svg>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="2.5" width="12" height="15" rx="1.5" stroke="#1B1B1B" stroke-width="1.4"/><path d="M7 7h6M7 10h6M7 13h4" stroke="#1B1B1B" stroke-width="1.4" stroke-linecap="round"/></svg>
                 Attestation PDF
               </div>
               <div class="ab as">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15.5l3.5-5 3.5 3 3.5-6.5 3.5 4" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15.5l3.5-5 3.5 3 3.5-6.5 3.5 4" stroke="#1B1B1B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Statistiques
               </div>
             </div>
