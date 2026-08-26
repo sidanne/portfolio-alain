@@ -1,0 +1,49 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: module-benevoles
+
+  datasource:
+    # Environnement local WAMP (section 1.2 de l'analyse) — adapter si besoin
+    url: jdbc:mysql://localhost:3306/terra_sana?useSSL=false&serverTimezone=Europe/Brussels&createDatabaseIfNotExist=true
+    username: root
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # update le temps du développement ; passer à validate une fois le schéma stabilisé
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME:}
+    password: ${GMAIL_APP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  jwt:
+    # Secrets distincts bénévole / admin (RG-24) — à définir via variables d'environnement en prod
+    volunteer:
+      secret: ${JWT_VOLUNTEER_SECRET:changeme-volunteer-secret-key-min-32-chars}
+      expiration-hours: 24
+    admin:
+      secret: ${JWT_ADMIN_SECRET:changeme-admin-secret-key-min-32-chars}
+      expiration-hours: 24
+  reset-token:
+    expiration-minutes: 30
+  cors:
+    allowed-origins: http://localhost:5173
