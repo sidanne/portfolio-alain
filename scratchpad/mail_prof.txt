@@ -1,0 +1,17 @@
+Objet : TFE Terra Sana — Avancement du module bénévoles (RG-01 à RG-14) et demande de visio
+
+Madame Namur,
+
+Je me permets de vous recontacter pour vous tenir informée de l'avancement du développement du module de gestion des bénévoles et des événements, dans le prolongement de l'analyse que vous avez validée.
+
+Les fondations techniques du module sont désormais en place : les entités JPA (bénévole, événement, inscription, avis) et leurs contraintes ont été codées de façon à couvrir les règles de gestion RG-01 à RG-14 (comptes bénévoles, gestion des événements, inscriptions et liste d'attente). Le projet compile et est versionné sur GitHub.
+
+Je continue à présent sur la couche de sécurité (authentification JWT) et les services qui appliqueront concrètement ces règles.
+
+Auriez-vous la possibilité d'organiser un court échange en visioconférence dans les prochains jours pour que je vous présente cet avancement (et éventuellement une première démonstration/tests) ? Je souhaiterais avoir votre avis avant de poursuivre le développement, notamment à l'approche de l'échéance de validation de l'analyse du 28 août.
+
+Je reste disponible aux dates qui vous conviennent.
+
+Bien cordialement,
+Alain Youndjeu Tchouapi
+Bachelier en Informatique de Gestion — EAFC Uccle
